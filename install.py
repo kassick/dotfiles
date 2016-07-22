@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-07-22 13:24:56 kassick"
+# Updated: "2016-07-22 13:43:58 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -64,6 +64,7 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
     renames = []
     dirs = []
     installs = []
+    executes = []
 
     if dot_path:
         print "dot/%s --> ~/.%s" % (dot_path, dot_path)
@@ -117,6 +118,12 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
             pass
         pass
 
+    if dot_install:
+        executes.append(dot_install)
+
+    return (removes, renames, dirs, installs, executes)
+
+def do_all_actions(removes, renames, dirs, installs, executes):
     print "Verification:"
     print "Will remove:"
     for f in removes:
@@ -133,10 +140,13 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
     print "Will Install:"
     for s, d in installs:
         print "\t", s, "->", d
-
+    print ""
+    print "Will Execute:"
+    for e in executes:
+        print "\t", e
     print ""
 
-    print "(C)onfirm, (Abort) ?"
+    print "(C)onfirm, (A)bort ?"
     action = None
     while not(action in ['A', 'C']):
         action = sys.stdin.readline().strip()
@@ -163,12 +173,12 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
     for s, d in installs:
         os.symlink(s, os.path.abspath( d ))
 
-    if dot_install:
-        print "Executing ", dot_install
-        dot_path = os.path.dirname(  os.path.realpath(__file__) )
-        new_env = dict( os.environ)
-        new_env['DOT_PATH'] = dot_path
-        subprocess.call([os.path.abspath("./"+dot_install)],
+    dot_path = os.path.dirname(  os.path.realpath(__file__) )
+    new_env = dict( os.environ)
+    new_env['DOT_PATH'] = dot_path
+    for e in executes:
+        print "Executing ", e
+        subprocess.call([os.path.abspath("./"+e)],
                         cwd=os.path.expanduser("~"),
                         env=new_env)
 
@@ -213,10 +223,24 @@ def main():
 
     print ""
 
+    removes = []
+    renames = []
+    dirs = []
+    installs = []
+    executes = []
+
+    from itertools import starmap
     for dot in selection:
         print "Installing dot '%s'" % dot
-        dot_install(dot, *dots[dot])
+        tup = dot_install(dot, *dots[dot])
+        print tup
+        map(lambda t: t[0].extend(t[1]),
+                zip([ removes, renames, dirs, installs, executes ],
+                    tup))
 
+        print removes
         print "---------------------------------"
+
+    do_all_actions(removes, renames, dirs, installs, executes)
 
 if __name__ == "__main__": main()
