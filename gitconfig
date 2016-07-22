@@ -1,0 +1,7 @@
+[user]
+	email = kassick@gmail.com
+	name = Rodrigo Kassick
+[push]
+	default = simple
+[core]
+    editor = emacsclient -t --alternate-editor=""
