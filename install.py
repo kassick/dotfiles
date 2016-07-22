@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-07-22 00:42:59 kassick"
+# Updated: "2016-07-22 12:53:21 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -165,7 +165,10 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
 
     if dot_install:
         print "Executing ", dot_install
-        subprocess.call([os.path.abspath("./"+dot_install)], cwd=os.path.expanduser("~"))
+        dot_path = os.path.dirname(  os.path.realpath(__file__) )
+        subprocess.call([os.path.abspath("./"+dot_install)],
+                        cwd=os.path.expanduser("~"),
+                        env={"DOT_PATH": dot_path})
 
 def find_all_dots():
     dots = {}
