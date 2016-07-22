@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-07-22 13:43:58 kassick"
+# Updated: "2016-07-22 13:49:32 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -181,6 +181,7 @@ def do_all_actions(removes, renames, dirs, installs, executes):
         subprocess.call([os.path.abspath("./"+e)],
                         cwd=os.path.expanduser("~"),
                         env=new_env)
+        print "-----"
 
 def find_all_dots():
     dots = {}
@@ -233,12 +234,10 @@ def main():
     for dot in selection:
         print "Installing dot '%s'" % dot
         tup = dot_install(dot, *dots[dot])
-        print tup
         map(lambda t: t[0].extend(t[1]),
                 zip([ removes, renames, dirs, installs, executes ],
                     tup))
 
-        print removes
         print "---------------------------------"
 
     do_all_actions(removes, renames, dirs, installs, executes)
