@@ -1,3 +1,7 @@
 [submodule "oh-my-zsh"]
 	path = dot/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule "dot/emacs.d"]
+	path = dot/emacs.d
+	url = git@bitbucket.org:kassick/emacs.d.git
+	branch = master
