@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-07-22 00:17:36 kassick"
+# Updated: "2016-07-22 00:42:59 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -17,7 +17,7 @@ SELECTION_FILE="dot_select.txt"
 
 def add_dot(dots, name, path, install, bundle):
     if name in dots:
-        dots[name] = tuple(apply(lambda i: i[0] if i[1] is None else i[1],
+        dots[name] = tuple(map(lambda i: i[0] if i[1] is None else i[1],
                            zip([path, install, bundle], dots[name])))
     else:
         dots[name] = (path, install, bundle)
@@ -33,31 +33,31 @@ def rec_file_split(p):
 
 
 def files_conflict_resolve(src, dst, renames, removes, installs):
-    if os.path.exists(dst):
-        if os.path.islink(dst):
+    if (os.path.islink(dst)):
+        # exists and is a link
+        removes.append(dst)
+        installs.append(( os.path.abspath( src ), dst) )
+    elif os.path.exists(dst):
+        # Exists and is not a link
+        print "\tFile %s already exists" % dst
+        print "\tAction:"
+        print "\t\t (o)verride"
+        print "\t\t (b)ackup"
+        print "\t\t (s)kip"
+
+        action = None
+        while not(action in ['o', 'b', 's']):
+            action = sys.stdin.readline().strip()
+
+        if action == 'o':
             removes.append(dst)
-            installs.append(( src, dst) )
-        else:
-            print "\tFile %s already exists" % dst
-            print "\tAction:"
-            print "\t\t (o)verride"
-            print "\t\t (b)ackup"
-            print "\t\t (s)kip"
-
-            action = None
-            while not(action in ['o', 'b', 's']):
-                action = sys.stdin.readline().strip()
-
-            if action == 'o':
-                removes.append(dst)
-                installs.append( (src, dst) )
-            elif action == 'b':
-                renames.append( (dst, dst + '.orig') )
-                installs.append( (src, dst) )
-            pass
+            installs.append( (os.path.abspath( src ), dst) )
+        elif action == 'b':
+            renames.append( (dst, dst + '.orig') )
+            installs.append( (os.path.abspath( src ), dst) )
         pass
     else:
-        installs.append( (src, dst) )
+        installs.append( (os.path.abspath(src), dst) )
 
 def dot_install(dot, dot_path, dot_install, dot_bundle):
     removes = []
@@ -146,8 +146,8 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
 
     print "Removing ..."
     for r in removes:
-        if path.isfile(r):
-            os.path.remove(r)
+        if path.isfile(r) or path.islink(r):
+            os.remove(r)
         else:
             os.removedirs(r)
 
@@ -155,13 +155,17 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
     for s, d in renames:
         os.rename(s, d)
 
+    print "Creating ..."
+    for d in dirs:
+        os.mkdir(d)
+
     print "Installing ..."
     for s, d in installs:
-        os.symlink(s, d)
+        os.symlink(s, os.path.abspath( d ))
 
     if dot_install:
         print "Executing ", dot_install
-        subprocess.call([dot_install], cwd=os.path.expanduser("~"))
+        subprocess.call([os.path.abspath("./"+dot_install)], cwd=os.path.expanduser("~"))
 
 def find_all_dots():
     dots = {}
@@ -188,18 +192,19 @@ def find_all_dots():
         for dot in l:
             match = install_re.match(dot)
             if match:
-                script = os.path.join(cur, do)
+                script = os.path.join(cur, dot)
                 add_dot(dots, match.groupdict()['dot'], None, script, None)
     return dots
 
 def main():
     dots = find_all_dots()
     if path.exists(SELECTION_FILE):
-        selection = open(SELECTION_FILE).readlines()
+        selection = map(lambda l: l.strip() ,open(SELECTION_FILE).readlines())
     else:
         selection = dots.keys()
 
-    print "Selected dots:", "\n".join(apply(lambda i: " - " + i, selection))
+    print dots
+    print "Selected dots:", "\n".join(map(lambda i: " - " + i, selection))
 
     print ""
 
