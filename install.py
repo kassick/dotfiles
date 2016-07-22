@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-07-22 12:53:21 kassick"
+# Updated: "2016-07-22 13:24:56 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -166,9 +166,11 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
     if dot_install:
         print "Executing ", dot_install
         dot_path = os.path.dirname(  os.path.realpath(__file__) )
+        new_env = dict( os.environ)
+        new_env['DOT_PATH'] = dot_path
         subprocess.call([os.path.abspath("./"+dot_install)],
                         cwd=os.path.expanduser("~"),
-                        env={"DOT_PATH": dot_path})
+                        env=new_env)
 
 def find_all_dots():
     dots = {}
@@ -177,7 +179,7 @@ def find_all_dots():
     #     if bundle is set, then every file inside bundle/name is linked to home and following paths
     #     if install is set, the program will be executed afterwards
 
-    install_re = re.compile(r'^INSTALL_(?P<dot>[a-z0-9][a-z0-9\.]+)\.[a-z0-9]+$')
+    install_re = re.compile(r'^INSTALL_(?P<dot>[a-z0-9][a-z0-9\.\-]+)\.[a-z0-9]+$')
 
     for dot in os.listdir('dot'):
         if not(install_re.match(dot)):

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-REPO="git@bitbucket.org:kassick/emacs.d.git"
-DEST=~/.emacs.d
+REPO="git://github.com/robbyrussell/oh-my-zsh.git"
+DEST=~/.oh-my-zsh
 
 cd $DEST
 if [ -d .git ]; then
@@ -11,5 +11,3 @@ else
     git remote add origin $REPO
     git pull origin master
 fi
-
-git submodule update --init --recursive && bash ./bootstrap.sh
