@@ -6,4 +6,5 @@ git pull origin master
 
 echo "Updating submodules"
 
-git submodule update --remote master --checkout master  --recursive --init
+git submodule foreach 'git checkout master'
+git submodule foreach 'git pull origin'
