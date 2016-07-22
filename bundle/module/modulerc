@@ -1,0 +1,5 @@
+#%Module 1.0
+
+module use /home/kassick/.local/modules
+module use /etc/modulefiles
+module use /usr/share/modulefiles
