@@ -1,4 +1,6 @@
 #!/bin/sh
 
 cd ~/.emacs.d
-bash ./bootstrap.sh
+git pull remote origin &&
+    git submodule update --init --recursive &&
+    bash ./bootstrap.sh
