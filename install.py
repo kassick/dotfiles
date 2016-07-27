@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-07-22 13:49:32 kassick"
+# Updated: "2016-07-27 00:28:49 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -213,13 +213,38 @@ def find_all_dots():
     return dots
 
 def main():
+    if len(sys.argv) == 1:
+        action = 'help'
+    elif sys.argv[1] == 'list':
+        action = 'list'
+    elif sys.argv[1] == 'install':
+        action = 'install'
+    else:
+        action = 'help'
+
+    if action == 'help':
+        print '''\
+              Usage:
+                 install.py install [dot1 [dot2 [dot3 ...]]]
+                 install.py list
+        '''
+        sys.exit(0)
+
     dots = find_all_dots()
-    if path.exists(SELECTION_FILE):
-        selection = map(lambda l: l.strip() ,open(SELECTION_FILE).readlines())
+
+    if action == 'list':
+        print '\n'.join(dots.keys())
+        sys.exit(0)
+
+    # only action here is install
+    if len(sys.argv) > 2:
+        selection = sys.argv[2:]
+    elif path.exists(SELECTION_FILE):
+        selection = map(lambda l: l.strip(),
+                        open(SELECTION_FILE).readlines())
     else:
         selection = dots.keys()
 
-    print dots
     print "Selected dots:", "\n".join(map(lambda i: " - " + i, selection))
 
     print ""
@@ -230,7 +255,6 @@ def main():
     installs = []
     executes = []
 
-    from itertools import starmap
     for dot in selection:
         print "Installing dot '%s'" % dot
         tup = dot_install(dot, *dots[dot])
