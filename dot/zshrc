@@ -1,3 +1,7 @@
+# Chase symlinks and avoid a lot of nonsense
+
+setopt chaselinks
+
 # Path to your oh-my-zsh installation.
 export ZSH=/home/kassick/.oh-my-zsh
 
@@ -49,7 +53,7 @@ ZSH_THEME="avit"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gitfast python sudo systemd vim-interaction vundle yum)
+plugins=(gitfast python sudo systemd yum)
 
 # User configuration
 
@@ -87,7 +91,7 @@ alias vim=vimx
 alias vi=vimx
 alias e=$EDITOR
 
-eval "$(thefuck --alias fuck)"
+#eval "$(thefuck --alias fuck)"
 # Fix for emacs
 if [[ "$TERM" == "dumb" ]]
 then
