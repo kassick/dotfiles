@@ -91,7 +91,7 @@ alias vim=vimx
 alias vi=vimx
 alias e=$EDITOR
 
-#eval "$(thefuck --alias fuck)"
+eval "$(thefuck --alias fuck)"
 # Fix for emacs
 if [[ "$TERM" == "dumb" ]]
 then
