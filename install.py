@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-07-27 00:28:49 kassick"
+# Updated: "2016-08-16 11:58:38 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -16,6 +16,7 @@ import subprocess
 SELECTION_FILE="dot_select.txt"
 
 def add_dot(dots, name, path, install, bundle):
+    if name == '.keep': return #ignore .keep files
     if name in dots:
         dots[name] = tuple(map(lambda i: i[0] if i[1] is None else i[1],
                            zip([path, install, bundle], dots[name])))
