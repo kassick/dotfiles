@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-08-16 11:58:38 kassick"
+# Updated: "2016-11-23 21:06:44 aluno"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -147,9 +147,9 @@ def do_all_actions(removes, renames, dirs, installs, executes):
         print "\t", e
     print ""
 
-    print "(C)onfirm, (A)bort ?"
     action = None
     while not(action in ['A', 'C']):
+        print "(C)onfirm, (A)bort ?"
         action = sys.stdin.readline().strip()
 
     if action == 'A':
