@@ -22,8 +22,18 @@ else
     git pull origin master
 fi
 
+YCM_CLANG_OPTS="--clang-completer --system-libclang"
+YCM_OMNISHARP_OPTS="--omnisharp-completer"
+YCM_SYSTEM_OPTS="--system-boost"
+YCM_GOCODE_OPTS="--gocode-completer"
+
+if [ -f ${DOT_PATH}/ycm_opts.sh ] ; then
+    echo " ----- Using options from $DOT_PATH/ycm_opts.sh -----"
+    . ${DOT_PATH}/ycm_opts.sh
+fi
+
 git submodule update --init --recursive && \
-    ./install.py --clang-completer --system-libclang \
-                 --omnisharp-completer \
-                 --system-boost \
-                 --gocode-completer
+    ./install.py $YCM_CLANG_OPTS \
+                 $YCM_OMNISHARP_OPTS \
+                 $YCM_SYSTEM_OPTS \
+                 $YCM_GOCODE_OPTS
