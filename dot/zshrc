@@ -3,7 +3,7 @@
 setopt chaselinks
 
 # Path to your oh-my-zsh installation.
-export ZSH=/home/kassick/.oh-my-zsh
+export ZSH=${HOME}/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -57,7 +57,7 @@ plugins=(gitfast python sudo systemd yum)
 
 # User configuration
 
-  export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/home/kassick/.local/bin:/home/kassick/bin"
+export PATH="/bin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:${HOME}/.local/bin:${HOME}/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
