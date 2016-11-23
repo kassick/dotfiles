@@ -7,7 +7,13 @@ echo "Installing Dependencies"
 pkcon install -y python-devel \
       clang-libs clang-devel \
       xbuild \
-      golang
+      golang \
+      mono-xbuild \
+      libboost-thread-dev \
+      libclang-3.9-dev \
+      python-dev \
+      python3-dev
+
 
 echo "Cloning YCM repository"
 
