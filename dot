@@ -3,7 +3,7 @@
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-11-23 21:06:44 aluno"
+# Updated: "2016-11-25 11:45:23 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -13,6 +13,9 @@ import sys
 import re
 import subprocess
 
+DOT_DIR="dots"
+BUNDLE_DIR="bundle"
+INSTALL_DIR="install"
 SELECTION_FILE="dot_select.txt"
 
 def add_dot(dots, name, path, install, bundle):
@@ -68,16 +71,16 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
     executes = []
 
     if dot_path:
-        print "dot/%s --> ~/.%s" % (dot_path, dot_path)
-
         dest = path.expanduser(path.join('~', '.' + dot_path ))
-        src = path.join('dot', dot_path)
+        src = path.join(DOT_DIR, dot_path)
 
-        files_conflict_resolve(src, dest, renames, removes, installs )
+        print "%s --> %s" % (src, dest)
+
+        files_conflict_resolve(src, dest, renames, removes, installs)
 
     if dot_bundle:
         print "Install bundle %s " % dot
-        for root, dirnames, filenames in os.walk(path.join('bundle', dot)):
+        for root, dirnames, filenames in os.walk(path.join(BUNDLE_DIR, dot)):
             destbase = os.path.sep.join(rec_file_split(root)[2:]) # ditch bundle/dotname
 
             for d in dirnames:
@@ -174,12 +177,14 @@ def do_all_actions(removes, renames, dirs, installs, executes):
     for s, d in installs:
         os.symlink(s, os.path.abspath( d ))
 
-    dot_path = os.path.dirname(  os.path.realpath(__file__) )
-    new_env = dict( os.environ)
+    # dot path environment is the path for the dotfiles main tree, i.e. path for
+    # current file
+    dot_path = os.path.dirname(os.path.realpath(__file__))
+    new_env = dict(os.environ)
     new_env['DOT_PATH'] = dot_path
     for e in executes:
         print "Executing ", e
-        subprocess.call([os.path.abspath("./"+e)],
+        subprocess.call([os.path.abspath("./" + e)],
                         cwd=os.path.expanduser("~"),
                         env=new_env)
         print "-----"
@@ -193,18 +198,19 @@ def find_all_dots():
 
     install_re = re.compile(r'^INSTALL_(?P<dot>[a-z0-9][a-z0-9\.\-]+)\.[a-z0-9]+$')
 
-    for dot in os.listdir('dot'):
+    for dot in os.listdir(DOT_DIR):
         if not(install_re.match(dot)):
             add_dot(dots, dot, dot, None, None)
 
-    for dot in os.listdir('install'):
-        script = os.path.join('install', dot)
+    for dot in os.listdir(INSTALL_DIR):
+        script = os.path.join(INSTALL_DIR, dot)
         add_dot(dots, dot, None, script, None)
 
-    for dot in os.listdir('bundle'):
+    for dot in os.listdir(BUNDLE_DIR):
         add_dot(dots, dot, None, None, dot )
 
-    for cur in ['dot', 'bundle', 'install']:
+    # Find all INSTALL_<dot> in all dirs
+    for cur in [DOT_DIR, BUNDLE_DIR, INSTALL_DIR]:
         l = os.listdir(cur)
         for dot in l:
             match = install_re.match(dot)
