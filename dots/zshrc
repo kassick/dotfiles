@@ -11,6 +11,7 @@ export ZSH=${HOME}/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="avit"
 
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -102,3 +103,6 @@ then
     unset preexec_functions
     PS1='$ '
 fi
+
+# Fix colors in dircolors
+eval `dircolors ~/.dir_colors`
