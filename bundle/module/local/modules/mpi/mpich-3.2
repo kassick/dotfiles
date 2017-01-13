@@ -1,0 +1,18 @@
+#%Module1.0
+##
+##  Mpich compiled from source
+##
+
+proc ModulesHelp { } {
+    global version modroot
+
+    puts stderr "mpi/mpich-3.2 -- sets env to work with homebrew mpich"
+}
+
+module-whatis "sets env to work with homebrew mpich"
+set topdir ~/Dev/mpich-3.2/
+set version 3.2
+set sys x86_64
+
+prepend-path PATH $topdir/bin
+prepend-path LD_LIBRARY_PATH $topdir/lib
