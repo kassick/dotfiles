@@ -4,15 +4,19 @@ REPO="https://github.com/Valloric/YouCompleteMe"
 DEST=~/.local/dev/ycm
 
 echo "Installing Dependencies"
-pkcon install -y python-devel \
-      clang-libs clang-devel \
-      xbuild \
-      golang \
-      mono-xbuild \
-      libboost-thread-dev \
-      libclang-3.9-dev \
-      python-dev \
-      python3-dev
+for pkg in  python-devel \
+                clang-libs clang-devel \
+                mono-devel \
+                xbuild \
+                golang \
+                mono-xbuild \
+                libboost-thread-dev \
+                libclang-3.9-dev \
+                python-dev \
+                python3-dev;
+do
+    pkcon install -y $pkg
+done
 
 
 echo "Cloning YCM repository"
