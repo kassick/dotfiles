@@ -65,8 +65,6 @@ def get_gpp_system_flags():
         xtra_incs = xtra_incs + \
                     " -I/usr/include/i386-linux-gnu/c++/%s/" % gpp_major
 
-    #xtra_params = " -std=c++0x  -D__USE_GNU " + xtra_incs
-
     return [f.strip() for f in xtra_incs.split(' ')]
 
 def get_default_flags_for_file(fname):
@@ -74,7 +72,7 @@ def get_default_flags_for_file(fname):
     try:
         extension = fname.split('.')[-1]
         if extension in ['C', 'cpp', 'CPP', 'H', 'hpp', 'HPP', 'c++', 'C++']:
-            flags.extend( ['-x', 'c++', '-std=c++0x'] )
+            flags.extend( ['-x', 'c++', '-std=c++14'] )
 
         return flags
     except:
