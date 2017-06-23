@@ -178,7 +178,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Meslo LG S for Powerline"
+   dotspacemacs-default-font '("Source Code Pro" ; "Meslo LG S for Powerline"
                                :height 130
                                :weight normal
                                :width normal
@@ -353,10 +353,22 @@ before packages are loaded. If you are unsure, you should try in setting them in
       (write-region "" nil cf))
     (setq custom-file cf))
 
+  (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
+
   (setq auto-insert-directory (expand-file-name "~/.spacemacs.d/templates"))
 
+  (setq kzk/default-font (car dotspacemacs-default-font))
+  (setq kzk/variable-pitch-font "Fira Sans")
+  (setq kzk/display-width/>1800/default-font-height 130 )
+  (setq kzk/display-width/>1800/variablepitch-height 140 )
+  (setq kzk/display-width/<1800/default-font-height 120 )
+  (setq kzk/display-width/<1800/variablepitch-height 130 )
+
+  (require 'kzk-gui-tweaks)
+
+
   ;; Extra code and customizations
-  (custom-set-faces '(default ((t (:slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Meslo LG S for Powerline")))))
+  ;;(custom-set-faces '(default ((t (:slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Meslo LG S for Powerline")))))
   ;                  '(region ((t (:background "gray31"))))
   ;                  '(helm-ff-dotted-directory ((t (:foreground "#6aaf50" :weight bold))))
   ;                  '(helm-ff-dotted-symlink-directory ((t (:foreground "DarkOrange" :weight bold)))))
@@ -372,7 +384,6 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; Default modes
-  (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
   (general-evil-setup)
 
   (key-chord-mode 1)
@@ -433,6 +444,9 @@ you should place your code here."
   (require 'kzk-company)
   (require 'kzk-org)
   (require 'kzk-latex)
+
+
+  (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
   ;;
 
   ;(custom-set-faces '(default ((t (:inherit nil :stipple nil :background "gray13" :foreground "#bdbdb3" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Source Code Pro"))))
