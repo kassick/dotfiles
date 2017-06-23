@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: C File Header
+# key: cfhdr
+# --
+/*=============================================================================
+ *       Filename: `(car (last (split-string (buffer-file-name) "/")))`
+ *
+ *    Description: $1
+ *
+ *        Version: 1.0
+ *        Created: `(format-time-string "%d-%m-%Y")`
+ *       Compiler: gcc
+ *
+ *         Author: Rodrigo Virote Kassick (), kassick@gmail.com
+ *   Organization:
+ * ============================================================================
+ */
