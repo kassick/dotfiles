@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# -*- BUNDLEDIRS -*-
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2016-11-25 11:45:23 kassick"
+# Updated: "2017-06-23 18:27:50 kassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -15,16 +15,17 @@ import subprocess
 
 DOT_DIR="dots"
 BUNDLE_DIR="bundle"
+BUNDLEDIRS_DIR="bundle_dirs"
 INSTALL_DIR="install"
 SELECTION_FILE="dot_select.txt"
 
-def add_dot(dots, name, path, install, bundle):
+def add_dot(dots, name, path, install, bundle, bundledirs):
     if name == '.keep': return #ignore .keep files
     if name in dots:
         dots[name] = tuple(map(lambda i: i[0] if i[1] is None else i[1],
-                           zip([path, install, bundle], dots[name])))
+                           zip([path, install, bundle, bundledirs], dots[name])))
     else:
-        dots[name] = (path, install, bundle)
+        dots[name] = (path, install, bundle, bundledirs)
 
 def rec_file_split(p):
     if len(p) == 0:
@@ -63,7 +64,7 @@ def files_conflict_resolve(src, dst, renames, removes, installs):
     else:
         installs.append( (os.path.abspath(src), dst) )
 
-def dot_install(dot, dot_path, dot_install, dot_bundle):
+def dot_install(dot, dot_path, dot_install, dot_bundle, dot_bundledirs):
     removes = []
     renames = []
     dirs = []
@@ -78,8 +79,19 @@ def dot_install(dot, dot_path, dot_install, dot_bundle):
 
         files_conflict_resolve(src, dest, renames, removes, installs)
 
+    if dot_bundledirs:
+        print "Install %s's directory-bundles" %dot
+
+        dirnames = os.listdir(os.path.join(BUNDLEDIRS_DIR, dot))
+
+        for d in dirnames:
+            src = os.path.join(BUNDLEDIRS_DIR, dot, d )
+            dest = os.path.expanduser(os.path.join("~", "." + d))
+
+            files_conflict_resolve(os.path.abspath(src), dest, renames, removes, installs)
+
     if dot_bundle:
-        print "Install bundle %s " % dot
+        print "Install %s's mergeable bundles" % dot
         for root, dirnames, filenames in os.walk(path.join(BUNDLE_DIR, dot)):
             destbase = os.path.sep.join(rec_file_split(root)[2:]) # ditch bundle/dotname
 
@@ -200,14 +212,17 @@ def find_all_dots():
 
     for dot in os.listdir(DOT_DIR):
         if not(install_re.match(dot)):
-            add_dot(dots, dot, dot, None, None)
+            add_dot(dots, dot, dot, None, None, None)
 
     for dot in os.listdir(INSTALL_DIR):
         script = os.path.join(INSTALL_DIR, dot)
-        add_dot(dots, dot, None, script, None)
+        add_dot(dots, dot, None, script, None, None)
+
+    for dot in os.listdir(BUNDLEDIRS_DIR):
+        add_dot(dots, dot, None, None, None, dot )
 
     for dot in os.listdir(BUNDLE_DIR):
-        add_dot(dots, dot, None, None, dot )
+        add_dot(dots, dot, None, None, dot, None )
 
     # Find all INSTALL_<dot> in all dirs
     for cur in [DOT_DIR, BUNDLE_DIR, INSTALL_DIR]:
@@ -216,7 +231,7 @@ def find_all_dots():
             match = install_re.match(dot)
             if match:
                 script = os.path.join(cur, dot)
-                add_dot(dots, match.groupdict()['dot'], None, script, None)
+                add_dot(dots, match.groupdict()['dot'], None, script, None, None)
     return dots
 
 def main():
