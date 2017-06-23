@@ -42,6 +42,7 @@ Dot files. Duh.
 A package can be composed of the following components:
 - ~dot~ : A file or directory which will be symlinked to the user's home
 - ~bundle~ : A set of files that are needed by the package, but that are spread all over the user's home. E.g. ~.desktop~ files and other helper files.
+- =bundle_dir=: A set of directories that should be symlinked on the user's home
 - ~install~ : A script that runs after linking the dot and the bundles
 
 ~dot~'s live in the ~dots~ directory. ~bundle~'s live in the ~bundle~ directory.
