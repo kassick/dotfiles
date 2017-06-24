@@ -386,6 +386,7 @@ you should place your code here."
   ;; Default modes
   (general-evil-setup)
 
+  (ido-mode nil)
   (key-chord-mode 1)
   (electric-pair-mode 1)
   (global-page-break-lines-mode 1)

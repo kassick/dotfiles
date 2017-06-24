@@ -26,6 +26,14 @@
 
 ;; Global keybindings
 (message "Loading kzk-window-management")
+;;; {{{ Switch buffers
+(general-define-key :keymaps    'global
+                    "C-x b"     'helm-mini
+                    "C-x C-b"   'helm-mini
+                    "<C-f10>"   'ibuffer
+                    "<C-S-f10>" 'ibuffer-other-window)
+;;; }}}
+
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
@@ -46,7 +54,7 @@
                     "C-x 7 0" 'esw/delete-window)
 
 ;; popwin
-  (push '("*company-documentation*" :height 10 :position bottom :noselect t)
+  (push '("\\*company-documentation\\*" :height 10 :position bottom :noselect t)
         popwin:special-display-config)
   (push '("^\\*Flycheck.+\\*$" :regexp t
           :dedicated t :position bottom :stick t :noselect t)
@@ -64,10 +72,6 @@
               "nn" 'ni-narrow-to-region-indirect-other-window
               "np" 'ni-narrow-to-page-indirect-other-window)
 
-;;; {{{ Switch buffers
-(global-set-key (kbd "<C-f10>"   ) 'ibuffer)
-(global-set-key (kbd "<C-S-f10>" ) 'ibuffer-other-window)
-;;; }}}
 
 (provide 'kzk-window-management)
 ;;; kzk-window-management.el ends here
