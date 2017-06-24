@@ -355,8 +355,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
 
-  (setq auto-insert-directory (expand-file-name "~/.spacemacs.d/templates"))
-
+  ;; Fonts are adjusted according to resolution during frame creation
   (setq kzk/default-font (car dotspacemacs-default-font))
   (setq kzk/variable-pitch-font "Fira Sans")
   (setq kzk/display-width/>1800/default-font-height 130 )
@@ -365,7 +364,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq kzk/display-width/<1800/variablepitch-height 130 )
 
   (require 'kzk-gui-tweaks)
-
 
   ;; Extra code and customizations
   ;;(custom-set-faces '(default ((t (:slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Meslo LG S for Powerline")))))

@@ -1,15 +1,11 @@
 #+TITLE: SOME HEADER
 #+AUTHOR: Rodrigo Kassick
-#+LANGUAGE: pt_BR
+#+LANGUAGE: pt
 #+LATEX_HEADER: \usepackage[margin=2cm,a4paper]{geometry}
-#+LATEX_HEADER: \usepackage[]{babel}
-#+LATEX_HEADER: \usepackage{ifxetex}
 #+LATEX_HEADER: \ifxetex
 #+LATEX_HEADER:     \usepackage{tgtermes}
 #+LATEX_HEADER: \else
-#+LATEX_HEADER:     \usepackage[utf-8]{inputenc}
 #+LATEX_HEADER:     \usepackage{times}              % pacote para usar fonte Adobe Times
-#+LATEX_HEADER:     \usepackage[T1]{fontenc}
 #+LATEX_HEADER: \fi
 #+TAGS: noexport(n) deprecated(d) success(s) failed(f) pending(p)
 #+EXPORT_SELECT_TAGS: export

@@ -24,6 +24,11 @@
 
 ;;; Code:
 
+;; Setup auto insert templates
+(auto-insert-mode)
+(setq auto-insert-directory "~/.spacemacs.d/templates/")
+(setq auto-insert-query nil)
+
 (defun kassick/do-header (leader &optional sleader eleader)
       (let ((com (concat leader " ")))
         (concat (if sleader (concat sleader "\n") "")
@@ -39,11 +44,6 @@
       (kassick/do-header " *"
                          (concat "/" (make-string 76 ?*))
                          (concat " " (make-string 76 ?*) "/")))
-
-;; Setup auto insert templates
-(auto-insert-mode)
-(setq auto-insert-directory "~/.emacs.d/templates/")
-(setq auto-insert-query nil)
 
 ;; Have to copy here, for autoinsert has no "clear template list for mode"
 (setq auto-insert-alist
@@ -129,7 +129,7 @@
 \;;; " (file-name-nondirectory (buffer-file-name)) " ends here\n")
         )
       )
-(define-auto-insert "\.org$" "org-header.org")
+(define-auto-insert "\\.org\\'" "org-header.org")
 ;(define-auto-insert "\.py" "python-header")
 
 
