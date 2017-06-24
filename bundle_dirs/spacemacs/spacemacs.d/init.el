@@ -382,9 +382,8 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; Default modes
-  (general-evil-setup)
-
   (ido-mode nil)
+  (general-evil-setup)
   (key-chord-mode 1)
   (electric-pair-mode 1)
   (global-page-break-lines-mode 1)

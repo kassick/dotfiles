@@ -24,6 +24,7 @@
 
 ;;; Code:
 
+(global-evil-matchit-mode t)
 
 (setq evil-symbol-word-search t)
 (setq-default evil-cross-lines t)
