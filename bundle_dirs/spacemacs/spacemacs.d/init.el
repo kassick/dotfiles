@@ -407,13 +407,13 @@ you should place your code here."
   ;; Stop littering everywhere with backups and locks!
   (setq backup-directory-alist '(("." . "~/tmp")))
 
-  (setq-default line-spacing 0.2)         ; Increase line-spacing (default 0)
+  (setq-default line-spacing 0.2)                       ; Increase line-spacing (default 0)
 
-  ;; Configure a reasonable fill column and enable automatic filling
+  ;; Configure a reasonable fill column and sane tab settings
   (setq-default fill-column 80)
   (setq-default indent-tabs-mode nil)
   (setq tab-width 4)
-  ;;(add-hook 'text-mode-hook #'auto-fill-mode)
+  ;;(add-hook 'text-mode-hook #'auto-fill-mode)         ; no auto-fill, christ
 
   ;; Give us narrowing back!
   (put 'narrow-to-region 'disabled nil)
