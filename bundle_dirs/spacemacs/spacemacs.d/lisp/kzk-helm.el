@@ -60,7 +60,7 @@
 
 (general-define-key :keymaps 'flyspell-mode-map
                     :prefix dotspacemacs-leader-key
-                    :modes '(normal motion visual)
+                    :states '(normal motion visual)
                     "S ;" 'helm-flyspell-correct)
 
 

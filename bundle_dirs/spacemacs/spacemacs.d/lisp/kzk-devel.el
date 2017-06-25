@@ -47,7 +47,8 @@
         (company-manual-begin))))
 
   (setq company-ycmd-request-sync-timeout 1.0)
-  (general-imap :modes 'ycmd-mode "<C-tab>" 'ycm)
+  (general-imap :keymaps 'ycmd-mode-map
+		"<C-tab>" 'ycm)
 )
 
 

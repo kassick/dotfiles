@@ -45,6 +45,7 @@ values."
      emacs-lisp
      git
      ranger
+     html
      markdown
      org
      (shell :variables
@@ -55,7 +56,8 @@ values."
      (spell-checking :variables
                      spell-checking-enable-by-default nil
                      spell-checking-enable-auto-dictionary t
-                     enable-flyspell-auto-completion t)
+                     ;; enable-flyspell-auto-completion t
+                     )
      ycmd
      python
      c-c++
@@ -168,12 +170,13 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(ample
+   dotspacemacs-themes '(spacemacs-light
+                         ample
                          ample-flat
                          ample-light
                          ample-zen
                          spacemacs-dark
-                         spacemacs-light)
+                         )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -248,7 +251,7 @@ values."
    ;; in all non-asynchronous sources. If set to `source', preserve individual
    ;; source settings. Else, disable fuzzy matching in all sources.
    ;; (default 'always)
-   dotspacemacs-helm-use-fuzzy 'always
+   dotspacemacs-helm-use-fuzzy 'source
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
    dotspacemacs-enable-paste-transient-state t
@@ -348,7 +351,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
   ;; Leave customizations out of the git tree. Make sure the file exists
-  (let ((cf (concat (file-name-directory load-file-name) "customize.el")))
+  (let ((cf  (expand-file-name "~/.spacemacs.d/customize.el") ))
     (unless (file-exists-p cf)
       (write-region "" nil cf))
     (setq custom-file cf))
@@ -363,6 +366,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq kzk/display-width/<1800/default-font-height 120 )
   (setq kzk/display-width/<1800/variablepitch-height 130 )
 
+
+  (require 'kzk-evil-init)
   (require 'kzk-gui-tweaks)
 
   ;; Extra code and customizations
