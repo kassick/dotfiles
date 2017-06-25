@@ -1,4 +1,4 @@
 dot_select.txt
-dot/emacs.d
-dot/oh-my-zsh
+dots/emacs.d/
+dots/oh-my-zsh/
 /bundle_dirs/spacemacs/spacemacs.d/customize.el
