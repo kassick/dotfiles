@@ -447,7 +447,7 @@ you should place your code here."
   (require 'kzk-company)
   (require 'kzk-org)
   (require 'kzk-latex)
-
+  (require 'kzk-shell)
 
   (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
   ;;
