@@ -19,11 +19,13 @@ if [ -d $DEST ]; then
     mv $DEST ~/__emacs.d.bk
 fi
 
-mkdir $DEST && \
-    git init && \
+mkdir $DEST || exit 1
+pushd $DEST
+git init && \
     git remote add origin $REPO && \
     git pull origin master || \
         exit 1
+popd
 
 # Needed by pdftools
 pkcon install poppler-devel
