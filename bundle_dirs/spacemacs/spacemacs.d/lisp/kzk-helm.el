@@ -25,8 +25,6 @@
 ;;; Code:
 
   ;; Helm
-
-  ;;(global-set-key (kbd "C-c h") 'helm-command-prefix)
   (setq helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
         helm-echo-input-in-header-line t
         ;helm-autoresize-max-height 0
@@ -63,7 +61,14 @@
                     :states '(normal motion visual)
                     "S ;" 'helm-flyspell-correct)
 
-
+(general-define-key :keymaps 'global
+                    "C-*" 'helm-swoop
+                    "C-S-s" 'helm-swoop-without-pre-input)
+(general-define-key :keymaps 'global :states 'motion
+                    "C-M-*" 'helm-swoop-from-evil-search)
+(general-define-key :keymaps 'isearch-mode-map
+                    "C-*" 'helm-swoop-from-isearch
+                    )
 
 (provide 'kzk-helm)
 ;;; kzk-helm.el ends here

@@ -339,7 +339,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'all
    ))
 
 (defun dotspacemacs/user-init ()
@@ -429,8 +429,8 @@ you should place your code here."
 
   ;; Indentation and stuff
   ;; Clear empty lines
-  (add-hook 'before-save-hook (lambda ()
-                                (delete-trailing-whitespace)))   ; makes empty lines empty
+  ;; (add-hook 'before-save-hook (lambda ()
+  ;;                               (delete-trailing-whitespace)))   ; makes empty lines empty
 
   ;; {{{ auto wrap around isearch
   (defadvice isearch-search (after isearch-no-fail activate)
