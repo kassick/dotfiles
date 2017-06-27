@@ -33,9 +33,10 @@
 (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+(define-key evil-motion-state-map (kbd "<C-escape>") 'evil-execute-in-emacs-state)
 
 ;; evilem on SPACE m
-(evilem-default-keybindings (concat dotspacemacs-leader-key " \\" ))
+(evilem-default-keybindings "\\" )
 
 ;; evil embrace
 (add-hook 'org-mode-hook 'embrace-org-mode-hook)
