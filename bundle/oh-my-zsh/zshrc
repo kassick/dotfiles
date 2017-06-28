@@ -63,9 +63,9 @@ plugins=(gitfast python sudo systemd yum)
 
 # User configuration
 
-if [ -f ${HOME}/.profile ]; then
-    source ${HOME}/.profile
-fi
+# if [ -f ${HOME}/.profile ]; then
+#    source ${HOME}/.profile
+# fi
 
 source $ZSH/oh-my-zsh.sh
 
