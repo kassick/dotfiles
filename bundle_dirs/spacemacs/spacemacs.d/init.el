@@ -177,6 +177,7 @@ values."
                          ample-zen
                          spacemacs-dark
                          )
+   spacemacs-theme-org-height nil
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -351,10 +352,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
   ;; Leave customizations out of the git tree. Make sure the file exists
-  (let ((cf  (expand-file-name "~/.spacemacs.d/customize.el") ))
-    (unless (file-exists-p cf)
-      (write-region "" nil cf))
-    (setq custom-file cf))
+  ;; (let ((cf  (expand-file-name "~/.spacemacs.d/customize.el") ))
+  ;;   (unless (file-exists-p cf)
+  ;;     (write-region "" nil cf))
+  ;;   (setq custom-file cf))
 
   (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
 
@@ -420,8 +421,10 @@ you should place your code here."
   (put 'narrow-to-page 'disabled nil)
   (put 'narrow-to-defun 'disabled nil)
   (put 'narrow-to-region 'disabled nil)
-  (put 'LaTeX-narrow-to-environment 'disabled nil)
   (put 'scroll-left 'disabled nil)
+  (with-eval-after-load 'latex
+    (put 'LaTeX-narrow-to-environment 'disabled nil)
+    )
 
   ;; Same for region casing
   (put 'upcase-region 'disabled nil)
@@ -459,3 +462,15 @@ you should place your code here."
 
 
   )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(spacemacs-theme-org-height nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
