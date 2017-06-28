@@ -1,4 +1,28 @@
-;;; helm-hacks.el --- Hacks to helm                  -*- lexical-binding: t; -*-
+;;; funcs.el --- KZK Helm functions                  -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2017  Rodrigo Kassick
+
+;; Author: Rodrigo Kassick <kassick@voyager>
+;; Keywords:
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;
+
+;;;;;; helm-hacks.el --- Hacks to helm                  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017  kassick
 
@@ -57,8 +81,8 @@
   (with-helm-alive-p
     (helm-exit-and-execute-action 'helm-esw/find-file)))
 
-(eval-after-load 'helm-files
-  (lambda ()
+;;(eval-after-load 'helm-files
+(defun kzk/helm-ff-hacks-setup ()
     ;;(if (locate-library "elscreen")
         ;;(progn
           ;;;; Add the shortcut description
@@ -72,10 +96,10 @@
           (add-to-list 'helm-find-files-actions
                        '("Find file in in new splited window `C-c C-w'" . helm-esw/find-file ) t)
           ;; Bind C-c C-w
-          (define-key helm-find-files-map (kbd "C-c C-w") 'helm-esw/run-find-file)))))
+          (define-key helm-find-files-map (kbd "C-c C-w") 'helm-esw/run-find-file))))
 
-(eval-after-load 'helm-buffers
-  (lambda ()
+;;(eval-after-load 'helm-buffers
+(defun kzk/helm-buffers-hacks-setup ()
     ;; (if (locate-library "elscreen")
         ;; (progn
           ;; ;; Add the shortcut description
@@ -88,15 +112,16 @@
           (add-to-list 'helm-type-buffer-actions
                        '("Display buffer(s) in new splited window `C-c C-w'" . helm-esw/show-buffer) t)
           ;; Bind C-c C-w
-          (define-key helm-buffer-map (kbd "C-c C-w") 'helm-esw/run-show-buffer)))))
+          (define-key helm-buffer-map (kbd "C-c C-w") 'helm-esw/run-show-buffer))))
 
-(eval-after-load 'helm-projectile
-  (lambda ()
+;;(eval-after-load 'helm-projectile
+(defun kzk/helm-projectile-hacks-setup ()
     ;; (if (locate-library "elscreen")
         ;; (define-key helm-projectile-find-file-map (kbd "C-c C-z") 'helm-ff-run-elscreen-find-file))
     (if (locate-library "es-windows")
-        (define-key helm-projectile-find-file-map (kbd "C-c C-w") 'helm-esw/run-find-file))))
+        (define-key helm-projectile-find-file-map (kbd "C-c C-w") 'helm-esw/run-find-file)))
 
 
-(provide 'kzk-helm-hacks)
-;;; helm-hacks.el ends here
+
+(provide 'funcs)
+;;; funcs.el ends here
