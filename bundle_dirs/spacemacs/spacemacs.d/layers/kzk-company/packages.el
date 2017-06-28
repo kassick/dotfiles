@@ -63,8 +63,7 @@ Each entry is either:
 
 
 (defun kzk-company/post-init-company ()
-  (global-company-mode 1)
-  (setq company-idle-delay 0.2
+  (setq company-idle-delay 0.9
         ;; company-idle-delay 0.9
         ;; company-transformers '(company-sort-by-backend-importance)
         company-selection-wrap-around t
@@ -80,10 +79,11 @@ Each entry is either:
         )
 
   ;; Company-dabbrev
-  (setq company-dabbrev-ignore-invisible t
-        ;; company-dabbrev-downcase nil
-        ;; company-dabbrev-ignore-case nil
-        )
+  (with-eval-after-load 'company-dabbrev
+    (setq company-dabbrev-ignore-invisible t
+          ;; company-dabbrev-downcase nil
+          ;; company-dabbrev-ignore-case nil
+          ))
 
 
   ;; Company-active shortcuts
@@ -93,19 +93,24 @@ Each entry is either:
   ;; (define-key company-active-map (kbd "TAB") 'company-select-next-if-tooltip-visible-or-complete-selection)
   ;; (define-key company-active-map (kbd "<C-return>") 'company-complete-common)
   ;; (define-key company-active-map (kbd "<backtab>") 'company-select-previous)
-  ;; (define-key company-active-map (kbd "<C-backspace>") 'company-abort)
   ;; (define-key company-active-map (kbd "<esc>") 'company-abort)
-  ;; (define-key company-active-map (kbd "C-w") 'company-abort)
   ;; (define-key company-active-map (kbd "C-e") 'company-other-backend)
   ;; (define-key company-active-map (kbd "C-<f1>") 'kzk/company-show-doc-buffer)
   ;; ;;(define-key company-active-map (kbd ;;"S-TAB" 'company-select-previous)
 
-  (general-define-key :keymaps 'company-mode-map
-                      "C-c o" 'company-manual-begin
-                      "C-c f" 'company-files
-                      "C-c y" 'company-yasnippet)
+  (with-eval-after-load 'general
+    (general-define-key :keymaps 'company-mode-map
+                        "C-c o" 'company-manual-begin
+                        "C-c f" 'company-files
+                        "C-c y" 'company-yasnippet)
 
-
+    (general-define-key :keymaps 'company-active-map
+                        "M-h" #'company-quickhelp-manual-begin
+                        "C-e" #'company-other-backend
+                        "C-w" 'company-abort
+                        "<C-backspace>" 'company-abort
+                        )
+  )
   )
 
 (defun kzk-company/post-init-company-quickhelp ()

@@ -78,6 +78,7 @@ values."
      themes-megapack
      kzk-visual-editing ; fix adaptive wrap for org
      kzk-helm
+     kzk-company
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -448,7 +449,6 @@ you should place your code here."
 
   (require 'kzk-devel)
   (require 'kzk-headers)
-  (require 'kzk-company)
   (require 'kzk-org)
   (require 'kzk-latex)
   (require 'kzk-shell)
