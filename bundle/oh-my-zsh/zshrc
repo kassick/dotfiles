@@ -63,8 +63,9 @@ plugins=(gitfast python sudo systemd yum)
 
 # User configuration
 
-export PATH="/bin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:${HOME}/.local/bin:${HOME}/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
+if [ -f ${HOME}/.profile ]; then
+    source ${HOME}/.profile
+fi
 
 source $ZSH/oh-my-zsh.sh
 
