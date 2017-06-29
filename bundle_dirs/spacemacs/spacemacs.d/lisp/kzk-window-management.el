@@ -72,6 +72,10 @@
               "nn" 'ni-narrow-to-region-indirect-other-window
               "np" 'ni-narrow-to-page-indirect-other-window)
 
+(general-define-key :keymaps 'spacemacs-cmds
+                    "w _" 'evil-window-set-height
+                    "w |" 'evil-window-set-width)
+
 
 (provide 'kzk-window-management)
 ;;; kzk-window-management.el ends here

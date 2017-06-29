@@ -34,7 +34,7 @@
     helm-flyspell
     helm-projectile
     helm-swoop
-    general
+    ;; general
     )
   "The list of Lisp packages required by the kzk-helm layer.
 
@@ -87,6 +87,7 @@ Each entry is either:
   (setq helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match    t)
 
+  (require 'general)
   (general-define-key :prefix dotspacemacs-leader-key :states '(normal visual motion)
                       "h a"  '(helm-ag :which-key "Ag (cwd)")
                       "s /" '(helm-find :which-key "Find")
@@ -95,11 +96,15 @@ Each entry is either:
   ;; add post-init hooks to setup some hacks on helm
   (eval-after-load 'helm-files #'kzk/helm-ff-hacks-setup)
   (eval-after-load 'helm-buffers #'kzk/helm-buffers-hacks-setup)
+  )
+
+(defun kzk-helm/post-init-helm-projectile ()
   (eval-after-load 'helm-projectile #'kzk/helm-projectile-hacks-setup)
   )
 
 (defun kzk-helm/post-init-helm-flyspell ()
   ;; Helm flyspell
+  (require 'general)
   (general-define-key :keymaps 'flyspell-mode-map
                       "C-;" 'helm-flyspell-correct)
 
@@ -108,6 +113,7 @@ Each entry is either:
                       :states '(normal motion visual)
                       "S ;" 'helm-flyspell-correct)
 )
+
 (defun kzk-helm/post-init-helm-swoop ()
   (general-define-key :keymaps 'global
                       "C-*" 'helm-swoop
@@ -117,7 +123,10 @@ Each entry is either:
   (general-define-key :keymaps 'isearch-mode-map
                       "C-*" 'helm-swoop-from-isearch
                       )
+  )
 
+(defun kzk-helm/post-init-general ()
+  ; nop
   )
 
 ;;; packages.el ends here

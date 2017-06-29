@@ -25,34 +25,39 @@
 ;;; Code:
 
 ;; ycmd setup
-(add-hook 'ycmd-mode-hook #'ycmd-eldoc-setup)
-(add-hook 'c++-mode-hook 'ycmd-mode)
-(add-hook 'c-mode-hook 'ycmd-mode)
-(add-hook 'python-mode-hook 'ycmd-mode)
-(set-variable 'ycmd-server-command
-              `("/usr/bin/python"
-                ,(expand-file-name
-                  "~/.local/dev/ycm/third_party/ycmd/ycmd")))
-(set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
 (with-eval-after-load "ycmd"
-  (progn
-    (require 'company-ycmd)
-    (setq company-ycmd-insert-arguments nil)
-    (require 'ycmd-eldoc)
-    (defun ycm ()
-      (interactive)
-      (company-cancel)
-      (let ((ycmd-force-semantic-completion (not (company-ycmd--in-include))))
-        (setq company-backend 'company-ycmd)
-        (company-manual-begin))))
+  (set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
+  (set-variable 'ycmd-server-command
+                `("/usr/bin/python"
+                  ,(expand-file-name
+                    "~/.local/dev/ycm/third_party/ycmd/ycmd")))
 
-  (setq company-ycmd-request-sync-timeout 1.0)
-  (general-imap :keymaps 'ycmd-mode-map
-		"<C-tab>" 'ycm)
-)
+  (require 'company-ycmd)
+  (setq company-ycmd-insert-arguments nil
+        company-ycmd-request-sync-timeout 1.0)
+
+  (require 'ycmd-eldoc)
+
+  (defun ycm ()
+    (interactive)
+    (company-cancel)
+    (let ((ycmd-force-semantic-completion (not (company-ycmd--in-include))))
+      (setq company-backend 'company-ycmd)
+      (company-manual-begin)))
+
+  (with-eval-after-load 'general
+    (general-imap :keymaps 'ycmd-mode-map
+                  "<C-tab>" 'ycm))
+
+  (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
+  (add-hook 'c++-mode-hook 'ycmd-mode)
+  (add-hook 'c-mode-hook 'ycmd-mode)
+  (add-hook 'python-mode-hook 'ycmd-mode)
+  )
 
 
 ;; helm dash
+(with-eval-after-load 'helm-dash
   (add-hook 'c-mode-hook (lambda ()
                            (setq-local helm-dash-docsets '("C"))))
   (add-hook 'c++-mode-hook (lambda ()
@@ -65,11 +70,13 @@
   (setq helm-dash-candidate-format "%d %n (%t)")
   (setq helm-dash-enable-debugging nil)
   (setq helm-dash-browser-func 'browse-url)
+  )
 
 ;; magit
-(general-define-key :keymaps 'global
-                    "C-x g" 'magit-status
-                    "C-x M-g"  'magit-dispatch-popup)
+(with-eval-after-load 'general
+  (general-define-key :keymaps 'global
+                      "C-x g" 'magit-status
+                      "C-x M-g"  'magit-dispatch-popup))
 
 ;; python
 (python-docstring-install)
@@ -123,31 +130,41 @@
 
 ;;; {{{ Java Support
 
-(setq eclimd-autostart t)
+(with-eval-after-load 'eclim
+  (setq eclimd-autostart t))
 
 ;; }}}
 
 ;;; {{{ CSharp
-(setq omnisharp-server-executable-path
-      (expand-file-name "~/.local/dev/ycm/third_party/ycmd/third_party/OmniSharpServer/OmniSharp/bin/Release/OmniSharp.exe"))
-(setq omnisharp-company-match-type 'company-match-server) ; This enables server-size flex matching
+(with-eval-after-load 'omnisharp-mode
+  (setq omnisharp-server-executable-path
+        (expand-file-name "~/.local/dev/ycm/third_party/ycmd/third_party/OmniSharpServer/OmniSharp/bin/Release/OmniSharp.exe"))
+  (setq omnisharp-company-match-type 'company-match-server) ; This enables server-size flex matching
+)
 ;; (eval-after-load 'company
 ;;      '(add-to-list 'company-backends 'company-omnisharp))
 
 ;;;}}}
 
 ;;; {{{ fsharp
-(setq inferior-fsharp-program "/usr/bin/fsharpi --readline-")
-(setq fsharp-compiler "/usr/bin/fsharpc")
-(setq fsharp-ac-intellisense-enabled t)
-(setq fsharp-ac-use-popup t)
+(with-eval-after-load 'fsharp-mode
+  (setq inferior-fsharp-program "/usr/bin/fsharpi --readline-")
+  (setq fsharp-compiler "/usr/bin/fsharpc")
+  (setq fsharp-ac-intellisense-enabled t)
+  (setq fsharp-ac-use-popup t))
+
 ;;(add-hook 'fsharp-mode-hook (lambda ()
 ;;                              (add-to-list 'company-transformers 'company-sort-prefer-same-case-prefix)))
 ;;)
 
 ;;;}}}
 
-(yas-global-mode 1)
+(with-eval-after-load 'yas
+  (yas-global-mode 1))
+
+(with-eval-after-load 'elec-pair
+  (setq electric-pair-open-newline-between-pairs nil)
+  )
 
 
 

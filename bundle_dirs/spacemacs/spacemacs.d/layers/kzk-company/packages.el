@@ -31,7 +31,6 @@
 
 (defconst kzk-company-packages
   '(company
-    general
     company-quickhelp
     helm-company)
   "The list of Lisp packages required by the kzk-company layer.

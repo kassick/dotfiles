@@ -30,14 +30,20 @@
         ;; default
         adaptive-wrap))
 
-(defun kzk-visual-editing/init-adaptive-wrap ()
+(defun kzk-visual-editing/post-init-adaptive-wrap ()
   ;; Adaptive wrap: do not load it with the layers; load it here so we can tweak the visual-line-mode-hook function: DO NOT MESS WITH MY ORG
-  (use-package adaptive-wrap
-    :config
-    (add-hook 'visual-line-mode-hook
-              (lambda ()
-                (if (not (eq major-mode 'org-mode))
-                    (adaptive-wrap-prefix-mode t)
-                  )))))
+
+  (defun kzk/adaptive-wrap-maybe ()
+    (if (not (eq major-mode 'org-mode))
+        (adaptive-wrap-prefix-mode t)
+      )
+    )
+
+  (let* ( ( tmp-hooks (remove-if (lambda (itm)
+                                   (eq itm 'adaptive-wrap-prefix-mode))
+                                 visual-line-mode-hook))
+          ( new-hooks (append tmp-hooks '(kzk/adaptive-wrap-maybe))))
+    (setq visual-line-mode-hook new-hooks))
+  )
 
 ;;; packages.el ends here
