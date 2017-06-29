@@ -390,6 +390,7 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; Default modes
+  ;; (spacemacs/toggle-smartparens-globally-off)
   (ido-mode nil)
   (general-evil-setup)
   (key-chord-mode 1)
