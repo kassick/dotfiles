@@ -76,6 +76,7 @@ values."
      ;; version-control
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      themes-megapack
+     theming
      kzk-visual-editing ; fix adaptive wrap for org
      kzk-helm
      kzk-company
@@ -172,8 +173,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-light
+   dotspacemacs-themes '(
                          ample
+                         spacemacs-light
                          ample-flat
                          ample-light
                          ample-zen
@@ -391,10 +393,14 @@ you should place your code here."
 
   ;; Default modes
   ;; (spacemacs/toggle-smartparens-globally-off)
+  (setq theming-modifications '((ample (hl-line :background "gray20")
+                                       (header-line :background "#3d3d3f" :foreground "white smoke" :weight semi-bold)
+                                        ;(header-line :foreground "gray10 ":background "gray60")
+                                       )))
   (ido-mode nil)
   (general-evil-setup)
   (key-chord-mode 1)
-  (electric-pair-mode 1)
+  ;; (electric-pair-mode 1)
   (global-page-break-lines-mode 1)
   (show-paren-mode t)
   (global-visual-line-mode t)
@@ -469,10 +475,14 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
  '(spacemacs-theme-org-height nil))
-(custom-set-faces
+;; (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+
+ ;;'(default ((t (:background nil))))
+ ;;'(header-line ((t (:background "#3d3d3f" :foreground "white smoke" :weight semi-bold))))
+ ;;'(hl-line ((t (:background "gray20")))))
