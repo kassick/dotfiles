@@ -393,10 +393,13 @@ you should place your code here."
 
   ;; Default modes
   ;; (spacemacs/toggle-smartparens-globally-off)
-  (setq theming-modifications '((ample (hl-line :background "gray20")
-                                       (header-line :background "#3d3d3f" :foreground "white smoke" :weight semi-bold)
-                                        ;(header-line :foreground "gray10 ":background "gray60")
-                                       )))
+  (setq theming-modifications
+        '((ample (hl-line :background "gray20")
+                 (header-line :background "#3d3d3f"
+                              :foreground "white smoke"
+                              :weight semi-bold)
+                 (region :background "gray30")
+                 )))
   (ido-mode nil)
   (general-evil-setup)
   (key-chord-mode 1)
@@ -461,28 +464,4 @@ you should place your code here."
   (require 'kzk-shell)
 
   (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
-  ;;
-
-  ;(custom-set-faces '(default ((t (:inherit nil :stipple nil :background "gray13" :foreground "#bdbdb3" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Source Code Pro"))))
-  ;                  '(region ((t (:background "gray31"))))
-  ;                  '(helm-ff-dotted-directory ((t (:foreground "#6aaf50" :weight bold))))
-  ;                  '(helm-ff-dotted-symlink-directory ((t (:foreground "DarkOrange" :weight bold)))))
-
-
   )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil)
- '(spacemacs-theme-org-height nil))
-;; (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-
- ;;'(default ((t (:background nil))))
- ;;'(header-line ((t (:background "#3d3d3f" :foreground "white smoke" :weight semi-bold))))
- ;;'(hl-line ((t (:background "gray20")))))

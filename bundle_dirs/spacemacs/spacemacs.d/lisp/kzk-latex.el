@@ -24,24 +24,35 @@
 
 ;;; Code:
 
-(general-define-key :keymaps 'LaTeX-mode-map
-                    :states '(normal motion visual)
-                    :prefix dotspacemacs-leader-key
-      "l" '(nil :which-key "LaTeX")
-       "ll" '(compile :which-key "Compile Document")
-       "lv" '(TeX-view :which-key "View Document"))
-(general-define-key :keymaps 'LaTeX-mode-map
-                    :states 'insert
-                    :prefix nil
-                    (general-chord "[[") 'LaTeX-environment
-                    (general-chord "]]") 'LaTeX-close-environment
-                    )
-(setq TeX-auto-save t
-      TeX-parse-self t
-      TeX-save-query nil
-      TeX-PDF-mode t
-      TeX-command-default "LatexMk")
+(with-eval-after-load 'latex
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-save-query nil
+        TeX-PDF-mode t
+        TeX-command-default "LatexMk"
+        )
 
+  ;; Stop fontifying super/subscript with :height 0.85 , it becomes really
+  ;; ANNOYING when editting something in an aligned environment, such as nd and
+  ;; others
+  (set-face-attribute 'font-latex-subscript-face :height 1.0)
+  (set-face-attribute 'font-latex-superscript-face :height 1.0)
+
+  (with-eval-after-load 'general
+    (general-define-key :keymaps 'LaTeX-mode-map
+                        :states '(normal motion visual)
+                        :prefix dotspacemacs-leader-key
+                        "l" '(nil :which-key "LaTeX")
+                        "ll" '(compile :which-key "Compile Document")
+                        "lv" '(TeX-view :which-key "View Document"))
+    (general-define-key :keymaps 'LaTeX-mode-map
+                        :states 'insert
+                        :prefix nil
+                        (general-chord "[[") 'LaTeX-environment
+                        (general-chord "]]") 'LaTeX-close-environment
+                        )
+    )
+  )
 
 (provide 'kzk-latex)
 ;;; kzk-latex.el ends here
