@@ -24,7 +24,7 @@
 
 ;;; Code:
 
-(with-eval-after-load 'latex
+(with-eval-after-load 'tex
   (setq TeX-auto-save t
         TeX-parse-self t
         TeX-save-query nil
@@ -35,8 +35,10 @@
   ;; Stop fontifying super/subscript with :height 0.85 , it becomes really
   ;; ANNOYING when editting something in an aligned environment, such as nd and
   ;; others
-  (set-face-attribute 'font-latex-subscript-face :height 1.0)
-  (set-face-attribute 'font-latex-superscript-face :height 1.0)
+  (with-eval-after-load 'font-latex
+   (set-face-attribute 'font-latex-subscript-face nil :height 1.0)
+   (set-face-attribute 'font-latex-superscript-face nil :height 1.0)
+   )
 
   (with-eval-after-load 'general
     (general-define-key :keymaps 'LaTeX-mode-map
