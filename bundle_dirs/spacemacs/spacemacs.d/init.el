@@ -105,7 +105,15 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(
+            evil-org
+            org-bullets
+            eyebrowse
+            ido
+            ido-vertical
+            flx-ido
+            smartparens
+            )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -313,7 +321,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers t
+   dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -403,7 +411,7 @@ you should place your code here."
   (ido-mode nil)
   (general-evil-setup)
   (key-chord-mode 1)
-  ;; (electric-pair-mode 1)
+  (electric-pair-mode 1)
   (global-page-break-lines-mode 1)
   (show-paren-mode t)
   (global-visual-line-mode t)
