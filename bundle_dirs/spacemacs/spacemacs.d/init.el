@@ -364,11 +364,6 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
-  ;; Leave customizations out of the git tree. Make sure the file exists
-  ;; (let ((cf  (expand-file-name "~/.spacemacs.d/customize.el") ))
-  ;;   (unless (file-exists-p cf)
-  ;;     (write-region "" nil cf))
-  ;;   (setq custom-file cf))
 
   (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
 
@@ -408,6 +403,8 @@ you should place your code here."
                               :foreground "white smoke"
                               :weight semi-bold)
                  (region :background "gray30")
+                 (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
+                 (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold)
                  )))
   (ido-mode -1)
   (general-evil-setup)
@@ -474,21 +471,10 @@ you should place your code here."
 
   (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
   )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil)
- '(package-selected-packages
-   (quote
-    (web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode eyebrowse zonokai-theme zenburn-theme zen-and-art-theme yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance srefactor spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs ranger rainbow-delimiters railscasts-theme pyvenv python-docstring pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pdf-tools pcre2el pastels-on-dark-theme paradox pandoc-mode ox-pandoc orgit organic-green-theme org-projectile org-present org-pomodoro org-download open-junk-file omtose-phellack-theme omnisharp oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree narrow-indirect naquadah-theme mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum live-py-mode linum-relative link-hint light-soap-theme less-css-mode key-chord jbeans-theme jazz-theme ir-black-theme insert-shebang inkpot-theme info+ indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flyspell helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme graphviz-dot-mode grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md general gandalf-theme fuzzy fsharp-mode flyspell-correct-helm flycheck-ycmd flycheck-pos-tip flatui-theme flatland-theme fish-mode firebelly-theme fill-column-indicator farmhouse-theme fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-embrace evil-ediff evil-easymotion evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help es-windows emmet-mode elisp-slime-nav dumb-jump dracula-theme django-theme disaster define-word dedicated darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-ycmd company-web company-statistics company-shell company-emacs-eclim company-c-headers company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmake-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:background nil))))
- '(header-line ((t (:background "#3d3d3f" :foreground "white smoke" :weight semi-bold))))
- '(hl-line ((t (:background "gray20"))))
- '(region ((t (:background "gray30")))))
+
+;; Leave customizations out of the git tree. Make sure the file exists
+(let ((cf  (expand-file-name "~/.spacemacs.d/customize.el") ))
+  (unless (file-exists-p cf)
+    (write-region "" nil cf))
+  (setq custom-file cf))
+(load-file custom-file)

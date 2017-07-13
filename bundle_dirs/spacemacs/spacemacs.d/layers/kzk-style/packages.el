@@ -60,9 +60,7 @@ Each entry is either:
 
 
 (defun kzk-style/post-init-ample-theme ()
-  (custom-set-faces '(region ((t (:background "gray31"))))
-                    '(helm-ff-dotted-directory ((t (:foreground "#6aaf50" :weight bold))))
-                    '(helm-ff-dotted-symlink-directory ((t (:foreground "DarkOrange" :weight bold)))))
+  nil
   )
 
 (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
