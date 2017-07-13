@@ -88,7 +88,7 @@
                                 "%latex -shell-escape -interaction nonstopmode -output-directory %o %f")
         org-latex-compiler "xelatex"
         org-latex-listings 'minted
-        org-directory "~/Dropbox/org"
+        org-directory "~/Dropbox/org/"
         org-default-notes-file (concat org-directory "notes.org")
         org-agenda-include-all-todo t
         org-agenda-include-diary t
