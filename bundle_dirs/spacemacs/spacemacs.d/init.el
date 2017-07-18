@@ -396,8 +396,8 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; Themes setup
-  (setq spacemacs-theme-org-height nil)
-  (setq theming-modifications
+  (setq spacemacs-theme-org-height nil ; set this here instead of -init
+        theming-modifications          ; fix some way-too-dark settings on ample
         '((ample (hl-line :background "gray20")
                  (header-line :background "#3d3d3f"
                               :foreground "white smoke"
@@ -406,13 +406,14 @@ you should place your code here."
                  (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
                  (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold)
                  )))
+
   ;; Default modes
   (ido-mode -1)          ; no ido
   (general-evil-setup)   ; evil general is my leader
   (key-chord-mode 1)     ; keychord integrates with general
   (electric-pair-mode 1) ; electric-pair instead of smartparens
-  (global-page-break-lines-mode 1)
   (show-paren-mode t)
+  (global-page-break-lines-mode 1)
   (global-visual-line-mode t)
 
   ;; Don't lazy load these ones, as they're kind of core features
