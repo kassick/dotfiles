@@ -395,8 +395,8 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  ;; Default modes
-  ;; (spacemacs/toggle-smartparens-globally-off)
+  ;; Themes setup
+  (setq spacemacs-theme-org-height nil)
   (setq theming-modifications
         '((ample (hl-line :background "gray20")
                  (header-line :background "#3d3d3f"
@@ -406,17 +406,18 @@ you should place your code here."
                  (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
                  (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold)
                  )))
-  (ido-mode -1)
-  (general-evil-setup)
-  (key-chord-mode 1)
-  (electric-pair-mode 1)
+  ;; Default modes
+  (ido-mode -1)          ; no ido
+  (general-evil-setup)   ; evil general is my leader
+  (key-chord-mode 1)     ; keychord integrates with general
+  (electric-pair-mode 1) ; electric-pair instead of smartparens
   (global-page-break-lines-mode 1)
   (show-paren-mode t)
   (global-visual-line-mode t)
 
-  (require 'kzk-evil)
-  ;; (require 'kzk-helm)
-  (require 'kzk-window-management)
+  ;; Don't lazy load these ones, as they're kind of core features
+  (require 'kzk-evil)              ; my settings for evil. Load NOW, no layer
+  (require 'kzk-window-management) ; window movement shortcuts
 
   ;; Language tweaks
   (setq default-process-coding-system '(utf-8 . utf-8)) ; utf8
@@ -426,13 +427,12 @@ you should place your code here."
   ;; Stop littering everywhere with backups and locks!
   (setq backup-directory-alist '(("." . "~/tmp")))
 
-  (setq-default line-spacing 0.2)                       ; Increase line-spacing (default 0)
-
-  ;; Configure a reasonable fill column and sane tab settings
-  (setq-default fill-column 80)
-  (setq-default indent-tabs-mode nil)
-  (setq tab-width 4)
-  ;;(add-hook 'text-mode-hook #'auto-fill-mode)         ; no auto-fill, christ
+  ; Visual settings
+  (setq-default line-spacing 0.2      ; Increase line-spacing (default 0)
+                fill-column 80        ; reasonable fill column
+                indent-tabs-mode nil  ; tabs off by default
+                tab-width 4           ; reasonable tab-width
+                )
 
   ;; Give us narrowing back!
   (put 'narrow-to-region 'disabled nil)
@@ -444,14 +444,9 @@ you should place your code here."
     (put 'LaTeX-narrow-to-environment 'disabled nil)
     )
 
-  ;; Same for region casing
+  ;; Give us region-case back
   (put 'upcase-region 'disabled nil)
   (put 'downcase-region 'disabled nil)
-
-  ;; Indentation and stuff
-  ;; Clear empty lines
-  ;; (add-hook 'before-save-hook (lambda ()
-  ;;                               (delete-trailing-whitespace)))   ; makes empty lines empty
 
   ;; {{{ auto wrap around isearch
   (defadvice isearch-search (after isearch-no-fail activate)
@@ -463,13 +458,17 @@ you should place your code here."
       (ad-activate 'isearch-search)))
   ;; }}}
 
-  (require 'kzk-devel)
-  (require 'kzk-headers)
-  (require 'kzk-org)
-  (require 'kzk-latex)
-  (require 'kzk-shell)
+  ;; Code that may (eventually) be moved to a layer
+  (require 'kzk-devel)   ; devel stuff
+  (require 'kzk-headers) ; headers for files
+  (require 'kzk-org)     ; org-mode settings
+  (require 'kzk-latex)   ; latex-mode settings
+  (require 'kzk-shell)   ; shell tweaks
 
   (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
+
+  ;; dotspacemacs/user-config ends here
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   )
 
 ;; Leave customizations out of the git tree. Make sure the file exists
