@@ -70,6 +70,8 @@
   (setq helm-dash-candidate-format "%d %n (%t)")
   (setq helm-dash-enable-debugging nil)
   (setq helm-dash-browser-func 'browse-url)
+  (general-define-key :keymaps 'global :states 'normal :prefix dotspacemacs-leader-key
+                      "doc" 'helm-dash)
   )
 
 ;; magit
