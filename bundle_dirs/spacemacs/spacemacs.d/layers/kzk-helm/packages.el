@@ -31,7 +31,9 @@
 
 (defconst kzk-helm-packages
   '(helm
-    helm-flyspell
+    ;helm-flyspell
+    flyspell-correct-helm
+    general
     helm-projectile
     helm-swoop
     ;; general
@@ -105,19 +107,21 @@ Each entry is either:
     (kzk/helm-projectile-hacks-setup))
   )
 
-(defun kzk-helm/post-init-helm-flyspell ()
+(defun kzk-helm/post-init-flyspell-correct-helm ()
   ;; Helm flyspell
 
-  (with-eval-after-load 'flyspell
-   (require 'general)
-   (general-define-key :keymaps 'flyspell-mode-map
-                       "C-;" 'helm-flyspell-correct)
+  (message "Post-init of helm-flyspell")
+  (print "Hello")
+  (with-eval-after-load 'general
+    (message "Settings keys for flyspell-mode-map")
+    (general-define-key :keymaps 'flyspell-mode-map
+                        "C-;" 'helm-flyspell-correct)
 
-   (general-define-key :keymaps 'flyspell-mode-map
-                       :prefix dotspacemacs-leader-key
-                       :states '(normal motion visual)
-                       "S ;" 'helm-flyspell-correct)
-   )
+    (general-define-key :keymaps 'flyspell-mode-map
+                        :prefix dotspacemacs-leader-key
+                        :states '(normal motion visual)
+                        "S ;" 'helm-flyspell-correct)
+    )
   )
 
 (defun kzk-helm/post-init-helm-swoop ()
