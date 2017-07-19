@@ -186,9 +186,7 @@ values."
                          ample
                          spacemacs-light
                          ample-flat
-                         ample-light
                          ample-zen
-                         spacemacs-dark
                          )
    spacemacs-theme-org-height nil
    ;; If non nil the cursor color matches the state color in GUI Emacs.

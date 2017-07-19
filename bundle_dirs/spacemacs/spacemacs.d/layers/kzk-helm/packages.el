@@ -107,15 +107,18 @@ Each entry is either:
 
 (defun kzk-helm/post-init-helm-flyspell ()
   ;; Helm flyspell
-  (require 'general)
-  (general-define-key :keymaps 'flyspell-mode-map
-                      "C-;" 'helm-flyspell-correct)
 
-  (general-define-key :keymaps 'flyspell-mode-map
-                      :prefix dotspacemacs-leader-key
-                      :states '(normal motion visual)
-                      "S ;" 'helm-flyspell-correct)
-)
+  (with-eval-after-load 'flyspell
+   (require 'general)
+   (general-define-key :keymaps 'flyspell-mode-map
+                       "C-;" 'helm-flyspell-correct)
+
+   (general-define-key :keymaps 'flyspell-mode-map
+                       :prefix dotspacemacs-leader-key
+                       :states '(normal motion visual)
+                       "S ;" 'helm-flyspell-correct)
+   )
+  )
 
 (defun kzk-helm/post-init-helm-swoop ()
   (general-define-key :keymaps 'global
