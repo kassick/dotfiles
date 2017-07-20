@@ -108,13 +108,19 @@ values."
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
-            evil-org
-            org-bullets
-            ido
-            ido-vertical
-            flx-ido
-            smartparens
-            )
+                                    ;; evil-escape: default fd is a no go. Come-on, nobody used fd as file-descriptor anymore?!
+                                    evil-escape
+                                    ;; evil-org: o and O are annoying, to say the least
+                                    evil-org
+                                    ;; I prefer org in text mode
+                                    org-bullets
+                                    ;; ido and ido-vertical and what-more bind some keys that should belong to helm
+                                    ido
+                                    ido-vertical
+                                    flx-ido
+                                    ;; smartparens tries by be a bit too smart
+                                    smartparens
+                                    )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
