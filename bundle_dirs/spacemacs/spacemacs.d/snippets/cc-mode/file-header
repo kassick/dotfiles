@@ -2,16 +2,17 @@
 # name: C File Header
 # key: cfhdr
 # --
-/*=============================================================================
- *       Filename: `(car (last (split-string (buffer-file-name) "/")))`
+/*=====================================================================
+ *       Filename: `(kassick/buffer-file-name-in-project)`
  *
  *    Description: $1
  *
  *        Version: 1.0
- *        Created: `(format-time-string "%d-%m-%Y")`
- *       Compiler: gcc
+ *        Created: `(current-time-string)`
+ *        Updated: `(current-time-string)`
  *
- *         Author: Rodrigo Virote Kassick (), kassick@gmail.com
- *   Organization:
- * ============================================================================
+ *         Author: `(user-full-name)`
+ *
+ *                   Copyright (C) `(format-time-string "%Y")`, `(user-full-name)`
+ * ====================================================================
  */

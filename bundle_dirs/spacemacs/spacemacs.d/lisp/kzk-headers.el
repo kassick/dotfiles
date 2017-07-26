@@ -29,14 +29,32 @@
 (setq auto-insert-directory "~/.spacemacs.d/templates/")
 (setq auto-insert-query nil)
 
+(defun kassick/buffer-file-name-in-project ()
+  "buffer-file-name relative to project's root (if inside a project)"
+  (if (buffer-file-name)
+      (if (projectile-project-p)
+      (file-relative-name (file-truename (buffer-file-name))
+                          (projectile-project-root))
+    (car (last (split-string (buffer-file-name)
+                             "/"))))
+    "(anon)"))
+
 (defun kassick/do-header (leader &optional sleader eleader)
-      (let ((com (concat leader " ")))
+  (let* ((com (concat leader " "))
+         (fname (kassick/buffer-file-name-in-project))
+        (empty-line (concat (string-trim-right com) "\n")))
         (concat (if sleader (concat sleader "\n") "")
-                (concat com "File: \"" (buffer-file-name) "\"" "\n")
-                (concat com "Created: \"" (current-time-string) "\"" "\n")
-                (concat com "Updated: \"" (current-time-string) "\"" "\n" )
-                (concat com "$Id$" "\n")
-                (concat com "Copyright (C) " (format-time-string "%Y") ", "
+                (concat com "       Filename: \"" fname "\"" "\n")
+                empty-line
+                (concat com "    Description:\n")
+                empty-line
+                (concat com "        Version: 1.0\n" )
+                (concat com "        Created: \"" (current-time-string) "\"" "\n")
+                (concat com "        Updated: \"" (current-time-string) "\"" "\n" )
+                empty-line
+                (concat com "         Author: " (user-full-name) "\n")
+                empty-line
+                (concat com "                   Copyright (C) " (format-time-string "%Y") ", "
                         (user-full-name) "\n")
                 (if eleader (concat eleader "\n") ""))))
 
@@ -52,9 +70,9 @@
          "#include \""
          (let ((stem (file-name-sans-extension buffer-file-name)))
            (cond ((file-exists-p (concat stem ".h"))
-	      (file-name-nondirectory (concat stem ".h")))
-	     ((file-exists-p (concat stem ".hh"))
-	      (file-name-nondirectory (concat stem ".hh")))))
+          (file-name-nondirectory (concat stem ".h")))
+         ((file-exists-p (concat stem ".hh"))
+          (file-name-nondirectory (concat stem ".hh")))))
          & ?\" | -10)
 
         (html-mode . (lambda () (sgml-tag "html")))
@@ -74,7 +92,7 @@
         (("/bin/.*[^/]\\'" . "Shell-Script mode magic number") .
          (lambda ()
            (if (eq major-mode (default-value 'major-mode))
-	   (sh-mode))))
+       (sh-mode))))
 
         (("\\.el\\'" . "Emacs Lisp header")
          "Short description: "
@@ -94,10 +112,10 @@
  '(require 'finder)
  ;;'(setq v1 (apply 'vector (mapcar 'car finder-known-keywords)))
  '(setq v1 (mapcar (lambda (x) (list (symbol-name (car x))))
-		   finder-known-keywords)
-	v2 (mapconcat (lambda (x) (format "%12s:  %s" (car x) (cdr x)))
-	   finder-known-keywords
-	   "\n"))
+           finder-known-keywords)
+    v2 (mapconcat (lambda (x) (format "%12s:  %s" (car x) (cdr x)))
+       finder-known-keywords
+       "\n"))
  ((let ((minibuffer-help-form v2))
         (completing-read "Keyword, C-h: " v1 nil t))
         str ", ") & -2 "
@@ -156,10 +174,11 @@
         )
       )
 
-(add-hook 'before-save-hook (lambda ()
-                                  (let ((time-stamp-start "Time-[sS]tamp:[ \t]+\\\\?[\"<]+")) (time-stamp))
-                                  (let ((time-stamp-start "Updated:[ \t]+\\\\?[\"<]+")) (time-stamp))
-                                  ))
+(add-hook 'before-save-hook
+          (lambda ()
+            (let ((time-stamp-start "Time-[sS]tamp:[ \t]+\\\\?[\"<]+")) (time-stamp))
+            (let ((time-stamp-start "Updated:[ \t]+\\\\?[\"<]+")) (time-stamp))
+            ))
 
 
 
