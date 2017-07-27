@@ -119,7 +119,7 @@ values."
                                     ido-vertical
                                     flx-ido
                                     ;; smartparens tries by be a bit too smart
-                                    smartparens
+                                    ;; smartparens
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -415,7 +415,7 @@ you should place your code here."
   (ido-mode -1)          ; no ido
   (general-evil-setup)   ; evil general is my leader
   (key-chord-mode 1)     ; keychord integrates with general
-  (electric-pair-mode 1) ; electric-pair instead of smartparens
+  ;; (electric-pair-mode 1) ; electric-pair instead of smartparens
   (show-paren-mode t)
   (global-page-break-lines-mode 1)
   (global-visual-line-mode t)
