@@ -36,7 +36,7 @@
   (setq company-ycmd-insert-arguments nil
         company-ycmd-request-sync-timeout 1.0)
 
-  (require 'ycmd-eldoc)
+  ;; (require 'ycmd-eldoc)
 
   (defun ycm ()
     (interactive)
@@ -49,10 +49,18 @@
     (general-imap :keymaps 'ycmd-mode-map
                   "<C-tab>" 'ycm))
 
-  (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
+  ;; (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
   (add-hook 'c++-mode-hook 'ycmd-mode)
   (add-hook 'c-mode-hook 'ycmd-mode)
   (add-hook 'python-mode-hook 'ycmd-mode)
+  (let ( (no-semantic-idle (lambda ()
+                             "Turn off semantic idle, as it clears the echo area from ycmd semantic info"
+                             (semantic-idle-summary-mode 0))))
+    ;; use append=t to make sure we have it execute AFTER semantic-mode
+    (add-hook 'c-mode-hook no-semantic-idle t)
+    (add-hook 'c++-mode-hook no-semantic-idle t )
+    (add-hook 'python-mode-hook no-semantic-idle t)
+    )
   )
 
 
