@@ -66,6 +66,7 @@ values."
      fsharp
      csharp
      java
+     antlr
      graphviz
      (latex :variables
             latex-enable-folding t
@@ -74,6 +75,7 @@ values."
      pandoc
      pdf-tools
      shell-scripts
+     ;; cscope
      semantic
      ;; version-control
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
