@@ -122,6 +122,8 @@ values."
                                     flx-ido
                                     ;; smartparens tries by be a bit too smart
                                     ;; smartparens
+                                    ;; persp-mode is a pain in the ass with on creating new frames
+                                    ;; persp-mode
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
