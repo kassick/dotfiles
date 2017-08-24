@@ -71,6 +71,7 @@ values."
      (latex :variables
             latex-enable-folding t
             latex-enable-auto-fill nil)
+     (bibtex)
      markdown
      pandoc
      pdf-tools

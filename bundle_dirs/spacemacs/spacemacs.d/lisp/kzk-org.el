@@ -246,4 +246,7 @@
   (require 'org-protocol)
 )
 
+(setq org-ref-default-bibliography '("~/Dropbox/Documentos/Bibliografias/IO.bib")
+      org-ref-pdf-directory "~/Dropbox/Bibliography/Papers/"
+      org-ref-bibliography-notes "~/Dropbox/Bibliography/Papers/notes.org")
 (provide 'kzk-org)
