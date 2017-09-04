@@ -85,6 +85,7 @@ values."
      kzk-visual-editing ; fix adaptive wrap for org
      kzk-helm
      kzk-company
+     kzk-persp
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -124,7 +125,7 @@ values."
                                     ;; smartparens tries by be a bit too smart
                                     ;; smartparens
                                     ;; persp-mode is a pain in the ass with on creating new frames
-                                    persp-mode
+                                    ;; persp-mode
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
