@@ -48,8 +48,22 @@
 
 ;;; Code:
 
+(defun kzk-helm/ff-insert-file-name (candidate)
+  "Inserts the candidate into the buffer. With prefix, insert full path"
+  (message "candidate is %S args is %S" candidate helm-current-prefix-arg)
+  (cond ((eq nil helm-current-prefix-arg )
+         ;; (message "rel path %S" (file-relative-name candidate))
+         (insert (file-relative-name candidate)))
+        ((not (null helm-current-prefix-arg))
+         (insert (expand-file-name candidate)))
+        (t
+         (insert candidate))))
 
-;; Bind c-c c-z to find the selection in another elscreen
+(defun kzk-helm/run-ff-insert-file-name ()
+  "Inserts selected file name at point"
+  (interactive)
+  (with-helm-alive-p
+    (helm-exit-and-execute-action 'kzk-helm/ff-insert-file-name)))
 
 (defun helm-ff-run-elscreen-find-file ()
   "Run helm-elscreen-find-file on current selection"
@@ -90,13 +104,20 @@
                 ;;"Find file in Elscreen `C-c C-z'")
           ;;;; Bind C-c C-z
           ;;(define-key helm-find-files-map (kbd "C-c C-z") 'helm-ff-run-elscreen-find-file)))
+
+  ;; Bind C-c i to insert file name and add it to the find file action list
+  (add-to-list 'helm-find-files-actions
+               '("Insert file name at point `C-c C-i'" . kzk-helm/ff-insert-file-name)
+               t)
+  (define-key helm-find-files-map (kbd "C-c C-i") 'kzk-helm/run-ff-insert-file-name)
+
     (if (locate-library "es-windows")
         (progn
           ;; Add description
           (add-to-list 'helm-find-files-actions
-                       '("Find file in in new splited window `C-c C-w'" . helm-esw/find-file ) t)
+                       '("Find file in in new splited window `C-c w'" . helm-esw/find-file ) t)
           ;; Bind C-c C-w
-          (define-key helm-find-files-map (kbd "C-c C-w") 'helm-esw/run-find-file))))
+          (define-key helm-find-files-map (kbd "C-c w") 'helm-esw/run-find-file))))
 
 ;;(eval-after-load 'helm-buffers
 (defun kzk/helm-buffers-hacks-setup ()
@@ -120,8 +141,6 @@
         ;; (define-key helm-projectile-find-file-map (kbd "C-c C-z") 'helm-ff-run-elscreen-find-file))
     (if (locate-library "es-windows")
         (define-key helm-projectile-find-file-map (kbd "C-c C-w") 'helm-esw/run-find-file)))
-
-
 
 (provide 'funcs)
 ;;; funcs.el ends here
