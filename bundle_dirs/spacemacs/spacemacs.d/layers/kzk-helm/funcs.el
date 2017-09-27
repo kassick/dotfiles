@@ -131,16 +131,16 @@
         (progn
           ;; Add description
           (add-to-list 'helm-type-buffer-actions
-                       '("Display buffer(s) in new splited window `C-c C-w'" . helm-esw/show-buffer) t)
+                       '("Display buffer(s) in new splited window `C-c w'" . helm-esw/show-buffer) t)
           ;; Bind C-c C-w
-          (define-key helm-buffer-map (kbd "C-c C-w") 'helm-esw/run-show-buffer))))
+          (define-key helm-buffer-map (kbd "C-c w") 'helm-esw/run-show-buffer))))
 
 ;;(eval-after-load 'helm-projectile
 (defun kzk/helm-projectile-hacks-setup ()
     ;; (if (locate-library "elscreen")
         ;; (define-key helm-projectile-find-file-map (kbd "C-c C-z") 'helm-ff-run-elscreen-find-file))
     (if (locate-library "es-windows")
-        (define-key helm-projectile-find-file-map (kbd "C-c C-w") 'helm-esw/run-find-file)))
+        (define-key helm-projectile-find-file-map (kbd "C-c w") 'helm-esw/run-find-file)))
 
 (provide 'funcs)
 ;;; funcs.el ends here
