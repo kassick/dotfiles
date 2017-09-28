@@ -332,7 +332,7 @@ def get_compilation_hints_for_file(file_full_path):
         relative_to = dir_of(file_full_path)
         return {
             'flags': extend_flags_with_defaults(file_full_path, [], relative_to),
-            'do_cache': False
+            'do_cache': True
         }
 
     # First, try the "normal" one: A file is either
@@ -416,7 +416,7 @@ def get_compilation_hints_for_file(file_full_path):
     relative_to = dir_of(file_full_path)
     return {
         'flags': extend_flags_with_defaults(file_full_path, [], relative_to),
-        'do_cache': False
+        'do_cache': True
     }
 
 # def get_compilation_hints_for_file(fname):
