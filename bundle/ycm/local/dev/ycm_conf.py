@@ -346,7 +346,7 @@ def get_compilation_hints_for_file(file_full_path):
             database = ycm_core.CompilationDatabase( database_path )
 
     if database:
-        #print "Trying database"
+        print "Trying database"
 
         database = ycm_core.CompilationDatabase( database_path )
 
@@ -354,7 +354,7 @@ def get_compilation_hints_for_file(file_full_path):
 
         if info.compiler_flags_:
             # Found compilation info on database
-            #print "Found info on database: ", ' '.join(info.compiler_flags_)
+            print "Found info on database: ", ' '.join(info.compiler_flags_)
             flags.extend(info.compiler_flags_)
             relative_to = info.compiler_working_dir_
             return {
@@ -362,18 +362,18 @@ def get_compilation_hints_for_file(file_full_path):
                 'do_cache': True
             }
 
-        #print "No info for file on database"
+        print "No info for file on database"
         # file not in database. If it's a header, try to find it's
         # implementation
         if IsHeaderFile(file_full_path):
             basename = os.path.splitext( file_full_path )[ 0 ]
             for extension in SOURCE_EXTENSIONS:
                 replacement_file = basename + extension
-                #print "Trying replacement", replacement_file
+                print "Trying replacement", replacement_file
                 if os.path.exists( replacement_file ):
                     info = database.GetCompilationInfoForFile(replacement_file )
                 if info.compiler_flags_:
-                    #print "Found info for replacement on database"
+                    print "Found info for replacement on database"
                     flags.extend(info.compiler_flags_)
                     relative_to = info.compiler_working_dir_
                     return {
@@ -381,11 +381,11 @@ def get_compilation_hints_for_file(file_full_path):
                         'do_cache': True
                     }
 
-    #print "No info on database"
+    print "No info on database"
     # No luck in the database. Try to find via .clang_flags file
     clang_complete_file = find_clang_completion_file_from(cur_path)
     if clang_complete_file:
-        #print ("Loading clang complete file in: %s" % clang_complete_file)
+        print ("Loading clang complete file in: %s" % clang_complete_file)
         flags.extend(get_clang_complete_flags(clang_complete_file))
         relative_to = dir_of(clang_complete_file)
         return {
@@ -393,15 +393,15 @@ def get_compilation_hints_for_file(file_full_path):
             'do_cache': True
         }
 
-    #print "No clang complete"
+    print "No clang complete"
 
     # No entry in the database, no corresponding implementation. Now we try to find files that include the header
     if IsHeaderFile(file_full_path):
-        #print "Going nuclear"
+        print "Going nuclear"
         # Could not find it in the compilation database. Now we go full oger mode
         files = files_including_header(file_full_path, all=False)
         if len(files) > 0:
-            #print "Found include in ", files[0]
+            print "Found include in ", files[0]
             info = database.GetCompilationInfoForFile( files[0] )
             flags.extend(info.compiler_flags_)
             relative_to = info.compiler_working_dir_
@@ -449,6 +449,8 @@ def FlagsForFile( filename ):
     MAIN ENTRY POINT -- returns a dict containing flags for filename
 
     """
+
+    print "Asking flags for", filename
 
     return get_compilation_hints_for_file( filename )
 

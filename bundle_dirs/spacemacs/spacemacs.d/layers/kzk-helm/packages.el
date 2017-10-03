@@ -67,6 +67,8 @@ Each entry is either:
 
 (defun kzk-helm/post-init-helm ()
   ;; Helm genral setq
+  ;;; workaround for issue https://github.com/syl20bnr/spacemacs/issues/9549
+  (require 'helm-bookmark)
   (setq helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
         helm-echo-input-in-header-line t
                                         ;helm-autoresize-max-height 0
@@ -98,6 +100,9 @@ Each entry is either:
   ;; add post-init hooks to setup some hacks on helm
   (eval-after-load 'helm-files #'kzk/helm-ff-hacks-setup)
   (eval-after-load 'helm-buffers #'kzk/helm-buffers-hacks-setup)
+
+  ;; Force helm mode
+  (helm-mode t)
   )
 
 (defun kzk-helm/post-init-helm-projectile ()

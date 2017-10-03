@@ -385,7 +385,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq kzk/display-width/<1800/default-font-height 120 )
   (setq kzk/display-width/<1800/variablepitch-height 130 )
 
-
   (require 'kzk-evil-init)
   (require 'kzk-gui-tweaks)
 
@@ -406,16 +405,20 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; Themes setup
+
   (setq spacemacs-theme-org-height nil ; set this here instead of -init
         theming-modifications          ; fix some way-too-dark settings on ample
-        '((ample (hl-line :background "gray20")
+        `((ample (hl-line :background "gray20")
                  (header-line :background "#3d3d3f"
                               :foreground "white smoke"
                               :weight semi-bold)
                  (region :background "gray30")
                  (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
                  (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold)
-                 )))
+                 )
+          (spacemacs-light (font-latex-bold-face
+                            :foreground "#6c4173"
+                            :weight bold))))
 
   ;; Default modes
   (ido-mode -1)          ; no ido
@@ -460,13 +463,13 @@ you should place your code here."
   (put 'downcase-region 'disabled nil)
 
   ;; {{{ auto wrap around isearch
-  (defadvice isearch-search (after isearch-no-fail activate)
-    (unless isearch-success
-      (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
-      (ad-activate 'isearch-search)
-      (isearch-repeat (if isearch-forward 'forward))
-      (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
-      (ad-activate 'isearch-search)))
+  ;; (defadvice isearch-search (after isearch-no-fail activate)
+  ;;   (unless isearch-success
+  ;;     (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
+  ;;     (ad-activate 'isearch-search)
+  ;;     (isearch-repeat (if isearch-forward 'forward))
+  ;;     (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
+  ;;     (ad-activate 'isearch-search)))
   ;; }}}
 
   ;; Code that may (eventually) be moved to a layer
@@ -478,6 +481,9 @@ you should place your code here."
 
   (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
 
+  (with-eval-after-load 'helm
+    (message "Forcing helm-mode")
+    (helm-mode t))
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   )
