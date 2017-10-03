@@ -69,6 +69,9 @@ Each entry is either:
   ;; Helm genral setq
   ;;; workaround for issue https://github.com/syl20bnr/spacemacs/issues/9549
   (require 'helm-bookmark)
+
+  ;;; Workaround for helm-buffer--details faililng due to missing dired-buffers variable
+  (require 'dired)
   (setq helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
         helm-echo-input-in-header-line t
                                         ;helm-autoresize-max-height 0
