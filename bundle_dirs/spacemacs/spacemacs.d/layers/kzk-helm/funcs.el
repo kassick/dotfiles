@@ -116,6 +116,7 @@
           ;; Add description
           (add-to-list 'helm-find-files-actions
                        '("Find file in in new splited window `C-c w'" . helm-esw/find-file ) t)
+
           ;; Bind C-c C-w
           (define-key helm-find-files-map (kbd "C-c w") 'helm-esw/run-find-file))))
 

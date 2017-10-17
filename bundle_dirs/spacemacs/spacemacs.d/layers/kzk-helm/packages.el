@@ -111,10 +111,10 @@ Each entry is either:
   )
 
 (defun kzk-helm/post-init-helm-projectile ()
-
-  (with-eval-after-load 'helm-projectile
-    (helm-projectile-on)
-    (kzk/helm-projectile-hacks-setup))
+  (with-eval-after-load 'projectile
+   (helm-projectile-on)
+   (kzk/helm-projectile-hacks-setup)
+   )
   )
 
 (defun kzk-helm/post-init-flyspell-correct-helm ()
