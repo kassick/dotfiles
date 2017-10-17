@@ -94,11 +94,13 @@ Each entry is either:
   (setq helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match    t)
 
-  (require 'general)
-  (general-define-key :prefix dotspacemacs-leader-key :states '(normal visual motion)
-                      "h a"  '(helm-ag :which-key "Ag (cwd)")
-                      "s /" '(helm-find :which-key "Find")
-                      )
+  (with-eval-after-load 'general
+    (general-define-key :prefix dotspacemacs-leader-key
+                        :states '(normal visual motion)
+                        "h a"  '(helm-ag :which-key "Ag (cwd)")
+                        "s /" '(helm-find :which-key "Find")
+                        )
+  )
 
   ;; add post-init hooks to setup some hacks on helm
   (eval-after-load 'helm-files #'kzk/helm-ff-hacks-setup)
@@ -133,14 +135,15 @@ Each entry is either:
   )
 
 (defun kzk-helm/post-init-helm-swoop ()
-  (general-define-key :keymaps 'global
-                      "C-*" 'helm-swoop
-                      "C-S-s" 'helm-swoop-without-pre-input)
-  (general-define-key :keymaps 'global :states 'motion
-                      "C-M-*" 'helm-swoop-from-evil-search)
-  (general-define-key :keymaps 'isearch-mode-map
-                      "C-*" 'helm-swoop-from-isearch
-                      )
+  (with-eval-after-load 'general
+    (general-define-key :keymaps 'global
+                        "C-*" 'helm-swoop
+                        "C-S-s" 'helm-swoop-without-pre-input)
+    (general-define-key :keymaps 'global :states 'motion
+                        "C-M-*" 'helm-swoop-from-evil-search)
+    (general-define-key :keymaps 'isearch-mode-map
+                        "C-*" 'helm-swoop-from-isearch)
+   )
   )
 
 (defun kzk-helm/post-init-general ()

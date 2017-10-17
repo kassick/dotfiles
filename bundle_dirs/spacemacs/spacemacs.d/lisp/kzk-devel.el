@@ -25,7 +25,20 @@
 ;;; Code:
 
 ;; ycmd setup
-(with-eval-after-load "ycmd"
+(defun ycmd-force-enable ()
+
+  ;; Turn off semantic idle, as it clears the echo area from ycmd semantic info
+  (semantic-idle-summary-mode 0)
+
+  (message "Force Enable YCMD for major mode %s" major-mode)
+  (ycmd-mode 1))
+
+;; (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
+(add-hook 'c++-mode-hook 'ycmd-force-enable)
+(add-hook 'c-mode-hook 'ycmd-force-enable)
+(add-hook 'python-mode-hook 'ycmd-force-enable)
+
+(with-eval-after-load 'ycmd
   (set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
   (set-variable 'ycmd-server-command
                 `("/usr/bin/python"
@@ -46,21 +59,11 @@
       (company-manual-begin)))
 
   (with-eval-after-load 'general
-    (general-imap :keymaps 'ycmd-mode-map
+    (message "Imapping ycm")
+    (general-define-key :keymaps 'ycmd-mode-map
+                        :states 'insert
                   "<C-tab>" 'ycm))
 
-  ;; (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
-  (add-hook 'c++-mode-hook 'ycmd-mode)
-  (add-hook 'c-mode-hook 'ycmd-mode)
-  (add-hook 'python-mode-hook 'ycmd-mode)
-  (let ( (no-semantic-idle (lambda ()
-                             "Turn off semantic idle, as it clears the echo area from ycmd semantic info"
-                             (semantic-idle-summary-mode 0))))
-    ;; use append=t to make sure we have it execute AFTER semantic-mode
-    (add-hook 'c-mode-hook no-semantic-idle t)
-    (add-hook 'c++-mode-hook no-semantic-idle t )
-    (add-hook 'python-mode-hook no-semantic-idle t)
-    )
   )
 
 
@@ -78,7 +81,12 @@
   (setq helm-dash-candidate-format "%d %n (%t)")
   (setq helm-dash-enable-debugging nil)
   (setq helm-dash-browser-func 'browse-url)
-  (general-define-key :keymaps 'global :states 'normal :prefix dotspacemacs-leader-key
+  )
+
+(with-eval-after-load 'general
+  (general-define-key :keymaps 'global
+                      :states 'normal
+                      :prefix dotspacemacs-leader-key
                       "doc" 'helm-dash)
   )
 
@@ -89,21 +97,23 @@
                       "C-x M-g"  'magit-dispatch-popup))
 
 ;; python
-(python-docstring-install)
-(defun python-sort-completions (candidates)
-      (defun py-is-priv (c)
-        (equal (substring c 0 1) "_"))
-      (defun my-filter (condp lst)
-        (delq nil
-              (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
-      (let* ((public (my-filter (lambda (c) (not (py-is-priv c))) candidates))
-             (priv (my-filter 'py-is-priv candidates)))
-        (append public priv)
-      )
-      )
+
+;; (python-docstring-install)
+;; (defun python-sort-completions (candidates)
+;;       (defun py-is-priv (c)
+;;         (equal (substring c 0 1) "_"))
+;;       (defun my-filter (condp lst)
+;;         (delq nil
+;;               (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
+;;       (let* ((public (my-filter (lambda (c) (not (py-is-priv c))) candidates))
+;;              (priv (my-filter 'py-is-priv candidates)))
+;;         (append public priv)
+;;       )
+;;       )
 
 (add-hook 'python-mode-hook
               (lambda ()
+                (python-docstring-mode 1)
                 (setq py-auto-fill-mode t
                       py-comment-auto-fill-p t
                       ;; py-complete-function nil

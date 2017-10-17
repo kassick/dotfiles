@@ -61,6 +61,7 @@ values."
                      ;; enable-flyspell-auto-completion t
                      )
      ycmd
+     company
      python
      c-c++
      fsharp
@@ -91,7 +92,8 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(key-chord
+   dotspacemacs-additional-packages '(general
+                                      key-chord
                                       evil-matchit
                                       evil-easymotion
                                       evil-embrace
@@ -104,7 +106,6 @@ values."
                                       company-quickhelp
                                       flycheck-ycmd
                                       python-docstring
-                                      general
                                       helm-dash
                                       helm-flyspell
                                       )
@@ -388,6 +389,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (require 'kzk-evil-init)
   (require 'kzk-gui-tweaks)
 
+  (require 'kzk-devel)   ; devel stuff
+  (require 'kzk-latex)   ; latex-mode settings
+  (require 'kzk-org)     ; org-mode settings
+  (require 'kzk-headers) ; headers for files
+
   ;; Extra code and customizations
   ;;(custom-set-faces '(default ((t (:slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Meslo LG S for Powerline")))))
   ;                  '(region ((t (:background "gray31"))))
@@ -432,6 +438,7 @@ you should place your code here."
   ;; Don't lazy load these ones, as they're kind of core features
   (require 'kzk-evil)              ; my settings for evil. Load NOW, no layer
   (require 'kzk-window-management) ; window movement shortcuts
+  (require 'kzk-shell)   ; shell tweaks
 
   ;; Language tweaks
   (setq default-process-coding-system '(utf-8 . utf-8)) ; utf8
@@ -473,17 +480,12 @@ you should place your code here."
   ;; }}}
 
   ;; Code that may (eventually) be moved to a layer
-  (require 'kzk-devel)   ; devel stuff
-  (require 'kzk-headers) ; headers for files
-  (require 'kzk-org)     ; org-mode settings
-  (require 'kzk-latex)   ; latex-mode settings
-  (require 'kzk-shell)   ; shell tweaks
 
   (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
 
   (with-eval-after-load 'helm
-    (message "Forcing helm-mode")
-    (helm-mode t))
+    (helm-mode t)
+    )
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   )

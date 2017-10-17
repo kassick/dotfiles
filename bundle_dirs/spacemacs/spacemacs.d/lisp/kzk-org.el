@@ -65,10 +65,12 @@
 
 
 (with-eval-after-load 'org
-  (general-define-key :keymaps 'org-mode-map
-                      "C-c d" 'insert-date
-                      "C-c t" 'insert-time-date
-                      "C-c v" 'org-show-todo-tree)
+  (with-eval-after-load 'general
+   (general-define-key :keymaps 'org-mode-map
+                       "C-c d" 'insert-date
+                       "C-c t" 'insert-time-date
+                       "C-c v" 'org-show-todo-tree)
+   )
 
   (setq org-startup-truncated nil
         ;; revert-without-query (quote ("google.org"))
@@ -246,7 +248,10 @@
   (require 'org-protocol)
 )
 
-(setq org-ref-default-bibliography '("~/Dropbox/Documentos/Bibliografias/IO.bib")
-      org-ref-pdf-directory "~/Dropbox/Bibliography/Papers/"
-      org-ref-bibliography-notes "~/Dropbox/Bibliography/Papers/notes.org")
+(with-eval-after-load 'org-ref
+  (setq org-ref-default-bibliography '("~/Dropbox/Documentos/Bibliografias/IO.bib")
+        org-ref-pdf-directory "~/Dropbox/Bibliography/Papers/"
+        org-ref-bibliography-notes "~/Dropbox/Bibliography/Papers/notes.org")
+)
+
 (provide 'kzk-org)
