@@ -43,7 +43,6 @@ values."
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip 'manual
                       )
-     ;; better-defaults
      emacs-lisp
      git
      ranger
@@ -61,7 +60,6 @@ values."
                      ;; enable-flyspell-auto-completion t
                      )
      ycmd
-     company
      python
      c-c++
      fsharp
