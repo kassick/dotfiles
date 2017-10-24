@@ -125,6 +125,7 @@ values."
                                     ;; smartparens
                                     ;; persp-mode is a pain in the ass with on creating new frames
                                     ;; persp-mode
+                                    org-projectile ;; org projectile has some issues as of 2017-10-19 . May re-enable in the future
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -194,8 +195,8 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         ample
                          spacemacs-light
+                         ample
                          ample-flat
                          ample-zen
                          )
