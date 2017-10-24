@@ -314,7 +314,7 @@ values."
    ;; If non nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
-   dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-mode-line-unicode-symbols nil
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
@@ -452,6 +452,7 @@ you should place your code here."
                 fill-column 80        ; reasonable fill column
                 indent-tabs-mode nil  ; tabs off by default
                 tab-width 4           ; reasonable tab-width
+                powerline-default-separator 'arrow ; Don't use separators
                 )
 
   ;; Give us narrowing back!
