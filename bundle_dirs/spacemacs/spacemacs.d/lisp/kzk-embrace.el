@@ -19,6 +19,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+;; THIS FILE MUST BE LOADED BEFORE evil-embrace-enable-evil-surround-integration IS CALLED. IN SPACEMACS, THIS MEANS user-init
 
 ;; This is a kludge. Issues involved:
 ;; - https://github.com/cute-jumper/evil-embrace.el/issues/5

@@ -480,13 +480,12 @@ you should place your code here."
   ;;     (ad-activate 'isearch-search)))
   ;; }}}
 
-  ;; Code that may (eventually) be moved to a layer
-
   (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
 
   (with-eval-after-load 'helm
     (helm-mode t)
     )
+
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   )
