@@ -393,7 +393,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (require 'kzk-latex)   ; latex-mode settings
   (require 'kzk-org)     ; org-mode settings
   (require 'kzk-headers) ; headers for files
-  (require 'kzk-embrace)
+  ;;(require 'kzk-embrace)
 
   ;; Extra code and customizations
   ;;(custom-set-faces '(default ((t (:slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Meslo LG S for Powerline")))))
