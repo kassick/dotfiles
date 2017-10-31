@@ -96,6 +96,7 @@ values."
                                       evil-easymotion
                                       evil-embrace
                                       evil-args
+                                      (evil-org :location elpa)
                                       es-windows
                                       narrow-indirect
                                       dedicated
@@ -114,7 +115,7 @@ values."
                                     ;; evil-escape: default fd is a no go. Come-on, nobody used fd as file-descriptor anymore?!
                                     evil-escape
                                     ;; evil-org: o and O are annoying, to say the least
-                                    evil-org
+                                    ;; evil-org
                                     ;; I prefer org in text mode
                                     org-bullets
                                     ;; ido and ido-vertical and what-more bind some keys that should belong to helm
