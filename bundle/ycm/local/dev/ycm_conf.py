@@ -256,7 +256,7 @@ def files_including_header(header_full_path, all=False):
         for entry in db_json:
             cmd = entry['command']
             entry_file = entry['file']
-            #print "checking ", entry_file
+            # print "checking ", entry_file
             entry_path = entry['directory']
 
             def de_include(i):
@@ -303,24 +303,21 @@ def files_including_header(header_full_path, all=False):
                         if include_file == header_full_path:
                             files.append(entry_file)
                             if not all:
-                                return files
+                                break
 
                             # if all, just stop reading this file. GO on to the next
                             break
                     except Exception as e:
                         print "oops", e
-                        pass # probably output included something strange
-                    pass
-                pass
-            pass
-            (out, err) = p.communicate()
-            if p.returncode != 0:
-                print "Error running command ``", ' '.join(cmd), "''"
-                print "error: ", '\n'.join(err)
-                continue
+                    pass # probably output included something strange
+                pass # if inc.startswith
+            pass # for inc in stderr
 
-        pass
+            p.kill()
 
+            if not all and len(files) > 0:
+                break # break  entry loop
+        pass # for entry in json
     except Exception as e:
         import traceback
         print "Could not load database ", database_path, ": ", e
