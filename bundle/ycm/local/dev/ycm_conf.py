@@ -282,13 +282,7 @@ def files_including_header(header_full_path, all=False):
             p = subprocess.Popen(cmd, cwd=entry_path,
                                  stderr=subprocess.PIPE,
                                  stdin=DEVNULL , stdout=DEVNULL)
-            (out, err) = p.communicate()
-            if p.returncode != 0:
-                print "Error running command ``", ' '.join(cmd), "''"
-                print "error: ", '\n'.join(err)
-                continue
-
-            for inc in err.split('\n'):
+            for inc in p.stderr:
                 # output is :
                 # . include/vm.H
                 # .. /usr/include/stdio.h
@@ -319,6 +313,12 @@ def files_including_header(header_full_path, all=False):
                     pass
                 pass
             pass
+            (out, err) = p.communicate()
+            if p.returncode != 0:
+                print "Error running command ``", ' '.join(cmd), "''"
+                print "error: ", '\n'.join(err)
+                continue
+
         pass
 
     except Exception as e:
