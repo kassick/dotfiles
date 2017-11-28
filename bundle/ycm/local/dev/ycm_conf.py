@@ -42,6 +42,12 @@ database_path = None
 # obtained by parsing the compilation database
 db_json = None
 
+try:
+    from subprocess import DEVNULL # py3k
+except ImportError:
+    import os
+    DEVNULL = open(os.devnull, 'wb')
+
 def dir_of(fname):
     return os.path.dirname( os.path.abspath(fname) )
 
@@ -244,11 +250,13 @@ def files_including_header(header_full_path, all=False):
 
     files = []
     header_full_path = os.path.normpath(header_full_path)
+    #print "looking for ", header_full_path
     try:
         # see if any known file includes header
         for entry in db_json:
             cmd = entry['command']
             entry_file = entry['file']
+            #print "checking ", entry_file
             entry_path = entry['directory']
 
             def de_include(i):
@@ -267,20 +275,20 @@ def files_including_header(header_full_path, all=False):
             cmd = ['cpp', '-H']
             cmd.extend(entry_includes)
             cmd.append(entry_file)
+            #print "Executing ", ' '.join(cmd)
 
             #print 'cpp for ', entry_file
-            DEVNULL = open(os.devnull, 'rb+')
             # cpp sends output to dev null, includes to err
             p = subprocess.Popen(cmd, cwd=entry_path,
                                  stderr=subprocess.PIPE,
-                                 stdin=DEVNULL, stdout=DEVNULL)
-            p.wait()
+                                 stdin=DEVNULL , stdout=DEVNULL)
+            (out, err) = p.communicate()
             if p.returncode != 0:
                 print "Error running command ``", ' '.join(cmd), "''"
-                print "error: ", '\n'.join(p.stderr.readlines())
+                print "error: ", '\n'.join(err)
                 continue
 
-            for inc in p.stderr:
+            for inc in err.split('\n'):
                 # output is :
                 # . include/vm.H
                 # .. /usr/include/stdio.h
@@ -314,7 +322,9 @@ def files_including_header(header_full_path, all=False):
         pass
 
     except Exception as e:
+        import traceback
         print "Could not load database ", database_path, ": ", e
+        traceback.print_exc()
         return []
 
     return files
