@@ -42,6 +42,12 @@ database_path = None
 # obtained by parsing the compilation database
 db_json = None
 
+try:
+    from subprocess import DEVNULL # py3k
+except ImportError:
+    import os
+    DEVNULL = open(os.devnull, 'wb')
+
 def dir_of(fname):
     return os.path.dirname( os.path.abspath(fname) )
 
@@ -244,11 +250,13 @@ def files_including_header(header_full_path, all=False):
 
     files = []
     header_full_path = os.path.normpath(header_full_path)
+    #print "looking for ", header_full_path
     try:
         # see if any known file includes header
         for entry in db_json:
             cmd = entry['command']
             entry_file = entry['file']
+            # print "checking ", entry_file
             entry_path = entry['directory']
 
             def de_include(i):
@@ -267,19 +275,13 @@ def files_including_header(header_full_path, all=False):
             cmd = ['cpp', '-H']
             cmd.extend(entry_includes)
             cmd.append(entry_file)
+            #print "Executing ", ' '.join(cmd)
 
             #print 'cpp for ', entry_file
-            DEVNULL = open(os.devnull, 'rb+')
             # cpp sends output to dev null, includes to err
             p = subprocess.Popen(cmd, cwd=entry_path,
                                  stderr=subprocess.PIPE,
-                                 stdin=DEVNULL, stdout=DEVNULL)
-            p.wait()
-            if p.returncode != 0:
-                print "Error running command ``", ' '.join(cmd), "''"
-                print "error: ", '\n'.join(p.stderr.readlines())
-                continue
-
+                                 stdin=DEVNULL , stdout=DEVNULL)
             for inc in p.stderr:
                 # output is :
                 # . include/vm.H
@@ -301,20 +303,25 @@ def files_including_header(header_full_path, all=False):
                         if include_file == header_full_path:
                             files.append(entry_file)
                             if not all:
-                                return files
+                                break
 
                             # if all, just stop reading this file. GO on to the next
                             break
                     except Exception as e:
                         print "oops", e
-                        pass # probably output included something strange
-                    pass
-                pass
-            pass
-        pass
+                    pass # probably output included something strange
+                pass # if inc.startswith
+            pass # for inc in stderr
 
+            p.kill()
+
+            if not all and len(files) > 0:
+                break # break  entry loop
+        pass # for entry in json
     except Exception as e:
+        import traceback
         print "Could not load database ", database_path, ": ", e
+        traceback.print_exc()
         return []
 
     return files
