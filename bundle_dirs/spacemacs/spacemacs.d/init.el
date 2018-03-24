@@ -100,7 +100,7 @@ values."
                                       evil-args
                                       (evil-org :location elpa)
                                       es-windows
-                                      narrow-indirect
+                                      ;; narrow-indirect
                                       dedicated
                                       company-ycmd
                                       helm-company

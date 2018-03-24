@@ -66,11 +66,11 @@
 (general-define-key :keymaps 'global
                     "C-x 9" 'dedicated-mode)
 
-;; narrow indirect'
-(general-define-key :keymaps 'ctl-x-4-map
-              "nd" 'ni-narrow-to-defun-indirect-other-window
-              "nn" 'ni-narrow-to-region-indirect-other-window
-              "np" 'ni-narrow-to-page-indirect-other-window)
+;; narrow indirect
+;; (general-define-key :keymaps 'ctl-x-4-map
+;;               "nd" 'ni-narrow-to-defun-indirect-other-window
+;;               "nn" 'ni-narrow-to-region-indirect-other-window
+;;               "np" 'ni-narrow-to-page-indirect-other-window)
 
 (general-define-key :keymaps 'spacemacs-cmds
                     "w _" 'evil-window-set-height
