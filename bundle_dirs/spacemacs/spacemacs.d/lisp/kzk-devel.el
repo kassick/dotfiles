@@ -41,7 +41,7 @@
 (with-eval-after-load 'ycmd
   (set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
   (set-variable 'ycmd-server-command
-                `("/usr/bin/python"
+                `("/usr/bin/python2.7"
                   ,(expand-file-name
                     "~/.local/dev/ycm/third_party/ycmd/ycmd")))
 
