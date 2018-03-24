@@ -34,7 +34,8 @@ fi
 
 YCM_CLANG_OPTS="--clang-completer --system-libclang"
 YCM_OMNISHARP_OPTS="--omnisharp-completer"
-YCM_SYSTEM_OPTS="--system-boost"
+# system boost may create issues with python2/3 compatibility of the generated executable ... --system-boost
+YCM_SYSTEM_OPTS=
 YCM_GOCODE_OPTS="--gocode-completer"
 
 if [ -f ${DOT_PATH}/ycm_opts.sh ] ; then
@@ -43,7 +44,4 @@ if [ -f ${DOT_PATH}/ycm_opts.sh ] ; then
 fi
 
 git submodule update --init --recursive && \
-    ./install.py $YCM_CLANG_OPTS \
-                 $YCM_OMNISHARP_OPTS \
-                 $YCM_SYSTEM_OPTS \
-                 $YCM_GOCODE_OPTS
+    ./install.py $YCM_CLANG_OPTS $YCM_OMNISHARP_OPTS $YCM_SYSTEM_OPTS $YCM_GOCODE_OPTS

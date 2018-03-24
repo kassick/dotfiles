@@ -233,7 +233,7 @@ def files_including_header(header_full_path, all=False):
     import subprocess
 
     if not database_path:
-        print "oops, missing database path"
+        print ("oops, missing database path")
         return []
 
     # cache json dict
@@ -242,7 +242,7 @@ def files_including_header(header_full_path, all=False):
 
         database_file = dir_has_compilation_database(database_path)
         if not database_file:
-            print "wtf no database file"
+            print ("wtf no database file")
 
         db_json = json.load(file(database_file, 'r'))
 
@@ -308,7 +308,7 @@ def files_including_header(header_full_path, all=False):
                             # if all, just stop reading this file. GO on to the next
                             break
                     except Exception as e:
-                        print "oops", e
+                        print ("oops", e)
                     pass # probably output included something strange
                 pass # if inc.startswith
             pass # for inc in stderr
@@ -320,7 +320,7 @@ def files_including_header(header_full_path, all=False):
         pass # for entry in json
     except Exception as e:
         import traceback
-        print "Could not load database ", database_path, ": ", e
+        print ("Could not load database ", database_path, ": ", e)
         traceback.print_exc()
         return []
 
@@ -353,7 +353,7 @@ def get_compilation_hints_for_file(file_full_path):
             database = ycm_core.CompilationDatabase( database_path )
 
     if database:
-        print "Trying database"
+        print ("Trying database")
 
         database = ycm_core.CompilationDatabase( database_path )
 
@@ -361,7 +361,7 @@ def get_compilation_hints_for_file(file_full_path):
 
         if info.compiler_flags_:
             # Found compilation info on database
-            print "Found info on database: ", ' '.join(info.compiler_flags_)
+            print ("Found info on database: ", ' '.join(info.compiler_flags_))
             flags.extend(info.compiler_flags_)
             relative_to = info.compiler_working_dir_
             return {
@@ -369,18 +369,18 @@ def get_compilation_hints_for_file(file_full_path):
                 'do_cache': True
             }
 
-        print "No info for file on database"
+        print ("No info for file on database")
         # file not in database. If it's a header, try to find it's
         # implementation
         if IsHeaderFile(file_full_path):
             basename = os.path.splitext( file_full_path )[ 0 ]
             for extension in SOURCE_EXTENSIONS:
                 replacement_file = basename + extension
-                print "Trying replacement", replacement_file
+                print ("Trying replacement", replacement_file)
                 if os.path.exists( replacement_file ):
                     info = database.GetCompilationInfoForFile(replacement_file )
                 if info.compiler_flags_:
-                    print "Found info for replacement on database"
+                    print ("Found info for replacement on database")
                     flags.extend(info.compiler_flags_)
                     relative_to = info.compiler_working_dir_
                     return {
@@ -388,7 +388,7 @@ def get_compilation_hints_for_file(file_full_path):
                         'do_cache': True
                     }
 
-    print "No info on database"
+    print ("No info on database")
     # No luck in the database. Try to find via .clang_flags file
     clang_complete_file = find_clang_completion_file_from(cur_path)
     if clang_complete_file:
@@ -400,15 +400,15 @@ def get_compilation_hints_for_file(file_full_path):
             'do_cache': True
         }
 
-    print "No clang complete"
+    print ("No clang complete")
 
     # No entry in the database, no corresponding implementation. Now we try to find files that include the header
     if IsHeaderFile(file_full_path):
-        print "Going nuclear"
+        print ("Going nuclear")
         # Could not find it in the compilation database. Now we go full oger mode
         files = files_including_header(file_full_path, all=False)
         if len(files) > 0:
-            print "Found include in ", files[0]
+            print ("Found include in ", files[0])
             info = database.GetCompilationInfoForFile( files[0] )
             flags.extend(info.compiler_flags_)
             relative_to = info.compiler_working_dir_
@@ -419,7 +419,7 @@ def get_compilation_hints_for_file(file_full_path):
 
     # Nothing found, use defaults
 
-    print "defaults"
+    print ("defaults")
     relative_to = dir_of(file_full_path)
     return {
         'flags': extend_flags_with_defaults(file_full_path, [], relative_to),
@@ -457,7 +457,7 @@ def FlagsForFile( filename ):
 
     """
 
-    print "Asking flags for", filename
+    print ("Asking flags for", filename)
 
     return get_compilation_hints_for_file( filename )
 
