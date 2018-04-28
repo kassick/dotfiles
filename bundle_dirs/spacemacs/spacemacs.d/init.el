@@ -109,6 +109,7 @@ values."
                                       python-docstring
                                       helm-dash
                                       helm-flyspell
+                                      yasnippet-snippets
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
