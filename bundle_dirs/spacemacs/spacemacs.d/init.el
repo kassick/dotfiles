@@ -490,6 +490,9 @@ you should place your code here."
     (helm-mode t)
     )
 
+  ;; Don't be annoying, emacs. C-x C-c is to close to EVERY OTHER SHORTCUT and can be used accidently too often. Also, no C-g on the confirmation prompt!? what the hell?
+  (global-unset-key (kbd "C-x C-c"))
+
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   )
