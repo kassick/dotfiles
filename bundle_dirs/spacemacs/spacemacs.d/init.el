@@ -68,6 +68,7 @@ values."
      csharp
      java
      antlr
+     elixir
      graphviz
      (latex :variables
             latex-enable-folding t
