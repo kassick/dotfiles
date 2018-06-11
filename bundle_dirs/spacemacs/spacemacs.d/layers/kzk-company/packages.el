@@ -34,6 +34,12 @@
     company-quickhelp
     helm-company))
 
+(defcustom kzk-company/ignored-files-extensions
+  '("fbd_latexmk" "aux" "log" "pdf" "bbl"
+    "bcf" "gz" "blg" "fls")
+  "List of extensions for dabbrev to ignore during completion"
+  :type '(repeat string)
+  :group 'kzk-company)
 
 (defun kzk-company/post-init-company ()
   (setq company-idle-delay 0.9
@@ -61,6 +67,9 @@
           ;; company-dabbrev-downcase nil
           ;; company-dabbrev-ignore-case nil
           ))
+
+  ;; blacklist some buffers
+  (kzk/company-blacklist-files)
 
 
   ;; Company-active shortcuts
