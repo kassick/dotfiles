@@ -32,14 +32,14 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     csv
-     haskell
-     javascript
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     csv
+     (haskell :variables haskell-completion-backend 'intero)
+     javascript
      helm
      (auto-completion :variables
                       auto-completion-enable-snippets-in-popup t
@@ -68,6 +68,7 @@ values."
      csharp
      java
      antlr
+     elixir
      graphviz
      (latex :variables
             latex-enable-folding t
