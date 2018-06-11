@@ -179,6 +179,20 @@
 
 ;;;}}}
 
+;;; {{{ elixir
+;;; Do not eval after load, since alchemist-server-command if const-defined on load of alchemist-server.el with alchemist-execute-command
+;; (let* ((docker-run-alpine (concat "docker run"
+;;                                   " --user ${UID}:${GID}"   ; run as current user
+;;                                   " -v \"${HOME}:${HOME}\"" ; All home dir is available
+;;                                   " -w \"$PWD\""            ; Work on CWD
+;;                                   " -it"                    ; interactive, allocate tty
+;;                                   " --rm"                   ; Remove container
+;;                                   " elixir:alpine")))
+;;   (setq alchemist-mix-command (concat docker-run-alpine " mix"))
+;;   (setq alchemist-execute-command (concat docker-run-alpine " elixir"))
+;;   (setq alchemist-compile-command (concat docker-run-alpine " elixirc")))
+;;; }}}
+
 (with-eval-after-load 'yas
   (yas-global-mode 1))
 
