@@ -4,16 +4,13 @@ REPO="https://github.com/Valloric/YouCompleteMe"
 DEST=~/.local/dev/ycm
 
 echo "Installing Dependencies"
-for pkg in  python-devel \
-                clang-libs clang-devel \
-                mono-devel \
-                xbuild \
-                golang \
-                mono-xbuild \
+for pkg in python-devel python3-devel \
+               python-dev python3-dev \
+               mono-devel xbuild mono-xbuild \
                 libboost-thread-dev \
-                libclang-3.9-dev \
-                python-dev \
-                python3-dev;
+                clang-libs clang-devel libclang-dev \
+                golang \
+                cmake ;
 do
     pkcon install -y $pkg
 done
