@@ -36,7 +36,8 @@
 
 (defcustom kzk-company/ignored-files-extensions
   '("fbd_latexmk" "aux" "log" "pdf" "bbl"
-    "bcf" "gz" "blg" "fls")
+    "bcf" "gz" "blg" "fls"
+    "png" "jpg" "jpeg" "JPEG" "Jpeg")
   "List of extensions for dabbrev to ignore during completion"
   :type '(repeat string)
   :group 'kzk-company)
