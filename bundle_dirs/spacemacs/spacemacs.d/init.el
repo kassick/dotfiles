@@ -111,6 +111,7 @@ values."
                                       helm-dash
                                       helm-flyspell
                                       yasnippet-snippets
+                                      imenu-list ;; imenu sidebar
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()

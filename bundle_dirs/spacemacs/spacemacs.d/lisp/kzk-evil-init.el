@@ -41,6 +41,8 @@
 (setq evil-symbol-word-search t)
 (setq evil-cross-lines t)
 
+(with-eval-after-load 'imenu-list
+  (push 'imenu-list-major-mode evil-emacs-state-modes))
 
 
 (provide 'kzk-evil-init)

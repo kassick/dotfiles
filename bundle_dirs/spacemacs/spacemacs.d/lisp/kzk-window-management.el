@@ -31,7 +31,8 @@
                     "C-x b"     'helm-mini
                     "C-x C-b"   'helm-mini
                     "<C-f10>"   'ibuffer
-                    "<C-S-f10>" 'ibuffer-other-window)
+                    "<C-S-f10>" 'ibuffer-other-window
+                    "<C-f12>"   'imenu-list-smart-toggle)
 ;;; }}}
 
 (global-set-key (kbd "C-x <up>") 'windmove-up)
@@ -54,6 +55,7 @@
                     "C-x 7 0" 'esw/delete-window)
 
 ;; popwin
+
   (push '("\\*company-documentation\\*" :height 10 :position bottom :noselect t)
         popwin:special-display-config)
   (push '("^\\*Flycheck.+\\*$" :regexp t
