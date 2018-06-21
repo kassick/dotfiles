@@ -31,8 +31,9 @@
                     "C-x b"     'helm-mini
                     "C-x C-b"   'helm-mini
                     "<C-f10>"   'ibuffer
-                    "<C-S-f10>" 'ibuffer-other-window
-                    "<C-f12>"   'imenu-list-smart-toggle)
+                    "<C-S-f10>" 'ibuffer-other-window)
+
+
 ;;; }}}
 
 (global-set-key (kbd "C-x <up>") 'windmove-up)
@@ -78,6 +79,14 @@
                     "w _" 'evil-window-set-height
                     "w |" 'evil-window-set-width)
 
+;; {{{ imenu-list
+(general-define-key :keymaps    'global
+                    "<C-f12>"   'imenu-list-smart-toggle)
+
+(with-eval-after-load 'imenu-list
+  (require 'dedicated)
+  (add-hook 'imenu-list-major-mode-hook 'dedicated-mode))
+;; }}}
 
 (provide 'kzk-window-management)
 ;;; kzk-window-management.el ends here
