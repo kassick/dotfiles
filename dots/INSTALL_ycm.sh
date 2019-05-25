@@ -3,17 +3,17 @@
 REPO="https://github.com/Valloric/YouCompleteMe"
 DEST=~/.local/dev/ycm
 
-echo "Installing Dependencies"
-for pkg in python-devel python3-devel \
-               python-dev python3-dev \
-               mono-devel xbuild mono-xbuild \
-                libboost-thread-dev \
-                clang-libs clang-devel libclang-dev \
-                golang \
-                cmake ;
-do
-    pkcon install -y $pkg
-done
+# echo "Installing Dependencies"
+# for pkg in python-devel python3-devel \
+#                python-dev python3-dev \
+#                mono-devel xbuild mono-xbuild \
+#                 libboost-thread-dev \
+#                 clang-libs clang-devel libclang-dev \
+#                 golang \
+#                 cmake ;
+# do
+#     pkcon install -y $pkg
+# done
 
 
 echo "Cloning YCM repository"
@@ -40,5 +40,6 @@ if [ -f ${DOT_PATH}/ycm_opts.sh ] ; then
     . ${DOT_PATH}/ycm_opts.sh
 fi
 
+export TERM=xterm
 git submodule update --init --recursive && \
     ./install.py $YCM_CLANG_OPTS $YCM_OMNISHARP_OPTS $YCM_SYSTEM_OPTS $YCM_GOCODE_OPTS
