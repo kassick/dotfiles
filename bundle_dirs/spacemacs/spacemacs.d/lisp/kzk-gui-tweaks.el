@@ -24,6 +24,5 @@
 
 ;;; Code:
 
-
 (provide 'kzk-gui-tweaks)
 ;;; kzk-gui-tweaks.el ends here

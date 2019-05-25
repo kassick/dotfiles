@@ -62,13 +62,14 @@ values."
                      ;; enable-flyspell-auto-completion t
                      )
      ycmd
-     python
+     lsp
+     (python :variables python-test-runner 'pytest)
      c-c++
      fsharp
      csharp
      java
      antlr
-     elixir
+     scala
      graphviz
      (latex :variables
             latex-enable-folding t
@@ -88,6 +89,7 @@ values."
      kzk-helm
      kzk-company
      kzk-persp
+     yaml
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -468,21 +470,7 @@ you should place your code here."
   (put 'upcase-region 'disabled nil)
   (put 'downcase-region 'disabled nil)
 
-  ;; {{{ auto wrap around isearch
-  ;; (defadvice isearch-search (after isearch-no-fail activate)
-  ;;   (unless isearch-success
-  ;;     (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
-  ;;     (ad-activate 'isearch-search)
-  ;;     (isearch-repeat (if isearch-forward 'forward))
-  ;;     (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
-  ;;     (ad-activate 'isearch-search)))
-  ;; }}}
-
-  (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
-
-  (with-eval-after-load 'helm
-    (helm-mode t)
-    )
+  (with-eval-after-load 'helm (helm-mode t))
 
   ;; Don't be annoying, emacs. C-x C-c is to close to EVERY OTHER SHORTCUT and can be used accidently too often. Also, no C-g on the confirmation prompt!? what the hell?
   (global-unset-key (kbd "C-x C-c"))

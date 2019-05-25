@@ -66,6 +66,7 @@
         popwin:special-display-config)
 
 ;; dedicated
+(use-package dedicated :ensure t)
 (general-define-key :keymaps 'global
                     "C-x 9" 'dedicated-mode)
 
@@ -84,7 +85,6 @@
                     "<C-f12>"   'imenu-list-smart-toggle)
 
 (with-eval-after-load 'imenu-list
-  (require 'dedicated)
   (add-hook 'imenu-list-major-mode-hook 'dedicated-mode))
 ;; }}}
 

@@ -96,7 +96,6 @@
         org-agenda-include-diary t
         org-extra-agenda-files (cl-remove-if-not 'file-exists-p
                                                  `( ,org-directory
-                                                    "~/Dropbox/Teaching/"
                                                     "~/Work/Thesis/"))
         org-agenda-files (org-find-agenda-files)
         org-capture-templates '(("t" "Todo" entry (file+headline

@@ -34,9 +34,9 @@
   (ycmd-mode 1))
 
 ;; (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
-(add-hook 'c++-mode-hook 'ycmd-force-enable)
-(add-hook 'c-mode-hook 'ycmd-force-enable)
-(add-hook 'python-mode-hook 'ycmd-force-enable)
+;(add-hook 'c++-mode-hook 'ycmd-force-enable)
+;(add-hook 'c-mode-hook 'ycmd-force-enable)
+; (add-hook 'python-mode-hook 'ycmd-force-enable)
 
 (with-eval-after-load 'ycmd
   (set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
