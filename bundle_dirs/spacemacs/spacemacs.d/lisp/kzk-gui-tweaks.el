@@ -24,37 +24,6 @@
 
 ;;; Code:
 
-;; from Manuel Uberti's dot-emacs
-(defun kzk/setup-main-fonts (default-height variable-pitch-height)
-  "Set up default fonts.
-
-Use DEFAULT-HEIGHT for default face and VARIABLE-PITCH-HEIGHT
-for variable-pitch face."
-
-  (set-face-attribute 'default nil
-                      :family kzk/default-font
-                      :height default-height)
-  (set-face-attribute 'variable-pitch nil
-                      :family kzk/variable-pitch-font
-                      :height variable-pitch-height
-                      :weight 'regular))
-
-(defun kzk/adjust-font-size ()
-  ;; Dinamically change font size based upon screen resolution
-  (if (display-graphic-p)
-      (if (> (display-pixel-width) 1800) ; Has X, query pixel width
-          (kzk/setup-main-fonts kzk/display-width/>1800/default-font-height
-                                kzk/display-width/>1800/variablepitch-height)
-        (kzk/setup-main-fonts kzk/display-width/<1800/default-font-height
-                              kzk/display-width/<1800/variablepitch-height))
-    ;; no X yet, maybe we are a server starting?
-    (kzk/setup-main-fonts kzk/display-width/>1800/default-font-height
-                          kzk/display-width/>1800/variablepitch-height)
-    )
-  )
-
-(add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
-(kzk/adjust-font-size)
 
 (provide 'kzk-gui-tweaks)
 ;;; kzk-gui-tweaks.el ends here
