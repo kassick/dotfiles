@@ -1,7 +1,31 @@
 [user]
-	email = kassick@gmail.com
-	name = Rodrigo Kassick
+    email = kassick@gmail.com
+    name = Rodrigo Kassick
 [push]
-	default = simple
+    default = simple
 [core]
     editor = emacsclient -t --alternate-editor=""
+
+[diff]
+    tool = meld
+
+[difftool]
+    prompt = false
+
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
+
+[diff]
+    tool = meld
+[difftool]
+    prompt = false
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
+
+[merge]
+    tool = meld
+
+[mergetool "meld"]
+    # Choose one of these 2 lines (not both!) explained below.
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+    cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
