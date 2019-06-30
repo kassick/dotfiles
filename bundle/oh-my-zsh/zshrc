@@ -112,3 +112,7 @@ fi
 
 # Fix colors in dircolors
 eval `dircolors ~/.dir_colors`
+
+for env_file in ~/.local/etc/env.d/* ; do
+    source $env_file
+done
