@@ -383,13 +383,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
 
-  ;; Fonts are adjusted according to resolution during frame creation
-  (setq kzk/default-font (car dotspacemacs-default-font))
-  (setq kzk/variable-pitch-font "Fira Sans")
-  (setq kzk/display-width/>1800/default-font-height 130 )
-  (setq kzk/display-width/>1800/variablepitch-height 140 )
-  (setq kzk/display-width/<1800/default-font-height 120 )
-  (setq kzk/display-width/<1800/variablepitch-height 130 )
+  ;; ;; Fonts are adjusted according to resolution during frame creation
+  ;; (setq kzk/default-font (car dotspacemacs-default-font))
+  ;; (setq kzk/variable-pitch-font "Fira Sans")
+  ;; (setq kzk/display-width/>1800/default-font-height 140 )
+  ;; (setq kzk/display-width/>1800/variablepitch-height 140 )
+  ;; (setq kzk/display-width/<1800/default-font-height 110 )
+  ;; (setq kzk/display-width/<1800/variablepitch-height 110 )
 
   (require 'kzk-evil-init)
   (require 'kzk-gui-tweaks)
@@ -486,7 +486,7 @@ you should place your code here."
   ;;     (ad-activate 'isearch-search)))
   ;; }}}
 
-  (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
+  ;; (add-hook 'before-make-frame-hook 'kzk/adjust-font-size)
 
   (with-eval-after-load 'helm
     (helm-mode t)
