@@ -96,7 +96,6 @@
         org-agenda-include-diary t
         org-extra-agenda-files (cl-remove-if-not 'file-exists-p
                                                  `( ,org-directory
-                                                    "~/Dropbox/Teaching/"
                                                     "~/Work/Thesis/"))
         org-agenda-files (org-find-agenda-files)
         org-capture-templates '(("t" "Todo" entry (file+headline
@@ -129,41 +128,41 @@
   (add-hook 'org-mode-hook 'org-babel-result-hide-all)
 
   (add-to-list 'org-structure-template-alist
-               '("r" "#+BEGIN_SRC R :results output :session *R* :exports both\n\n#+END_SRC" "<src lang=\"R\">\n\n</src>"))
+               '("r" . "#+BEGIN_SRC R :results output :session *R* :exports both\n\n#+END_SRC"))
 
   (add-to-list 'org-structure-template-alist
-               '("R" "#+BEGIN_SRC R :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400 :session *R* \n\n#+END_SRC" "<src lang=\"R\">\n\n</src>"))
+               '("R" . "#+BEGIN_SRC R :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400 :session *R* \n\n#+END_SRC"))
 
   (add-to-list 'org-structure-template-alist
-               '("RR" "#+BEGIN_SRC R :results output graphics :file  (org-babel-temp-file (concat (file-name-directory (or load-file-name buffer-file-name)) \"figure-\") \".png\") :exports both :width 600 :height 400 :session *R* \n\n#+END_SRC" "<src lang=\"R\">\n\n</src>"))
+               '("RR" . "#+BEGIN_SRC R :results output graphics :file  (org-babel-temp-file (concat (file-name-directory (or load-file-name buffer-file-name)) \"figure-\") \".png\") :exports both :width 600 :height 400 :session *R* \n\n#+END_SRC"))
 
   (add-to-list 'org-structure-template-alist
-               '("p" "#+BEGIN_SRC python :preamble \"# -*- coding: utf-8 -*-\" :results output :exports both\n\n#+END_SRC" "<src lang=\"python\">\n\n</src>"))
+               '("p" . "#+BEGIN_SRC python :preamble \"# -*- coding: utf-8 -*-\" :results output :exports both\n\n#+END_SRC"))
 
   (add-to-list 'org-structure-template-alist
-               '("P" "#+BEGIN_SRC python :preamble \"# -*- coding: utf-8 -*-\" :results output :session *python* :exports both\n\n#+END_SRC" "<src lang=\"python\">\n\n</src>"))
+               '("P" . "#+BEGIN_SRC python :preamble \"# -*- coding: utf-8 -*-\" :results output :session *python* :exports both\n\n#+END_SRC"))
 
   ;; Matplotlib with python!
   (add-to-list 'org-structure-template-alist
-               '("MP" "#+BEGIN_SRC python :preamble \"# -*- coding: utf-8 -*-\" :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400\nimport matplotlib, numpy, StringIO\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfig=plt.figure(figsize=(4,2))\n\nbuf = StringIO.StringIO()\nplt.savefig(buf)\nprint buf.getvalue()\n#+END_SRC" "<src lang=\"python\">\n\n</src>"))
+               '("MP" . "#+BEGIN_SRC python :preamble \"# -*- coding: utf-8 -*-\" :results output graphics :file (org-babel-temp-file \"figure\" \".png\") :exports both :width 600 :height 400\nimport matplotlib, numpy, StringIO\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfig=plt.figure(figsize=(4,2))\n\nbuf = StringIO.StringIO()\nplt.savefig(buf)\nprint buf.getvalue()\n#+END_SRC"))
 
   (add-to-list 'org-structure-template-alist
-               '("Mp" "#+BEGIN_SRC python :preamble \"# -*- coding: utf-8 -*-\" :results output graphics :file \"images/img_?.png\" :exports both :width 600 :height 400\nimport matplotlib, numpy, StringIO\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfig=plt.figure(figsize=(4,2))\n\nbuf = StringIO.StringIO()\nplt.savefig(buf)\nprint buf.getvalue()\n#+END_SRC" "<src lang=\"python\">\n\n</src>"))
+               '("Mp" . "#+BEGIN_SRC python :preamble \"# -*- coding: utf-8 -*-\" :results output graphics :file \"images/img_?.png\" :exports both :width 600 :height 400\nimport matplotlib, numpy, StringIO\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfig=plt.figure(figsize=(4,2))\n\nbuf = StringIO.StringIO()\nplt.savefig(buf)\nprint buf.getvalue()\n#+END_SRC"))
 
   (add-to-list 'org-structure-template-alist
-               '("b" "#+BEGIN_SRC sh :results output :exports both\n\n#+END_SRC" "<src lang=\"sh\">\n\n</src>"))
+               '("b" . "#+BEGIN_SRC sh :results output :exports both\n\n#+END_SRC"))
 
   (add-to-list 'org-structure-template-alist
-               '("B" "#+BEGIN_SRC sh :session foo :results output :exports both \n\n#+END_SRC" "<src lang=\"sh\">\n\n</src>"))
+               '("B" . "#+BEGIN_SRC sh :session foo :results output :exports both \n\n#+END_SRC"))
 
   (add-to-list 'org-structure-template-alist
-               '("g" "#+BEGIN_SRC dot :results output graphics :file \"/tmp/graph.pdf\" :exports both
+               '("g" . "#+BEGIN_SRC dot :results output graphics :file \"/tmp/graph.pdf\" :exports both
                        digraph G {
                           node [color=black,fillcolor=white,shape=rectangle,style=filled,fontname=\"Helvetica\"];
                           A[label=\"A\"]
                           B[label=\"B\"]
                           A->B
-                       }\n#+END_SRC" "<src lang=\"dot\">\n\n</src>"))
+                       }\n#+END_SRC"))
 
   ;; LaTeX settings
   (with-eval-after-load 'ox-latex
@@ -243,6 +242,7 @@
   ;;
 
 
+  (require 'org-tempo)
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
   (require 'org-protocol)

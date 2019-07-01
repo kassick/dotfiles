@@ -86,7 +86,7 @@ def get_default_flags_for_file(fname, cur_flags):
         # lead to unintended consequences
         flags.extend( ['-x', 'c++'] )
         if not any(map(lambda f: f.startswith('-std='), cur_flags)):
-            flags.append('-std=c++14')
+            flags.append('-std=c++17')
 
     # print 'for file', fname, 'ext', extension, 'flags:', flags
 

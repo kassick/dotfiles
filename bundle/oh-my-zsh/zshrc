@@ -60,7 +60,7 @@ WORKON_HOME=${HOME}/.local/virtualenvs
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gitfast python sudo systemd yum virtualenvwrapper)
+plugins=(gitfast python sudo systemd dnf virtualenvwrapper)
 
 # User configuration
 
@@ -112,11 +112,10 @@ fi
 # Fix colors in dircolors
 eval `dircolors ~/.dir_colors`
 
-if [ -f "$HOME/.zsh.env" ] ;
-then
-	source "$HOME/.zsh.env"
-fi
+for env_file in ~/.local/etc/env.d/* ; do
+    source $env_file
+done
 
 if [ -d "$HOME/.local/bin" ]; then
-	export PATH="$HOME/.local/bin:$PATH"
+    export PATH="$HOME/.local/bin:$PATH"
 fi

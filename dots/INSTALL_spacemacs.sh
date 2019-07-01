@@ -28,9 +28,9 @@ git init && \
 popd
 
 # Needed by pdftools
-for pkg in poppler-devel \
-               poppler-glib-devel \
-               the_silver_searcher ;
-do
-    pkcon install $pkg
-done
+# for pkg in poppler-devel \
+#                poppler-glib-devel \
+#                the_silver_searcher ;
+# do
+#     pkcon install $pkg
+# done

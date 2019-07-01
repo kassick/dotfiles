@@ -3,7 +3,7 @@
 ;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
 ;;
 ;; Author: Rodrigo Kassick <kassick@voyager>
-;; URL: https://github.com/syl20bnr/spacemacs
+;; URL: https://bitbucket.com/kassick/dotfiles
 ;;
 ;; This file is not part of GNU Emacs.
 ;;

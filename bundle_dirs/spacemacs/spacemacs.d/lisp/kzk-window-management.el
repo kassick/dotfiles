@@ -31,8 +31,9 @@
                     "C-x b"     'helm-mini
                     "C-x C-b"   'helm-mini
                     "<C-f10>"   'ibuffer
-                    "<C-S-f10>" 'ibuffer-other-window
-                    "<C-f12>"   'imenu-list-smart-toggle)
+                    "<C-S-f10>" 'ibuffer-other-window)
+
+
 ;;; }}}
 
 (global-set-key (kbd "C-x <up>") 'windmove-up)
@@ -65,6 +66,7 @@
         popwin:special-display-config)
 
 ;; dedicated
+(use-package dedicated :ensure t)
 (general-define-key :keymaps 'global
                     "C-x 9" 'dedicated-mode)
 
@@ -78,6 +80,13 @@
                     "w _" 'evil-window-set-height
                     "w |" 'evil-window-set-width)
 
+;; {{{ imenu-list
+(general-define-key :keymaps    'global
+                    "<C-f12>"   'imenu-list-smart-toggle)
+
+(with-eval-after-load 'imenu-list
+  (add-hook 'imenu-list-major-mode-hook 'dedicated-mode))
+;; }}}
 
 (provide 'kzk-window-management)
 ;;; kzk-window-management.el ends here
