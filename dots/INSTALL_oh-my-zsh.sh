@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 REPO="git://github.com/robbyrussell/oh-my-zsh.git"
 DEST=~/.oh-my-zsh
