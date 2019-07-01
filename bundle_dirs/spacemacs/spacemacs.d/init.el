@@ -63,12 +63,14 @@ values."
                      )
      ycmd
      python
+     ruby
      c-c++
      fsharp
      csharp
      java
      antlr
      elixir
+     go
      graphviz
      (latex :variables
             latex-enable-folding t
