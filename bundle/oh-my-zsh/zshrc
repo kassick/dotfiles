@@ -55,11 +55,12 @@ fi
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+WORKON_HOME=${HOME}/.local/virtualenvs
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gitfast python sudo systemd yum)
+plugins=(gitfast python sudo systemd yum virtualenvwrapper)
 
 # User configuration
 
@@ -94,8 +95,6 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias vim=vimx
-alias vi=vimx
 alias e=$EDITOR
 
 # eval "$(thefuck --alias fuck)"
@@ -112,3 +111,12 @@ fi
 
 # Fix colors in dircolors
 eval `dircolors ~/.dir_colors`
+
+if [ -f "$HOME/.zsh.env" ] ;
+then
+	source "$HOME/.zsh.env"
+fi
+
+if [ -d "$HOME/.local/bin" ]; then
+	export PATH="$HOME/.local/bin:$PATH"
+fi
