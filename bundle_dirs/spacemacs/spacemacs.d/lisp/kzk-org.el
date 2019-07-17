@@ -98,17 +98,15 @@
                                                  `( ,org-directory
                                                     "~/Work/Thesis/"))
         org-agenda-files (org-find-agenda-files)
-        org-capture-templates '(("t" "Todo" entry (file+headline
-                                                   (concat org-directory "todo.org")
-                                                   "Tasks")
-                                 "* TODO %?
-                                 %i
-                                 %a" :prepend t)
-                                ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-                                 "* %?
-                                 Entered on %U
-                                 %i
-                                 %a"))
+        org-capture-templates '(
+                                ("t" "Todo" entry (file+headline (concat org-directory "todo.org") "Tasks")
+                                 "* TODO %?\n%i\n%a" :prepend t)
+                                ("j" "Journal entry with context" entry (file+datetree "~/Dropbox/org/journal.org")
+                                 "* %?\nEntered on %U\n%i\n%a")
+                                ("e" "Journal entry" entry (file+datetree "~/Dropbox/org/journal.org")
+                                 "* %?\nEntered on %U\n%i")
+                                ("i" "Item on journal entry" item (file+function "~/Dropbox/org/journal.org" org-goto)
+                                 "%?\n%i"))
         ;; org-export-babel-evaluate nil
         org-confirm-babel-evaluate nil
         ;;; {{{ Set behaviour for links
