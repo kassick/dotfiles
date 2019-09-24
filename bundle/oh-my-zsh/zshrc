@@ -1,15 +1,18 @@
-# Chase symlinks and avoid a lot of nonsense
-
-setopt chaselinks
-
 # Path to your oh-my-zsh installation.
 export ZSH=${HOME}/.oh-my-zsh
+
+# User machine local settings
+export ZSH_USER_LOCAL="$HOME/.local/share/zsh/"
+export ZSH_CUSTOM="$ZSH_USER_LOCAL/custom"
+
+# Chase symlinks and avoid a lot of nonsense
+setopt chaselinks
+
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-
 if [[ "$TERM" == "eterm-color" ]]; then
    ZSH_THEME="amuse"
 else
@@ -55,12 +58,11 @@ fi
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-export WORKON_HOME=${HOME}/.local/virtualenvs
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gitfast python sudo systemd dnf virtualenvwrapper)
+plugins=(gitfast python sudo conda-zsh-completion tsuru)
 
 # User configuration
 
@@ -74,7 +76,7 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]] || [[ -z $DISPLAY ]]; then
+if [ -n "$SSH_CONNECTION" ]; then
    export EDITOR='emacsclient -t --alternate-editor="" '
 else
    export EDITOR='emacsclient -n -c --alternate-editor="" '
@@ -97,7 +99,6 @@ fi
 
 alias e=$EDITOR
 
-# eval "$(thefuck --alias fuck)"
 # Fix for emacs
 if [[ "$TERM" == "dumb" ]]
 then
@@ -109,12 +110,15 @@ then
     PS1='$ '
 fi
 
-# Fix colors in dircolors
-eval `dircolors ~/.dir_colors`
+if [ -f ~/.local/share/zsh/site_conf.zsh ] ; then
+    source ~/.local/share/zsh/site_conf.zsh
+fi
 
-for env_file in ~/.local/etc/env.d/* ; do
-    source $env_file
-done
+if [ -d ~/.local/etc/env.d/ ]; then
+    for env_file in ~/.local/etc/env.d/* ; do
+        source $env_file
+    done
+fi
 
 if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"

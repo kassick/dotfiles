@@ -26,11 +26,3 @@ git init && \
     git pull origin master || \
         exit 1
 popd
-
-# Needed by pdftools
-# for pkg in poppler-devel \
-#                poppler-glib-devel \
-#                the_silver_searcher ;
-# do
-#     pkcon install $pkg
-# done

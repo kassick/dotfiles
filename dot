@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- BUNDLEDIRS -*-
 
 # File: "/home/kassick/Sources/dotfiles/install.py"
 # Created: "Thu Jul 21 21:46:45 2016"
-# Updated: "2018-03-24 18:24:07 kassick"
+# Updated: "2019-09-10 20:55:57 rodrigokassick"
 # $Id$
 # Copyright (C) 2016, Rodrigo Kassick
 
@@ -44,11 +44,11 @@ def files_conflict_resolve(src, dst, renames, removes, installs):
         installs.append(( os.path.abspath( src ), dst) )
     elif os.path.exists(dst):
         # Exists and is not a link
-        print "\tFile %s already exists" % dst
-        print "\tAction:"
-        print "\t\t (o)verride"
-        print "\t\t (b)ackup"
-        print "\t\t (s)kip"
+        print("\tFile %s already exists" % dst)
+        print("\tAction:")
+        print("\t\t (o)verride")
+        print("\t\t (b)ackup")
+        print("\t\t (s)kip")
 
         action = None
         while not(action in ['o', 'b', 's']):
@@ -75,12 +75,12 @@ def dot_install(dot, dot_path, dot_install, dot_bundle, dot_bundledirs):
         dest = path.expanduser(path.join('~', '.' + dot_path ))
         src = path.join(DOT_DIR, dot_path)
 
-        print "%s --> %s" % (src, dest)
+        print("%s --> %s" % (src, dest))
 
         files_conflict_resolve(src, dest, renames, removes, installs)
 
     if dot_bundledirs:
-        print "Install %s's directory-bundles" %dot
+        print("Install %s's directory-bundles" %dot)
 
         dirnames = os.listdir(os.path.join(BUNDLEDIRS_DIR, dot))
 
@@ -91,7 +91,7 @@ def dot_install(dot, dot_path, dot_install, dot_bundle, dot_bundledirs):
             files_conflict_resolve(os.path.abspath(src), dest, renames, removes, installs)
 
     if dot_bundle:
-        print "Install %s's mergeable bundles" % dot
+        print("Install %s's mergeable bundles" % dot)
         for root, dirnames, filenames in os.walk(path.join(BUNDLE_DIR, dot)):
             destbase = os.path.sep.join(rec_file_split(root)[2:]) # ditch bundle/dotname
 
@@ -105,9 +105,9 @@ def dot_install(dot, dot_path, dot_install, dot_bundle, dot_bundledirs):
                     if os.path.isdir(dest_dir):
                         do_mkdir = False
                     else:
-                        print "\tTarget %s is not a directory" % destk_dir
-                        print "\t\t (b)ackup"
-                        print "\t\t (i)gnore"
+                        print("\tTarget %s is not a directory" % destk_dir)
+                        print("\t\t (b)ackup")
+                        print("\t\t (i)gnore")
                         action = None
                         while not(action in ['b', 'i']):
                             action = sys.stdin.readline().strip()
@@ -140,52 +140,52 @@ def dot_install(dot, dot_path, dot_install, dot_bundle, dot_bundledirs):
     return (removes, renames, dirs, installs, executes)
 
 def do_all_actions(removes, renames, dirs, installs, executes):
-    print "Verification:"
-    print "Will remove:"
+    print("Verification:")
+    print("Will remove:")
     for f in removes:
-        print "\t", f
-    print ""
-    print "Will Rename:"
+        print("\t", f)
+    print( "" )
+    print( "Will Rename:" )
     for s,d in renames:
-        print "\t", s, "->", d
-    print ""
-    print "Will Create:"
+        print("\t", s, "->", d)
+    print("")
+    print("Will Create:")
     for d in dirs:
-        print "\t", d
-    print ""
-    print "Will Install:"
+        print("\t", d)
+    print("")
+    print("Will Install:")
     for s, d in installs:
-        print "\t", s, "->", d
-    print ""
-    print "Will Execute:"
+        print("\t", s, "->", d)
+    print("")
+    print("Will Execute:")
     for e in executes:
-        print "\t", e
-    print ""
+        print("\t", e)
+    print("")
 
     action = None
     while not(action in ['A', 'C']):
-        print "(C)onfirm, (A)bort ?"
+        print("(C)onfirm, (A)bort ?")
         action = sys.stdin.readline().strip()
 
     if action == 'A':
         return
 
-    print "Removing ..."
+    print("Removing ...")
     for r in removes:
         if path.isfile(r) or path.islink(r):
             os.remove(r)
         else:
             os.removedirs(r)
 
-    print "Renaming ..."
+    print("Renaming ...")
     for s, d in renames:
         os.rename(s, d)
 
-    print "Creating ..."
+    print("Creating ...")
     for d in dirs:
         os.mkdir(d)
 
-    print "Installing ..."
+    print("Installing ...")
     for s, d in installs:
         os.symlink(s, os.path.abspath( d ))
 
@@ -195,11 +195,11 @@ def do_all_actions(removes, renames, dirs, installs, executes):
     new_env = dict(os.environ)
     new_env['DOT_PATH'] = dot_path
     for e in executes:
-        print "Executing ", e
+        print("Executing ", e)
         subprocess.call([os.path.abspath("./" + e)],
                         cwd=os.path.expanduser("~"),
                         env=new_env)
-        print "-----"
+        print("-----")
 
 def find_all_dots():
     dots = {}
@@ -245,17 +245,17 @@ def main():
         action = 'help'
 
     if action == 'help':
-        print '''\
+        print('''\
               Usage:
                  install.py install [dot1 [dot2 [dot3 ...]]]
                  install.py list
-        '''
+        ''')
         sys.exit(0)
 
     dots = find_all_dots()
 
     if action == 'list':
-        print '\n'.join(dots.keys())
+        print('\n'.join(dots.keys()))
         sys.exit(0)
 
     # only action here is install
@@ -267,9 +267,9 @@ def main():
     else:
         selection = dots.keys()
 
-    print "Selected dots:", "\n".join(map(lambda i: " - " + i, selection))
+    print("Selected dots:", "\n".join(map(lambda i: " - " + i, selection)))
 
-    print ""
+    print("")
 
     removes = []
     renames = []
@@ -278,13 +278,16 @@ def main():
     executes = []
 
     for dot in selection:
-        print "Installing dot '%s'" % dot
-        tup = dot_install(dot, *dots[dot])
-        map(lambda t: t[0].extend(t[1]),
-                zip([ removes, renames, dirs, installs, executes ],
-                    tup))
+        print("Installing dot '%s'" % dot)
+        (new_removes, new_renames, new_dirs, new_installs, new_executes) = dot_install(dot, *dots[dot])
 
-        print "---------------------------------"
+        removes.extend(new_removes)
+        renames.extend(new_renames)
+        dirs.extend(new_dirs)
+        installs.extend(new_installs)
+        executes.extend(new_executes)
+
+        print("---------------------------------")
 
     do_all_actions(removes, renames, dirs, installs, executes)
 
