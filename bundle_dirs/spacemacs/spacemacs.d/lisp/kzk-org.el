@@ -105,7 +105,7 @@
                                  "* %?\nEntered on %U\n%i\n%a")
                                 ("e" "Journal entry" entry (file+datetree "~/Dropbox/org/journal.org")
                                  "* %?\nEntered on %U\n%i")
-                                ("i" "Item on journal entry" item (file+function "~/Dropbox/org/journal.org" org-goto)
+                                ("i" "Item on journal entry" item (file+function "~/Dropbox/org/journal.org" spacemacs/helm-jump-in-buffer)
                                  "%?\n%i"))
         ;; org-export-babel-evaluate nil
         org-confirm-babel-evaluate nil
