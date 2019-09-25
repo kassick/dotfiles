@@ -110,15 +110,28 @@ then
     PS1='$ '
 fi
 
-if [ -f ~/.local/share/zsh/site_conf.zsh ] ; then
-    source ~/.local/share/zsh/site_conf.zsh
-fi
-
+# global environment. Should just export variables
 if [ -d ~/.local/etc/env.d/ ]; then
     for env_file in ~/.local/etc/env.d/* ; do
         source $env_file
     done
 fi
+
+# site configuration. Can be used to update plugins
+# e.g. plugins+=(dnf systemd)
+if [ -f ~/.local/share/zsh/site_conf.zsh ] ; then
+    source ~/.local/share/zsh/site_conf.zsh
+fi
+
+# Shell setup
+# These scripts are used to initialize interactive aspects of the shell
+# and can execute more complex commands, redefine aliases, etc.
+if [ -d ~/.local/etc/rc.d ]; then
+    for rc in ~/.local/etc/rc.d/*; do
+        source $rc
+    done
+fi
+
 
 if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
