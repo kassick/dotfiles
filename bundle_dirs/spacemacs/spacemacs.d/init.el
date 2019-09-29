@@ -49,22 +49,22 @@ values."
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip 'manual
                       )
-     ; emacs-lisp
+     emacs-lisp
      git
      ; ranger
      ; html
      markdown
      org
-     ; (shell :variables
-     ;        shell-default-height 30
-     ;        shell-default-position 'bottom)
-     ; (syntax-checking :variables
-     ;                  syntax-checking-enable-by-default t)
-     ; (spell-checking :variables
-     ;                 spell-checking-enable-by-default nil
-     ;                 spell-checking-enable-auto-dictionary t
-     ;                 ;; enable-flyspell-auto-completion t
-     ;                 )
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
+     (syntax-checking :variables
+                      syntax-checking-enable-by-default t)
+     (spell-checking :variables
+                     spell-checking-enable-by-default nil
+                     spell-checking-enable-auto-dictionary t
+                     ;; enable-flyspell-auto-completion t
+                     )
      ycmd
      ; ruby
      ; lsp
@@ -87,7 +87,7 @@ values."
      shell-scripts
      ; ;; cscope
      semantic
-     ; ;; version-control
+     version-control
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      themes-megapack
      theming
