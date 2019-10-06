@@ -59,8 +59,8 @@
         )
 
   ;; More vim-like completion
-  (require 'company-tng) ;; shipped with company
-  (company-tng-configure-default)
+  ;; (require 'company-tng) ;; shipped with company
+  ;; (company-tng-configure-default)
 
   ;; Company-dabbrev
   (with-eval-after-load 'company-dabbrev
