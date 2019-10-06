@@ -51,6 +51,7 @@ values."
                       )
      emacs-lisp
      git
+     (treemacs :variables treemacs-use-git-mode 'deferred)
      ; ranger
      ; html
      markdown
@@ -75,7 +76,10 @@ values."
      ; java
      ; antlr
      ; go
-     ; scala
+     (scala :variables
+            scala-backend 'scala-metals
+            scala-auto-start-backend t
+            scala-enable-eldoc t)
      ; graphviz
      (latex :variables
             latex-enable-folding t
