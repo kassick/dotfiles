@@ -69,7 +69,12 @@ values."
      ycmd
      ; ruby
      ; lsp
-     (python :variables python-test-runner 'pytest)
+     (python :variables
+             python-test-runner 'pytest
+             python-backend 'anaconda
+             ; python-backend 'lsp
+             ; python-lsp-server 'mspyls
+             )
      c-c++
      ; fsharp
      ; csharp
