@@ -13,12 +13,7 @@ setopt chaselinks
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-if [[ "$TERM" == "eterm-color" ]]; then
-   ZSH_THEME="amuse"
-else
-    ZSH_THEME="avit"
-fi
-
+ZSH_THEME="avit"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
