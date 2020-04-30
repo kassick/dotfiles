@@ -98,7 +98,6 @@ values."
      semantic
      version-control
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
-     themes-megapack
      theming
      kzk-visual-editing ; fix adaptive wrap for org
      kzk-helm
