@@ -268,12 +268,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(
-                         spacemacs-light
-                         ample
-                         ample-flat
-                         ample-zen
-                         )
+   dotspacemacs-themes '(spacemacs-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -658,6 +653,23 @@ you should place your code here."
 
   ;; Don't be annoying, emacs. C-x C-c is to close to EVERY OTHER SHORTCUT and can be used accidently too often. Also, no C-g on the confirmation prompt!? what the hell?
   (global-unset-key (kbd "C-x C-c"))
+
+
+   (setq dotspacemacs-default-font '(("Monego"
+                               :height 120
+                               :weight normal
+                               :width normal
+                               :powerline-scale 1.0)
+                               ("Monaco"
+                                :height 120
+                                :weight normal
+                                :width normal
+                                :powerline-scale 1.0)
+                               ("Dejavu Sans Mono"
+                                :height 120
+                                :weight normal
+                                :width normal
+                                :powerline-scale 1.0)))
 
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
