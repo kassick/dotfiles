@@ -119,7 +119,6 @@ values."
                                       es-windows
                                       ;; narrow-indirect
                                       dedicated
-                                      company-ycmd
                                       helm-company
                                       company-quickhelp
                                       flycheck-ycmd
