@@ -85,6 +85,7 @@ values."
             scala-backend 'scala-metals
             scala-auto-start-backend t
             scala-enable-eldoc t)
+     (rust :variables rust-backend 'lsp)
      ; graphviz
      (latex :variables
             latex-enable-folding t
