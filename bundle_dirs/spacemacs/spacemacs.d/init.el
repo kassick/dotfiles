@@ -66,7 +66,6 @@ values."
                      spell-checking-enable-auto-dictionary t
                      ;; enable-flyspell-auto-completion t
                      )
-     ycmd
      ; ruby
      ; lsp
      (python :variables
