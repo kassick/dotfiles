@@ -46,6 +46,7 @@ values."
      ; javascript
      helm
      (auto-completion :variables
+                      auto-completion-front-end 'company
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip 'manual
                       )
