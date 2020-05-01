@@ -67,7 +67,6 @@ values."
                      ;; enable-flyspell-auto-completion t
                      )
      ; ruby
-     ; lsp
      (python :variables
              python-test-runner 'pytest
              python-backend 'anaconda
@@ -75,6 +74,7 @@ values."
              ; python-lsp-server 'mspyls
              )
      c-c++
+     lsp
      ; fsharp
      ; csharp
      ; java
