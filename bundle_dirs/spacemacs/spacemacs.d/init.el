@@ -8,7 +8,6 @@
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
 values."
-  ; (debug-on-entry 'ido-mode)
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
