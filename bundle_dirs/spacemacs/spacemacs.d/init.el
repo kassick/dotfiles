@@ -135,8 +135,6 @@ values."
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
-                                    ;; evil-escape: default fd is a no go. Come-on, nobody used fd as file-descriptor anymore?!
-                                    evil-escape
                                     ;; evil-org: o and O are annoying, to say the least
                                     ;; evil-org
                                     ;; I prefer org in text mode
@@ -673,6 +671,8 @@ you should place your code here."
                                 :weight normal
                                 :width normal
                                 :powerline-scale 1.0)))
+
+   (setq evil-escape-delay 0.04)
 
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
