@@ -83,12 +83,12 @@
   (setq helm-dash-browser-func 'browse-url)
   )
 
-(with-eval-after-load 'general
-  (general-define-key :keymaps 'global
-                      :states 'normal
-                      :prefix dotspacemacs-leader-key
-                      "doc" 'helm-dash)
-  )
+;; (with-eval-after-load 'general
+;;   (general-define-key :keymaps 'global
+;;                       :states 'normal
+;;                       :prefix dotspacemacs-leader-key
+;;                       "doc" 'helm-dash)
+;; )
 
 ;; magit
 (with-eval-after-load 'general
