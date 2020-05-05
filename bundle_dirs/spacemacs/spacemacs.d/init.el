@@ -141,7 +141,6 @@ values."
                                     ido
                                     ido-vertical
                                     flx-ido
-                                    org-projectile ;; org projectile has some issues as of 2017-10-19 . May re-enable in the future
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
