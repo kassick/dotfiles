@@ -66,6 +66,7 @@ values."
 
      emacs-lisp
      shell-scripts
+     conda
      (python :variables
              ;; python-test-runner 'pytest
              ;; python-backend 'anaconda
