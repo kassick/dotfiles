@@ -68,6 +68,11 @@ values."
                      ;; enable-flyspell-auto-completion t
                      )
      ; ruby
+     (lsp :variables
+          lsp-keymap-prefix "C-c C-l"
+          lsp-ui-doc-enable nil
+          lsp-ui-doc-position 'bottom
+          lsp-ui-doc-max-height 15)
      (python :variables
              python-test-runner 'pytest
              python-backend 'anaconda

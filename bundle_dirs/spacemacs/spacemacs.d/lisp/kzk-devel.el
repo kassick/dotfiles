@@ -200,6 +200,12 @@
   (setq electric-pair-open-newline-between-pairs nil)
   )
 
+(with-eval-after-load 'lsp-mode
+  (with-eval-after-load 'general
+    (message "Setting lsp-mode custom keys")
+    (general-define-key :keymaps 'lsp-mode-map
+                        "C-c C-h" 'lsp-ui-doc-glance
+                        "C-c h" 'lsp-describe-thing-at-point)))
 
 
 (provide 'kzk-devel)
