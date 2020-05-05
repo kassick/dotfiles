@@ -100,6 +100,11 @@ then
     PS1='$ '
 fi
 
+# custom user environment
+if [ -f $HOME/.zprofile ] ; then
+    source $HOME/.zprofile
+fi
+
 # global environment. Should just export variables
 if [ -d ~/.local/etc/env.d/ ]; then
     for env_file in ~/.local/etc/env.d/* ; do
