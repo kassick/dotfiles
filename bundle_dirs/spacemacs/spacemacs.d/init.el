@@ -135,18 +135,12 @@ values."
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
-                                    ;; evil-org: o and O are annoying, to say the least
-                                    ;; evil-org
                                     ;; I prefer org in text mode
                                     org-bullets
                                     ;; ido and ido-vertical and what-more bind some keys that should belong to helm
                                     ido
                                     ido-vertical
                                     flx-ido
-                                    ;; smartparens tries by be a bit too smart
-                                    ;; smartparens
-                                    ;; persp-mode is a pain in the ass with on creating new frames
-                                    ;; persp-mode
                                     org-projectile ;; org projectile has some issues as of 2017-10-19 . May re-enable in the future
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
