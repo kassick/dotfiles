@@ -34,82 +34,79 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     lua
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ; csv
-     ; yaml
-     ; (haskell :variables haskell-completion-backend 'intero)
-     ; javascript
+     ;; csv
+     ;; multiple-cursors
      helm
      (auto-completion :variables
                       auto-completion-front-end 'company
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip 'manual
                       )
-     emacs-lisp
      git
+     version-control
      (treemacs :variables treemacs-use-git-mode 'deferred)
      ; ranger
      ; html
-     markdown
-     org
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
-     (syntax-checking :variables
-                      syntax-checking-enable-by-default t)
      (spell-checking :variables
                      spell-checking-enable-by-default nil
                      spell-checking-enable-auto-dictionary t
                      ;; enable-flyspell-auto-completion t
                      )
-     ; ruby
+     (syntax-checking :variables
+                      syntax-checking-enable-by-default t)
      (lsp :variables
           lsp-keymap-prefix "C-c C-l"
           lsp-ui-doc-enable nil
           lsp-ui-doc-position 'bottom
           lsp-ui-doc-max-height 15)
+
+     emacs-lisp
+     shell-scripts
      (python :variables
-             python-test-runner 'pytest
-             python-backend 'anaconda
-             ; python-backend 'lsp
-             ; python-lsp-server 'mspyls
-             )
+             ;; python-test-runner 'pytest
+             ;; python-backend 'anaconda
+             python-backend 'lsp
+             python-lsp-server 'mspyls
+             python-lsp-git-root "~/Sources/python-language-server")
      c-c++
-     lsp
-     ; fsharp
-     ; csharp
-     ; java
-     ; antlr
-     ; go
      (scala :variables
             scala-backend 'scala-metals
             scala-auto-start-backend t
             scala-enable-eldoc t)
      (rust :variables rust-backend 'lsp)
-     ; graphviz
+     ;; cscope
+     ;; fsharp
+     ;; csharp
+     ;; java
+     ;; antlr
+     ;; go
+     ;; (haskell :variables haskell-completion-backend 'intero)
+     ;; javascript
+     ;; graphviz
+     ;; pandoc
+     ;; pdf-tools
+     yaml
+     markdown
+     org
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
      (latex :variables
             latex-enable-folding t
             latex-enable-auto-fill nil)
      (bibtex)
      markdown
-     ; pandoc
-     ; pdf-tools
-     shell-scripts
-     ; ;; cscope
-     semantic
-     version-control
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      theming
      kzk-visual-editing ; fix adaptive wrap for org
      kzk-helm
      kzk-company
      kzk-persp
-     yaml
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
