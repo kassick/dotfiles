@@ -76,6 +76,7 @@ values."
      c-c++
      (scala :variables
             scala-backend 'scala-metals
+            lsp-metals-server-command "~/.local/dev/metals/metals"
             scala-auto-start-backend t
             scala-enable-eldoc t)
      (rust :variables rust-backend 'lsp)
