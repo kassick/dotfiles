@@ -88,5 +88,31 @@
   (add-hook 'imenu-list-major-mode-hook 'dedicated-mode))
 ;; }}}
 
+;; Directly copied from frame.el but now hide Emacs instead of killing
+;; it when last frame will be closed.
+(defun handle-delete-frame-without-kill-emacs (event)
+  "Handle delete-frame events from the X server."
+  (interactive "e")
+  (let ((frame (posn-window (event-start event)))
+        (i 0)
+        (tail (frame-list)))
+    (while tail
+      (and (frame-visible-p (car tail))
+           (not (eq (car tail) frame))
+           (setq i (1+ i)))
+      (setq tail (cdr tail)))
+    (if (> i 0)
+        (delete-frame frame t)
+      ;; Not (save-buffers-kill-emacs) but instead:
+      (ns-do-hide-emacs))))
+
+(when (eq system-type 'darwin)
+  (advice-add 'handle-delete-frame :override
+              #'handle-delete-frame-without-kill-emacs)
+
+  (global-set-key (kbd "<end>") 'end-of-visual-line)
+  (global-set-key (kbd "<home>") 'beginning-of-visual-line))
+
+
 (provide 'kzk-window-management)
 ;;; kzk-window-management.el ends here
