@@ -279,7 +279,8 @@ values."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '(("Fira Code Retina"
+   dotspacemacs-default-font '(("Fira Code"
+                                :foundry "Retina"
                                 :height 120
                                 :weight normal
                                 :width normal
@@ -654,22 +655,27 @@ you should place your code here."
   ;; Don't be annoying, emacs. C-x C-c is to close to EVERY OTHER SHORTCUT and can be used accidently too often. Also, no C-g on the confirmation prompt!? what the hell?
   (global-unset-key (kbd "C-x C-c"))
 
-
-   (setq dotspacemacs-default-font '(("Monego"
-                               :height 120
-                               :weight normal
-                               :width normal
-                               :powerline-scale 1.0)
-                               ("Monaco"
-                                :height 120
-                                :weight normal
-                                :width normal
-                                :powerline-scale 1.0)
-                               ("Dejavu Sans Mono"
-                                :height 120
-                                :weight normal
-                                :width normal
-                                :powerline-scale 1.0)))
+  (setq dotspacemacs-default-font '(("Fira Code"
+                                     :foundry "Retina"
+                                     :height 120
+                                     :weight normal
+                                     :width normal
+                                     :powerline-scale 1.0)
+                                    ("Monego"
+                                     :height 120
+                                     :weight normal
+                                     :width normal
+                                     :powerline-scale 1.0)
+                                    ("Monaco"
+                                     :height 120
+                                     :weight normal
+                                     :width normal
+                                     :powerline-scale 1.0)
+                                    ("Dejavu Sans Mono"
+                                     :height 120
+                                     :weight normal
+                                     :width normal
+                                     :powerline-scale 1.0)))
 
    (setq evil-escape-delay 0.04)
 
