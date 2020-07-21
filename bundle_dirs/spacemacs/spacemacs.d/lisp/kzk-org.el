@@ -41,10 +41,12 @@
   "Insert the current date. With prefix-argument, use ISO format. With
                        two prefix arguments, write out the day and month name."
   (interactive "P")
-  (let ((format (cond
-                 ((not prefix) "[%H:%M:%S; %d.%m.%Y]")
-                 ((equal prefix '(4)) "[%H:%M:%S; %Y-%m-%d]"))))
+  (let ((format (cond ((not prefix) "%FT%T%z")
+                      ((equal prefix '(4)) "[%H:%M:%S; %Y-%m-%d]")
+                      (t "[%H:%M:%S; %d.%m.%Y]"))))
     (insert (format-time-string format))))
+
+
 (defun ndk/checkbox-list-complete ()
   (save-excursion
     (org-back-to-heading t)
