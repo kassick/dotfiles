@@ -107,8 +107,8 @@
       (ns-do-hide-emacs))))
 
 (when (eq system-type 'darwin)
-  (advice-add 'handle-delete-frame :override
-              #'handle-delete-frame-without-kill-emacs)
+;;   (advice-add 'handle-delete-frame :override
+;;               #'handle-delete-frame-without-kill-emacs)
 
   (global-set-key (kbd "<end>") 'end-of-visual-line)
   (global-set-key (kbd "<home>") 'beginning-of-visual-line))
