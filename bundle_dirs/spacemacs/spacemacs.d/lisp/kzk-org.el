@@ -67,11 +67,6 @@
   (require 'org-protocol)
 )
 
-(with-eval-after-load 'org-ref
-  (setq org-ref-default-bibliography '("~/Dropbox/Documentos/Bibliografias/IO.bib")
-        org-ref-pdf-directory "~/Dropbox/Bibliography/Papers/"
-        org-ref-bibliography-notes "~/Dropbox/Bibliography/Papers/notes.org")
-)
 ;; LaTeX settings
 (with-eval-after-load 'ox-latex
   ;; (message "Loading custom settings for tex")
