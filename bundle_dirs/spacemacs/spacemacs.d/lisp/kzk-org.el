@@ -7,25 +7,6 @@
                                    (format "/usr/bin/xdg-open '%s'" fname))))
   )
 
-;;; {{{ Finds the agenda files and returns a flat list
-(require 'nifty)
-(defun org-find-agenda-files ()
-  (setq tmplist '())
-  (mapcar (lambda (d)
-            (setq tmplist (append tmplist
-                                  (sa-find-org-file-recursively d "org" 5))))
-          org-extra-agenda-files)
-  tmplist
-  )
-;;; }}}
-
-;;; {{{ org-update-agenda-files -- Updates the agenda files
-(defun org-update-agenda-files ()
-  (interactive)
-  (setq org-agenda-files  (org-find-agenda-files))
-  (message "Agenda file list updated")
-  )
-;;; }}}
 
 (defun insert-date (prefix)
   "Insert the current date. With prefix-argument, use ISO format. With
@@ -47,23 +28,6 @@
     (insert (format-time-string format))))
 
 
-(defun ndk/checkbox-list-complete ()
-  (save-excursion
-    (org-back-to-heading t)
-    (let ((beg (point)) end)
-      (end-of-line)
-      (setq end (point))
-      (goto-char beg)
-      (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]" end t)
-          (if (match-end 1)
-              (if (equal (match-string 1) "100%")
-                  ;; all done - do the state change
-                  (org-todo 'done)
-                (org-todo 'todo))
-            (if (and (> (match-end 2) (match-beginning 2))
-                     (equal (match-string 2) (match-string 3)))
-                (org-todo 'done)
-              (org-todo 'todo)))))))
 
 
 (with-eval-after-load 'org
