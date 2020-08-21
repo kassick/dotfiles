@@ -1,6 +1,8 @@
 (require 'kzk-utils)
 (require 'kzk-org-common)
 
+(require 'kzk-org-capture)
+(require 'kzk-org-agenda)
 
 (with-eval-after-load 'org
   (with-eval-after-load 'general
@@ -31,19 +33,6 @@
         org-default-notes-file (kzk/org-directory-file "notes.org")
         org-agenda-include-all-todo t
         org-agenda-include-diary t
-        org-extra-agenda-files (cl-remove-if-not 'file-exists-p
-                                                 `( ,org-directory
-                                                    "~/Work/Thesis/"))
-        org-agenda-files (org-find-agenda-files)
-        org-capture-templates '(
-                                ("t" "Todo" entry (file+headline (concat org-directory "todo.org") "Tasks")
-                                 "* TODO %?\n%i\n%a" :prepend t)
-                                ("j" "Journal entry with context" entry (file+datetree "~/Dropbox/org/journal.org")
-                                 "* %?\nEntered on %U\n%i\n%a")
-                                ("e" "Journal entry" entry (file+datetree "~/Dropbox/org/journal.org")
-                                 "* %?\nEntered on %U\n%i")
-                                ("i" "Item on journal entry" item (file+function "~/Dropbox/org/journal.org" spacemacs/helm-jump-in-buffer)
-                                 "%?\n%i"))
         ;; org-export-babel-evaluate nil
         org-confirm-babel-evaluate nil
         ;;; {{{ Set behaviour for links
