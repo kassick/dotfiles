@@ -1,42 +1,12 @@
-(defun xdg-open-fun (fname)
-  (save-window-excursion
-    (message "Running xdg-open for %s" fname)
-    (let ((process-connection-type nil))
-      (start-process-shell-command (format "/usr/bin/xdg-open '%s'" fname)
-                                   nil
-                                   (format "/usr/bin/xdg-open '%s'" fname))))
-  )
-
-
-(defun insert-date (prefix)
-  "Insert the current date. With prefix-argument, use ISO format. With
-                       two prefix arguments, write out the day and month name."
-  (interactive "P")
-  (let ((format (cond
-                 ((not prefix) "%Y-%m-%d")
-                 ((equal prefix '(4)) "[%Y-%m-%d]"))))
-    (insert (format-time-string format))))
-
-
-(defun insert-time-date (prefix)
-  "Insert the current date. With prefix-argument, use ISO format. With
-                       two prefix arguments, write out the day and month name."
-  (interactive "P")
-  (let ((format (cond ((not prefix) "%FT%T%z")
-                      ((equal prefix '(4)) "[%H:%M:%S; %Y-%m-%d]")
-                      (t "[%H:%M:%S; %d.%m.%Y]"))))
-    (insert (format-time-string format))))
-
-
+(require 'kzk-utils)
 
 
 (with-eval-after-load 'org
   (with-eval-after-load 'general
    (general-define-key :keymaps 'org-mode-map
-                       "C-c d" 'insert-date
-                       "C-c t" 'insert-time-date
-                       "C-c v" 'org-show-todo-tree)
-   )
+                       "C-c d" 'kzk/insert-date
+                       "C-c t" 'kzk/insert-time-date
+                       "C-c v" 'org-show-todo-tree))
 
   (setq org-startup-truncated nil
         ;; revert-without-query (quote ("google.org"))
