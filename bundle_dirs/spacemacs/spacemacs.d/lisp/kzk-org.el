@@ -59,15 +59,6 @@
 
   (add-hook 'org-mode-hook 'org-display-inline-images)
 
-  ;; LaTeX settings
-  (with-eval-after-load 'ox-latex
-    ;; (message "Loading custom settings for tex")
-    (unless (boundp 'org-latex-default-packages-alist)
-      (setq org-latex-default-packages-alist nil))
-    (add-to-list 'org-latex-default-packages-alist '("" "ifxetex" t))
-    (add-to-list 'org-latex-default-packages-alist '("" "minted" t))
-    )
-
   (require 'kzk-org-babel)
 
   (require 'org-tempo)
@@ -81,5 +72,13 @@
         org-ref-pdf-directory "~/Dropbox/Bibliography/Papers/"
         org-ref-bibliography-notes "~/Dropbox/Bibliography/Papers/notes.org")
 )
+;; LaTeX settings
+(with-eval-after-load 'ox-latex
+  ;; (message "Loading custom settings for tex")
+  (unless (boundp 'org-latex-default-packages-alist)
+    (setq org-latex-default-packages-alist nil))
+  (add-to-list 'org-latex-default-packages-alist '("" "ifxetex" t))
+  (add-to-list 'org-latex-default-packages-alist '("" "minted" t))
+  )
 
 (provide 'kzk-org)
