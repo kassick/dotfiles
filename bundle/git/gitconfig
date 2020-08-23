@@ -4,7 +4,7 @@
 [push]
     default = simple
 [core]
-    editor = emacsclient -t --alternate-editor=""
+    editor = emacsclient -t --alternate-editor="emacs"
 
 [diff]
     tool = meld
