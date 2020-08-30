@@ -12,22 +12,19 @@
                                                      ":LOCATION:  %a" "\n"
                                                      ":END:" "\n"
                                                      "\n"
-                                                     "%i"
-                                                     "\n")
+                                                     "%i" "\n")
       kzk/org-capture-template-entry (concat "* %?" "\n"
                                              ":PROPERTIES:" "\n"
                                              ":ENTERED:  %U" "\n"
                                              ":END:" "\n"
                                              "\n"
-                                             "%i"
-                                             "\n")
-      kzk/org-capture-task-template (concat "* TODO  %?" "\n"
-                                            ":PROPERTIES:" "\n"
-                                            ":ENTERED:  %U" "\n"
+                                             "%i" "\n")
+      kzk/org-capture-task-template (concat "* TODO %?" "\n"
+                                            ":LOGBOOK:" "\n"
+                                            "- State \"TODO\"   from   %U" "\n"
                                             ":END:" "\n"
                                             "\n"
-                                            "%i"
-                                            "\n"))
+                                            "%i" "\n"))
 
 ;; Default org-capture templates, if not set via customize:
 (defvar org-capture-templates
