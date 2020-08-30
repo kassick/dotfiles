@@ -39,7 +39,7 @@
                               (t . emacs)              ; set to system to have xdg-open by default
                               (auto-mode . emacs)
                               ;;; (system . "/usr/bin/xdg-open \"%s\" </dev/null")
-                              (system . (lambda (file link) (xdg-open-fun file)))
+                              (system . (lambda (file link) (kzk/open-fun file)))
                               ("\\.mm\\'" . default)
                               ("\\.x?html?\\'" . default)
                               ("\\.pdf\\'" . default))))

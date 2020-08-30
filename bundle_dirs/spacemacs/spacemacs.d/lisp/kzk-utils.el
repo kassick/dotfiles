@@ -5,14 +5,18 @@
 ;; Author: Rodrigo Kassick <rodrigokassick@mckzk>
 
 ;; @TODO: make this generic depending on platform
-(defun xdg-open-fun (fname)
+(defun kzk/open-fun (fname)
   (save-window-excursion
-    (message "Running xdg-open for %s" fname)
-    (let ((process-connection-type nil))
-      (start-process-shell-command (format "/usr/bin/xdg-open '%s'" fname)
+    (let ((process-connection-type nil)
+          (fname-for-cmd (shell-quote-argument (expand-file-name fname)))
+          (cmd (cond
+                ((eq system-type 'darwin) "open")
+                ((eq system-type 'gnu/linux) "xdg-open")
+                (t "open"))))
+      (message "Running %s for %s" cmd fname-for-cmd)
+      (start-process-shell-command (format "%s '%s'" cmd fname-for-cmd)
                                    nil
-                                   (format "/usr/bin/xdg-open '%s'" fname))))
-  )
+                                   (format "%s '%s'" cmd fname-for-cmd)))))
 
 (defun kzk/insert-date (prefix)
   "Insert the current date. With prefix-argument, use ISO format. With
