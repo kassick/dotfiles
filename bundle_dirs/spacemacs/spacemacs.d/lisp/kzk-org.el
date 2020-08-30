@@ -4,6 +4,21 @@
 (require 'kzk-org-capture)
 (require 'kzk-org-agenda)
 
+;;; {{{ Set behaviour for links
+;;;     Use kzk/open-fun by default for system.
+;;;     May be changed by customized
+(defvar org-file-apps (quote (
+                              ;; (directory . system)   ; uncomment to open directories with xdg-open always
+                              (t . emacs)              ; set to system to have xdg-open by default
+                              (auto-mode . emacs)
+                              ;;; (system . "/usr/bin/xdg-open \"%s\" </dev/null")
+                              (system . (lambda (file link) (kzk/open-fun file)))
+                              ("\\.mm\\'" . default)
+                              ("\\.x?html?\\'" . default)
+                              ("\\.pdf\\'" . default))))
+;; }}}
+
+
 (with-eval-after-load 'org
   (with-eval-after-load 'general
    (general-define-key :keymaps 'org-mode-map
@@ -33,17 +48,7 @@
         org-agenda-include-all-todo t
         org-agenda-include-diary t
         ;; org-export-babel-evaluate nil
-        org-confirm-babel-evaluate nil
-        ;;; {{{ Set behaviour for links
-        org-file-apps (quote (; (directory . system)   ; uncomment to open directories with xdg-open always
-                              (t . emacs)              ; set to system to have xdg-open by default
-                              (auto-mode . emacs)
-                              ;;; (system . "/usr/bin/xdg-open \"%s\" </dev/null")
-                              (system . (lambda (file link) (kzk/open-fun file)))
-                              ("\\.mm\\'" . default)
-                              ("\\.x?html?\\'" . default)
-                              ("\\.pdf\\'" . default))))
-  ;; }}}
+        org-confirm-babel-evaluate nil)
 
   (add-hook 'org-mode-hook 'org-display-inline-images)
 

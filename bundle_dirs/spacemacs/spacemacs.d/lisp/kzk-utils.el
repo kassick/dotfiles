@@ -4,15 +4,17 @@
 
 ;; Author: Rodrigo Kassick <rodrigokassick@mckzk>
 
-;; @TODO: make this generic depending on platform
+(defcustom kzk/open-externally-command (cond
+                                        ((eq system-type 'darwin) "open")
+                                        ((eq system-type 'gnu/linux) "xdg-open")
+                                        (t "open"))
+  "Command used to open a file externally. Used by kzk/open-fun. Default: open or xdg-open, dependent on the system")
+
 (defun kzk/open-fun (fname)
   (save-window-excursion
     (let ((process-connection-type nil)
           (fname-for-cmd (shell-quote-argument (expand-file-name fname)))
-          (cmd (cond
-                ((eq system-type 'darwin) "open")
-                ((eq system-type 'gnu/linux) "xdg-open")
-                (t "open"))))
+          (cmd kzk/open-externally-command))
       (message "Running %s for %s" cmd fname-for-cmd)
       (start-process-shell-command (format "%s '%s'" cmd fname-for-cmd)
                                    nil
