@@ -6,7 +6,7 @@
 
 (require 'kzk-org-common)
 
-(defvar org-agenda-files `(,kzk/org-directory))
+(defvar org-agenda-files `(,org-directory))
 
 (defun kzk/add-current-file-to-org-agenda ()
     "Adds the current file to org agenda list -- and save the list as customize"

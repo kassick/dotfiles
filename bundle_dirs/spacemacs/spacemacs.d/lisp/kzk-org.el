@@ -29,7 +29,6 @@
                                 "%latex -shell-escape -interaction nonstopmode -output-directory %o %f")
         org-latex-compiler "xelatex"
         org-latex-listings 'minted
-        org-directory kzk/org-directory
         org-default-notes-file (kzk/org-directory-file "notes.org")
         org-agenda-include-all-todo t
         org-agenda-include-diary t

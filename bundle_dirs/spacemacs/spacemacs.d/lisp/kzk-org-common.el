@@ -4,11 +4,11 @@
 
 ;; Author: Rodrigo Kassick <rodrigokassick@mckzk>
 
-(defcustom kzk/org-directory "~/Dropbox/org"
+(defvar org-directory "~/Dropbox/org"
   "Default path for org-mode {todo,journal}.org")
 
 (defun kzk/org-directory-file (name)
-  (expand-file-name name kzk/org-directory))
+  (expand-file-name name org-directory))
 
 
 (provide 'kzk-org-common)
