@@ -29,6 +29,12 @@
                  ((equal prefix '(4)) "[%Y-%m-%d]"))))
     (insert (format-time-string format))))
 
+(defun kzk/iso-date ()
+  (concat
+   (format-time-string "%Y-%m-%dT%T")
+   ((lambda (x) (concat (substring x 0 3) ":" (substring x 3 5)))
+    (format-time-string "%z"))))
+
 
 (defun kzk/insert-time-date (prefix)
   "Insert the current date. With prefix-argument, use ISO format. With

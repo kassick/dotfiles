@@ -6,13 +6,13 @@
 
 (require 'kzk-org-common)
 
-(setq kzk/org-capture-template-context-entry (concat "* %U %?" "\n"
+(setq kzk/org-capture-template-context-entry (concat "* %(kzk/iso-date) %?" "\n"
                                                      ":PROPERTIES:" "\n"
                                                      ":LOCATION:  %a" "\n"
                                                      ":END:" "\n"
                                                      "\n"
                                                      "%i" "\n")
-      kzk/org-capture-template-entry (concat "* %U %?" "\n"
+      kzk/org-capture-template-entry (concat "* %(kzk/iso-date) %?" "\n"
                                              "\n"
                                              "%i" "\n")
       kzk/org-capture-task-template (concat "* TODO %?" "\n"
