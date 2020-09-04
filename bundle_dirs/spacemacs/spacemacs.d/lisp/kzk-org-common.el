@@ -10,6 +10,5 @@
 (defun kzk/org-directory-file (name)
   (expand-file-name name org-directory))
 
-
 (provide 'kzk-org-common)
 ;;; kzk-org-common.el ends here

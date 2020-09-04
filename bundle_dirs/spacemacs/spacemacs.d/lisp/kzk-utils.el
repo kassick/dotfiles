@@ -37,12 +37,13 @@
 
 
 (defun kzk/insert-time-date (prefix)
-  "Insert the current date. With prefix-argument, use ISO format. With
-                       two prefix arguments, write out the day and month name."
+  "Insert the current date. No Prefix: ISO; Prefix=4 for org-timestamp with Y-M-d; otherwise org-timestamp d-M-Y"
   (interactive "P")
-  (let ((format (cond ((not prefix) "%FT%T%z")
-                      ((equal prefix '(4)) "[%H:%M:%S; %Y-%m-%d]")
-                      (t "[%H:%M:%S; %d.%m.%Y]"))))
-    (insert (format-time-string format))))
+  (let ((date-str (cond
+                  ((not prefix) (kzk/iso-date) )
+                  ((equal prefix '(4))  (format-time-string "[%H:%M:%S; %Y-%m-%d]"))
+                  (t (format-time-string "[%H:%M:%S; %d.%m.%Y]")))))
+    (insert date-str)))
+
 
 (provide 'kzk-utils)
