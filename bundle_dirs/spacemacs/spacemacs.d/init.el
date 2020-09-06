@@ -279,11 +279,7 @@ values."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '(("Fira Code"
-                                :foundry "Retina"
-                                :height 120
-                                :weight normal
-                                :width normal
+   dotspacemacs-default-font '(("Fira Code Retina 12"
                                 :powerline-scale 1.0)
                                ("Monego"
                                :height 120
@@ -549,7 +545,6 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
-
   (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
 
   (require 'kzk-evil-init)
@@ -654,28 +649,6 @@ you should place your code here."
 
   ;; Don't be annoying, emacs. C-x C-c is to close to EVERY OTHER SHORTCUT and can be used accidently too often. Also, no C-g on the confirmation prompt!? what the hell?
   (global-unset-key (kbd "C-x C-c"))
-
-  (setq dotspacemacs-default-font '(("Fira Code"
-                                     :foundry "Retina"
-                                     :height 120
-                                     :weight normal
-                                     :width normal
-                                     :powerline-scale 1.0)
-                                    ("Monego"
-                                     :height 120
-                                     :weight normal
-                                     :width normal
-                                     :powerline-scale 1.0)
-                                    ("Monaco"
-                                     :height 120
-                                     :weight normal
-                                     :width normal
-                                     :powerline-scale 1.0)
-                                    ("Dejavu Sans Mono"
-                                     :height 120
-                                     :weight normal
-                                     :width normal
-                                     :powerline-scale 1.0)))
 
    (setq evil-escape-delay 0.04)
 
