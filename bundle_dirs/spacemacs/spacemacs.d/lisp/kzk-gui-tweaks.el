@@ -61,7 +61,7 @@
     ;;                      ))
 
 (defun kzk/set-frame-font (&optional frame)
-  (run-at-time "1 seconds" nil (lambda () (kzk/set-default-face frame)))
+  (run-at-time "3 seconds" nil (lambda () (kzk/set-default-face frame)))
   (remove-hook 'after-make-frame-functions #'kzk/set-frame-font)
   )
 
