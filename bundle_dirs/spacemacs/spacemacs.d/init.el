@@ -279,7 +279,8 @@ values."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '(("Fira Code Retina 12"
+   dotspacemacs-default-font '(("Fira Code"
+                                :height 120
                                 :powerline-scale 1.0)
                                ("Monego"
                                :height 120
