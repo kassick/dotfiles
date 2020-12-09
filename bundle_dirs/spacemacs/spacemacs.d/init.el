@@ -71,8 +71,7 @@ values."
              ;; python-test-runner 'pytest
              ;; python-backend 'anaconda
              python-backend 'lsp
-             python-lsp-server 'mspyls
-             python-lsp-git-root "~/Sources/python-language-server")
+             python-lsp-server 'pyright)
      c-c++
      (scala :variables
             scala-backend 'scala-metals
