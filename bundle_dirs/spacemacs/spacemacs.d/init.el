@@ -535,6 +535,7 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
+  (load-env-vars spacemacs-env-vars-file) ;; force loading of envs
   (spacemacs/load-spacemacs-env))
 
 (defun dotspacemacs/user-init ()
