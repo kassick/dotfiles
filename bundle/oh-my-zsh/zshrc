@@ -107,7 +107,7 @@ fi
 
 # global environment. Should just export variables
 if [ -d ~/.local/etc/env.d/ ]; then
-    for env_file in ~/.local/etc/env.d/* ; do
+    for env_file in `ls ~/.local/etc/env.d/* | sort` ; do
         source $env_file
     done
 fi
