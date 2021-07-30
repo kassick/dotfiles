@@ -148,7 +148,7 @@
         )
       )
 (define-auto-insert "\\.org\\'" "org-header.org")
-(define-auto-insert "\.py" "python-header")
+;(define-auto-insert "\.py" "python-header")
 
 
 (define-auto-insert
@@ -156,12 +156,12 @@
          '(nil
            "#!/usr/bin/env python\n# -*- coding: utf-8 -*-" \n
            \n
-           ;; (kassick/do-header "#") \n
+           (kassick/do-header "#") \n
            ))
 (define-auto-insert
       '("\\.\\([Hh]\\|hh\\|hpp\\)\\'" . "C / C++ header")
       '(nil
-        ;; (kassick/c-style-header) \n
+        (kassick/c-style-header) \n
         \n
         "#pragma once" \n
         \n
@@ -169,16 +169,16 @@
 (define-auto-insert
       '("\\.\\([Cc]\\|cc\\|cpp\\)\\'" . "C / C++ program")
       '(nil
-        ;; (kassick/c-style-header)
+        (kassick/c-style-header)
         \n
         )
       )
 
-;; (add-hook 'before-save-hook
-;;           (lambda ()
-;;             (let ((time-stamp-start "Time-[sS]tamp:[ \t]+\\\\?[\"<]+")) (time-stamp))
-;;             (let ((time-stamp-start "Updated:[ \t]+\\\\?[\"<]+")) (time-stamp))
-;;             ))
+(add-hook 'before-save-hook
+          (lambda ()
+            (let ((time-stamp-start "Time-[sS]tamp:[ \t]+\\\\?[\"<]+")) (time-stamp))
+            (let ((time-stamp-start "Updated:[ \t]+\\\\?[\"<]+")) (time-stamp))
+            ))
 
 
 

@@ -43,7 +43,8 @@
   :group 'kzk-company)
 
 (defun kzk-company/post-init-company ()
-  (setq company-idle-delay 2
+  (setq company-idle-delay 0.9
+        ;; company-idle-delay 0.9
         ;; company-transformers '(company-sort-by-backend-importance)
         company-selection-wrap-around t
         company-show-numbers t
@@ -56,11 +57,6 @@
                             )
 
         )
-
-
-  (with-eval-after-load 'company
-    (message "Remapping indent-for-tab-command for company indent-or-complete-common")
-    (define-key company-mode-map [remap indent-for-tab-command] #'company-indent-or-complete-common))
 
   ;; More vim-like completion
   ;; (require 'company-tng) ;; shipped with company
@@ -91,27 +87,16 @@
 
   (with-eval-after-load 'general
     (general-define-key :keymaps 'company-mode-map
-                        "C-=" 'company-manual-begin
                         "C-c o" 'company-manual-begin
                         "C-c f" 'company-files
                         "C-c y" 'company-yasnippet)
 
     (general-define-key :keymaps 'company-active-map
-                        "C-=" 'company-complete-common
                         "M-h" #'company-quickhelp-manual-begin
                         "C-e" #'company-other-backend
                         "C-w" 'company-abort
                         "<C-backspace>" 'company-abort
-                        "<left>" 'company-abort
-                        "<right>" 'company-abort
-                        "<home>" 'company-abort
-                        "<end>" 'company-abort
                         )
-
-    ;;; NO LINGERING COMPANY POPUP AFTER ESCAPING TO NORMAL
-    ;;; This is very annoying
-    (with-eval-after-load 'evil
-      (add-hook 'evil-insert-state-exit-hook 'company-abort))
     )
   )
 

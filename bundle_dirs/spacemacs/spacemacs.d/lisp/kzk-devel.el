@@ -25,46 +25,46 @@
 ;;; Code:
 
 ;; ycmd setup
-(defun ycmd-force-enable ()
+;; (defun ycmd-force-enable ()
 
-  ;; Turn off semantic idle, as it clears the echo area from ycmd semantic info
-  (semantic-idle-summary-mode 0)
+;;   ;; Turn off semantic idle, as it clears the echo area from ycmd semantic info
+;;   (semantic-idle-summary-mode 0)
 
-  (message "Force Enable YCMD for major mode %s" major-mode)
-  (ycmd-mode 1))
+;;   (message "Force Enable YCMD for major mode %s" major-mode)
+;;   (ycmd-mode 1))
 
-;; (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
-;(add-hook 'c++-mode-hook 'ycmd-force-enable)
-;(add-hook 'c-mode-hook 'ycmd-force-enable)
-; (add-hook 'python-mode-hook 'ycmd-force-enable)
+;; ;; (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
+;; ;(add-hook 'c++-mode-hook 'ycmd-force-enable)
+;; ;(add-hook 'c-mode-hook 'ycmd-force-enable)
+;; ; (add-hook 'python-mode-hook 'ycmd-force-enable)
 
-(with-eval-after-load 'ycmd
-  (set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
-  (set-variable 'ycmd-server-command
-                `("/usr/bin/python2.7"
-                  ,(expand-file-name
-                    "~/.local/dev/ycm/third_party/ycmd/ycmd")))
+;; ;; (with-eval-after-load 'ycmd
+;; ;;   (set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
+;; ;;   (set-variable 'ycmd-server-command
+;; ;;                 `("/usr/bin/python2.7"
+;; ;;                   ,(expand-file-name
+;; ;;                     "~/.local/dev/ycm/third_party/ycmd/ycmd")))
 
-  (require 'company-ycmd)
-  (setq company-ycmd-insert-arguments nil
-        company-ycmd-request-sync-timeout 1.0)
+;;   (require 'company-ycmd)
+;;   (setq company-ycmd-insert-arguments nil
+;;         company-ycmd-request-sync-timeout 1.0)
 
-  ;; (require 'ycmd-eldoc)
+;;   ;; (require 'ycmd-eldoc)
 
-  (defun ycm ()
-    (interactive)
-    (company-cancel)
-    (let ((ycmd-force-semantic-completion (not (company-ycmd--in-include))))
-      (setq company-backend 'company-ycmd)
-      (company-manual-begin)))
+;;   (defun ycm ()
+;;     (interactive)
+;;     (company-cancel)
+;;     (let ((ycmd-force-semantic-completion (not (company-ycmd--in-include))))
+;;       (setq company-backend 'company-ycmd)
+;;       (company-manual-begin)))
 
-  (with-eval-after-load 'general
-    (message "Imapping ycm")
-    (general-define-key :keymaps 'ycmd-mode-map
-                        :states 'insert
-                  "<C-tab>" 'ycm))
+;;   (with-eval-after-load 'general
+;;     (message "Imapping ycm")
+;;     (general-define-key :keymaps 'ycmd-mode-map
+;;                         :states 'insert
+;;                   "<C-tab>" 'ycm))
 
-  )
+;;   )
 
 
 ;; helm dash
@@ -96,82 +96,119 @@
                       "C-x g" 'magit-status
                       "C-x M-g"  'magit-dispatch-popup))
 
-;; python
+;; {{{ python
 
-;; (python-docstring-install)
-;; (defun python-sort-completions (candidates)
-;;       (defun py-is-priv (c)
-;;         (equal (substring c 0 1) "_"))
-;;       (defun my-filter (condp lst)
-;;         (delq nil
-;;               (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
-;;       (let* ((public (my-filter (lambda (c) (not (py-is-priv c))) candidates))
-;;              (priv (my-filter 'py-is-priv candidates)))
-;;         (append public priv)
-;;       )
-;;       )
+
+;; Extract value to variable!
+(defun kzk/py-refactor-extract-arg (prefix new-name &rest)
+  "Extracts an argument to a variable immediately above the current statement"
+  (interactive "P\nsVariable Name: ")
+
+  (let* ((bounds (if (region-active-p)
+                     (car (region-bounds)) ;; no support for non contiguous regions ...
+                   (let* ((inner-arg-bounds (evil-inner-arg))
+                          (start (evil-range-beginning inner-arg-bounds))
+                          (end (evil-range-end inner-arg-bounds)))
+                     (cons start end))))
+         (start (car bounds))
+         (end (cdr bounds))
+         (text (buffer-substring-no-properties start end))
+         (start-of-arg-marker (make-marker))
+         (cur-statement-end-marker (make-marker))
+         )
+    ;; Save start of current argument position, we'll move the cursor to this
+    ;; position later
+    (set-marker start-of-arg-marker start)
+
+    ;; Substitute the current argument text with the provided variable name
+    (replace-region-contents start end (lambda () new-name))
+
+    ;; Figure current statement's boundaries
+    (let ((statement-start (save-excursion
+                             (python-nav-beginning-of-statement)
+                             (point)))
+          (statement-end (save-excursion
+                           (python-nav-end-of-statement)
+                           (point))))
+
+      ;; Leave a mark at the end of the current function call
+      (set-marker cur-statement-end-marker statement-end)
+
+      ;; Insert new variable atribution before
+      (goto-char statement-start)
+      (insert (concat new-name " = " text))
+      (newline-and-indent)
+
+      ;; Indent from the point there whe new statement was inserted up to the
+      ;; end of the function call where the refactor was called
+      (indent-region statement-start (marker-position cur-statement-end-marker)))
+
+    ;; Place the cursor at the start of the argument that was extracted
+    (goto-char (marker-position start-of-arg-marker))
+
+    ;; clear markers
+    (set-marker start-of-arg-marker nil)
+    (set-marker cur-statement-end-marker nil)))
+
+(with-eval-after-load 'bind-map
+  ;;; spacemacs bind needs bind-map, which is not loaded at the time
+  ;;; this code is called.
+  (spacemacs/set-leader-keys-for-major-mode 'python-mode
+    "re" 'kzk/py-refactor-extract-arg))
+
+(with-eval-after-load 'smartparens-python
+  ;; disable this annoying behaviour, since pressing colon does not jump over
+  ;; the included colon
+  (setq sp-python-insert-colon-in-function-definitions nil))
 
 (add-hook 'python-mode-hook
-              (lambda ()
-                (python-docstring-mode 1)
-                (setq py-auto-fill-mode t
-                      py-comment-auto-fill-p t
-                      ;; py-complete-function nil
-                      )
-                ;; capf with python is kind of problematic, as it sometimes sends things to the python shell and hangs up
-                ;; (make-local-variable 'company-backends)
-                ;; (make-local-variable 'company-transformers)
-                ;; (setq company-transformers '(company-sort-by-backend-importance python-sort-completions))
-                ;; (setq company-backends
-                ;;       (remove-if (lambda (k) (or (and (listp k) (member 'company-capf k))
-                ;;                                  (eq k 'company-capf)))
-                ;;                  company-backends))
-                )
-              )
+          (lambda ()
+            (filladapt-mode t)
+            (display-fill-column-indicator-mode t)))
 
 ;;     }}}
 
 ;; {{{ C / C++ support
-(require 'google-c-style) ; google-ish style configured in my lisp directory
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            ;; (semantic-mode t)
-            (google-set-c-style)
-            (google-make-newline-indent)
-            ;; avoid company using several backends and giving headaches
-            ;; (unless (eq major-mode 'java-mode)
-            ;;   (set (make-local-variable 'company-backends)
-            ;;        (quote (company-ycmd
-            ;;                company-files
-            ;;                company-keywords))))
-            ))
+;; (require 'google-c-style) ; google-ish style configured in my lisp directory
+;; (add-hook 'c-mode-common-hook
+;;           (lambda ()
+;;             ;; (semantic-mode t)
+;;             (google-set-c-style)
+;;             (google-make-newline-indent)
+;;             ;; avoid company using several backends and giving headaches
+;;             ;; (unless (eq major-mode 'java-mode)
+;;             ;;   (set (make-local-variable 'company-backends)
+;;             ;;        (quote (company-ycmd
+;;             ;;                company-files
+;;             ;;                company-keywords))))
+;;             ))
 ;; }}}
 
 
 ;;; {{{ Java Support
 
-(with-eval-after-load 'eclim
-  (setq eclimd-autostart t))
+;; (with-eval-after-load 'eclim
+;;   (setq eclimd-autostart t))
 
 ;; }}}
 
 ;;; {{{ CSharp
-(with-eval-after-load 'omnisharp-mode
-  (setq omnisharp-server-executable-path
-        (expand-file-name "~/.local/dev/ycm/third_party/ycmd/third_party/OmniSharpServer/OmniSharp/bin/Release/OmniSharp.exe"))
-  (setq omnisharp-company-match-type 'company-match-server) ; This enables server-size flex matching
-)
+;; (with-eval-after-load 'omnisharp-mode
+;;   (setq omnisharp-server-executable-path
+;;         (expand-file-name "~/.local/dev/ycm/third_party/ycmd/third_party/OmniSharpServer/OmniSharp/bin/Release/OmniSharp.exe"))
+;;   (setq omnisharp-company-match-type 'company-match-server) ; This enables server-size flex matching
+;; )
 ;; (eval-after-load 'company
 ;;      '(add-to-list 'company-backends 'company-omnisharp))
 
 ;;;}}}
 
 ;;; {{{ fsharp
-(with-eval-after-load 'fsharp-mode
-  (setq inferior-fsharp-program "/usr/bin/fsharpi --readline-")
-  (setq fsharp-compiler "/usr/bin/fsharpc")
-  (setq fsharp-ac-intellisense-enabled t)
-  (setq fsharp-ac-use-popup t))
+;; (with-eval-after-load 'fsharp-mode
+;;   (setq inferior-fsharp-program "/usr/bin/fsharpi --readline-")
+;;   (setq fsharp-compiler "/usr/bin/fsharpc")
+;;   (setq fsharp-ac-intellisense-enabled t)
+;;   (setq fsharp-ac-use-popup t))
 
 ;;(add-hook 'fsharp-mode-hook (lambda ()
 ;;                              (add-to-list 'company-transformers 'company-sort-prefer-same-case-prefix)))
@@ -193,19 +230,31 @@
 ;;   (setq alchemist-compile-command (concat docker-run-alpine " elixirc")))
 ;;; }}}
 
-(with-eval-after-load 'yas
-  (yas-global-mode 1))
+;; (with-eval-after-load 'yas
+;;   (yas-global-mode 1))
 
 (with-eval-after-load 'elec-pair
-  (setq electric-pair-open-newline-between-pairs nil)
-  )
+  (setq electric-pair-open-newline-between-pairs nil))
 
 (with-eval-after-load 'lsp-mode
+  (message "setting lsp imenu index function")
+  (setq lsp-imenu-index-function 'lsp-imenu-create-categorized-index)
+
   (with-eval-after-load 'general
     (message "Setting lsp-mode custom keys")
     (general-define-key :keymaps 'lsp-mode-map
                         "C-c C-h" 'lsp-ui-doc-glance
-                        "C-c h" 'lsp-describe-thing-at-point)))
+                        "C-c h" (lambda ()
+                                  (interactive)
+                                  (let ((help-window-select nil))
+                                    (lsp-describe-thing-at-point))))))
+
+(spacemacs/set-leader-keys "ps" 'projectile-save-project-buffers)
+
+(add-hook 'prog-mode-hook (lambda ()
+                            (message "enabling truncate lines for a prog buffer")
+                            (make-variable-buffer-local 'toggle-truncate-lines)
+                            (setq truncate-lines t)))
 
 
 (provide 'kzk-devel)

@@ -66,9 +66,9 @@
         popwin:special-display-config)
 
 ;; dedicated
-;; (use-package dedicated :ensure t)
-;; (general-define-key :keymaps 'global
-;;                     "C-x 9" 'dedicated-mode)
+(use-package dedicated :ensure t)
+(general-define-key :keymaps 'global
+                    "C-x 9" 'dedicated-mode)
 
 ;; narrow indirect
 ;; (general-define-key :keymaps 'ctl-x-4-map
@@ -90,99 +90,28 @@
 
 ;; Directly copied from frame.el but now hide Emacs instead of killing
 ;; it when last frame will be closed.
-;; (defun handle-delete-frame-without-kill-emacs (event)
-;;   "Handle delete-frame events from the X server."
-;;   (interactive "e")
-;;   (let ((frame (posn-window (event-start event)))
-;;         (i 0)
-;;         (tail (frame-list)))
-;;     (while tail
-;;       (and (frame-visible-p (car tail))
-;;            (not (eq (car tail) frame))
-;;            (setq i (1+ i)))
-;;       (setq tail (cdr tail)))
-;;     (if (> i 0)
-;;         (delete-frame frame t)
-;;       ;; Not (save-buffers-kill-emacs) but instead:
-;;       (ns-do-hide-emacs))))
+(defun handle-delete-frame-without-kill-emacs (event)
+  "Handle delete-frame events from the X server."
+  (interactive "e")
+  (let ((frame (posn-window (event-start event)))
+        (i 0)
+        (tail (frame-list)))
+    (while tail
+      (and (frame-visible-p (car tail))
+           (not (eq (car tail) frame))
+           (setq i (1+ i)))
+      (setq tail (cdr tail)))
+    (if (> i 0)
+        (delete-frame frame t)
+      ;; Not (save-buffers-kill-emacs) but instead:
+      (ns-do-hide-emacs))))
 
-;; (when (eq system-type 'darwin)
+(when (eq system-type 'darwin)
 ;;   (advice-add 'handle-delete-frame :override
 ;;               #'handle-delete-frame-without-kill-emacs)
 
-(defun kzk/beginning-of-visual-line-or-indent (&optional n)
-  "Move point to:
-  - beginning of current visual line
-  - indent
-  - first character
-  "
-  (interactive "^p")
-  (or n (setq n 1))
-  (let ((opoint (point)))
-    (when (/= n 1)
-      (let ((line-move-visual t))
-        (line-move (1- n) t)))
-    (vertical-motion 0)
-    ;; Constrain to field boundaries, like `move-beginning-of-line'.
-    (goto-char (constrain-to-field (point) opoint (/= n 1)))
-
-    (when (= opoint (point))
-      (back-to-indentation))
-
-    (when (= opoint (point))
-      (move-beginning-of-line 1))))
-
-(defun kzk/beginning-of-visual-line-or-indent-v2 (&optional n)
-  "Move point to:
-  - beginning of current visual line
-  - indent
-  - first character
-  "
-  (interactive "^p")
-  (or n (setq n 1))
-  (let ((opoint (point)))
-    (when (/= n 1)
-      (let ((line-move-visual t))
-        (line-move (1- n) t)))
-
-    (goto-char
-     (save-excursion
-       (max (progn (vertical-motion 0)
-                   (goto-char (constrain-to-field (point) opoint (/= n 1)))
-                   (if (= (point) opoint) -1 (point)))
-            (progn (back-to-indentation)
-                   (if (= (point) opoint) -1 (point)))
-            (progn (move-beginning-of-line 1)
-                   (if (= (point) opoint) -1 (point))))))))
-
-(defun kzk/end-of-visual-line-or-eol (&optional n)
-  "Move point to :
-  - end of visual line
-  - end of line
-  "
-  (interactive "^p")
-  (or n (setq n 1))
-  (let ((opoint (point)))
-    (when (/= n 1)
-      (let ((line-move-visual t))
-        (line-move (1- n) t)))
-    ;; Unlike `move-beginning-of-line', `move-end-of-line' doesn't
-    ;; constrain to field boundaries, so we don't either.
-    (vertical-motion (cons (window-width) 0))
-
-    (when (= opoint (point))
-      (end-of-line 1))))
-
-
-(global-set-key (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent-v2)
-(global-set-key (kbd "<end>") 'kzk/end-of-visual-line-or-eol)
-
-(with-eval-after-load 'general
-  (general-define-key :states '(normal visual motion insert)
-                      "<home>" 'kzk/beginning-of-visual-line-or-indent-v2
-                      "<end>" 'kzk/end-of-visual-line-or-eol))
-
-;; )
+  (global-set-key (kbd "<end>") 'end-of-visual-line)
+  (global-set-key (kbd "<home>") 'beginning-of-visual-line))
 
 
 (provide 'kzk-window-management)

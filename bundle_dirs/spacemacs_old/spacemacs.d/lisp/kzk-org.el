@@ -58,8 +58,7 @@
   (require 'org-tempo)
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
-  ;;(require 'org-protocol)
-  )
+  (require 'org-protocol))
 
 ;; LaTeX settings
 (with-eval-after-load 'ox-latex

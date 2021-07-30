@@ -4,7 +4,7 @@
 
 ;; Author: Rodrigo Kassick <rodrigokassick@mckzk>
 
-(defvar org-directory "~/org"
+(defvar org-directory "~/Dropbox/org"
   "Default path for org-mode {todo,journal}.org")
 
 (defun kzk/org-directory-file (name)

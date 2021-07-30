@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Python file header
+# key: pfhdr
+# --
+#File: `(car (last (split-string (buffer-file-name) "/")))`
+#Created: `(time-stamp-string)`
+#Updated: 
+#$Id$
+#Copyright (C) ALL RIGHTS RESERVED

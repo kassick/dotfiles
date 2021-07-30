@@ -66,7 +66,6 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
 (defun kzk-helm/post-init-helm ()
-  (message "post init of helm")
   ;; Helm genral setq
   ;;; workaround for issue https://github.com/syl20bnr/spacemacs/issues/9549
   (require 'helm-bookmark)

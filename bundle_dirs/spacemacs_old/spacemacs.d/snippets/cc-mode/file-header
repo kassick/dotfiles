@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: C File Header
+# key: cfhdr
+# --
+/*=====================================================================
+ *       Filename: `(kassick/buffer-file-name-in-project)`
+ *
+ *    Description: $1
+ *
+ *        Version: 1.0
+ *        Created: `(current-time-string)`
+ *        Updated: `(current-time-string)`
+ *
+ *         Author: `(user-full-name)`
+ *
+ *                   Copyright (C) `(format-time-string "%Y")`, `(user-full-name)`
+ * ====================================================================
+ */
