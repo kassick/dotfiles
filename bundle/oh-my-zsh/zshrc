@@ -57,7 +57,7 @@ ZSH_THEME="avit"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gitfast python sudo conda-zsh-completion tsuru autoswitch_conda)
+plugins=(gitfast python sudo pyenv)
 
 # User configuration
 
@@ -128,12 +128,12 @@ if [ -d ~/.local/etc/rc.d ]; then
 fi
 
 
-if [ -d "$HOME/.local/bin" ]; then
-    export PATH="$HOME/.local/bin:$PATH"
+if [ -f ${HOME}/.profile ]; then
+   source ${HOME}/.profile
 fi
 
-# if [ -f ${HOME}/.profile ]; then
-#    source ${HOME}/.profile
-# fi
 export DISABLE_MAGIC_FUNCTIONS=true
 source $ZSH/oh-my-zsh.sh
+
+
+eval "$(dircolors -b)"
