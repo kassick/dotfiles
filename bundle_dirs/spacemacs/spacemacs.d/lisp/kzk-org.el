@@ -48,7 +48,8 @@
         org-agenda-include-all-todo t
         org-agenda-include-diary t
         ;; org-export-babel-evaluate nil
-        org-confirm-babel-evaluate nil)
+        org-confirm-babel-evaluate nil
+        org-capture-bookmark nil)
 
   (add-hook 'org-mode-hook 'org-display-inline-images)
 
