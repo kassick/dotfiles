@@ -77,6 +77,7 @@ This function should only modify configuration layer settings."
      (python :variables
              ;; lsp-pyright-log-level "trace"
              lsp-pyright-venv-path "/home/kassick/.pyenv/versions"
+             python-auto-set-local-pyenv-version nil
              python-test-runner 'pytest
              python-backend 'lsp
              python-lsp-server 'pyright
