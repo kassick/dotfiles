@@ -260,6 +260,8 @@
                                   (let ((help-window-select nil))
                                     (lsp-describe-thing-at-point))))))
 
+
+(setq shell-default-shell 'vterm)
 (spacemacs/set-leader-keys "ps" 'projectile-save-project-buffers)
 
 
