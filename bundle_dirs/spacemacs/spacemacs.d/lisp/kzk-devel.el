@@ -169,6 +169,33 @@
             (filladapt-mode t)))
 
 
+(defun kzk/around-pyenv-pyenv-mode-set (fn args)
+  (interactive (list (pyenv-mode-read-version)))
+
+  (make-variable-buffer-local 'python-shell-virtualenv-root)
+
+  (let* ((venv (getenv "PYENV_VERSION"))
+         (result (call-interactively fn args))
+         (new-venv (getenv "PYENV_VERSION")))
+    (message "pyenv set PYENV_VERSION from %s to %s; undoing" venv new-venv)
+    (setenv "PYENV_VERSION" venv)
+
+    result))
+
+(defun kzk/around-spacemacs-pyenv-mode-set (fn args)
+  (interactive)
+  (let* ((venv (getenv "VIRTUAL_ENV"))
+         (result (call-interactively fn args))
+         (new-venv (getenv "VIRTUAL_ENV")))
+    (message "spacemacs set VIRTUAL_ENV from %s to %s; undoing" venv new-venv)
+
+    result))
+
+;; (with-eval-after-load 'pyenv-mode
+;;  (advice-add 'pyenv-mode-set :around 'kzk/around-pyenv-pyenv-mode-set))
+;; (advice-add 'spacemacs//pyenv-mode-set-local-version :around 'kzk/around-spacemacs-pyenv-mode-set)
+;; (advice-add 'spacemacs//pyenv-mode-set-local-virtualenv :around 'kzk/around-spacemacs-pyenv-mode-set)
+
 ;;     }}}
 
 ;; {{{ C / C++ support
