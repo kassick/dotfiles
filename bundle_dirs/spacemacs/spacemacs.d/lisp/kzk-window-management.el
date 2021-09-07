@@ -145,15 +145,30 @@
       (let ((line-move-visual t))
         (line-move (1- n) t)))
 
-    (goto-char
-     (save-excursion
-       (max (progn (vertical-motion 0)
-                   (goto-char (constrain-to-field (point) opoint (/= n 1)))
-                   (if (= (point) opoint) -1 (point)))
-            (progn (back-to-indentation)
-                   (if (= (point) opoint) -1 (point)))
-            (progn (move-beginning-of-line 1)
-                   (if (= (point) opoint) -1 (point))))))))
+    (defun point-or-bail ()
+      (if (= (point) opoint)
+          -1
+        (point))
+      )
+
+    (let ((target
+           (save-excursion
+             (max (progn
+                    (vertical-motion 0)
+                    (goto-char (constrain-to-field (point) opoint (/= n 1)))
+
+                    (point-or-bail))
+                  (progn
+                    (back-to-indentation)
+                    (point-or-bail))
+
+                  (progn
+                    (move-beginning-of-line 1)
+                    (point-or-bail))
+           ))))
+
+      (if (/= target -1)
+          (goto-char target)))))
 
 (defun kzk/end-of-visual-line-or-eol (&optional n)
   "Move point to :
