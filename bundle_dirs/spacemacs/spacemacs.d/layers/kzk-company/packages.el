@@ -57,10 +57,16 @@
 
         )
 
+  ;; TODO: maybe move this to other layer or maybe rename this layer for auto-complete ...
+  (with-eval-after-load 'auto-complete
+    (setq tab-always-indent t))
 
-  (with-eval-after-load 'company
-    (message "Remapping indent-for-tab-command for company indent-or-complete-common")
-    (define-key company-mode-map [remap indent-for-tab-command] #'company-indent-or-complete-common))
+  ;; (define-key global-map (kbd "C-<tab>") 'indent-for-tab-command)
+  ;; (with-eval-after-load 'company
+  ;;   (message "Remapping indent-for-tab-command for company indent-or-complete-common")
+  ;;   ;; (define-key company-mode-map [remap indent-for-tab-command] #'company-indent-or-complete-common)
+  ;;   (define-key company-mode-map (kbd "<tab>") 'indent-for-tab-command)
+  ;;   )
 
   ;; More vim-like completion
   ;; (require 'company-tng) ;; shipped with company
@@ -118,7 +124,7 @@
 (defun kzk-company/post-init-company-quickhelp ()
   (company-quickhelp-mode 1)
 
-  (setq company-quickhelp-delay nil)
+  (setq company-quickhelp-delay 0.5)
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "M-h") #'company-quickhelp-manual-begin))
   )
