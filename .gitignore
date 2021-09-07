@@ -3,3 +3,4 @@ dots/emacs.d/
 dots/oh-my-zsh/
 /bundle_dirs/spacemacs/spacemacs.d/customize.el
 /bundle_dirs/spacemacs/spacemacs.d/.spacemacs.env
+.dir-locals.el
