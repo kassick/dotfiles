@@ -91,6 +91,9 @@
 ;; )
 
 ;; magit
+(with-eval-after-load 'magit
+  (add-hook 'magit-process-mode-hook 'goto-address-mode))
+
 (with-eval-after-load 'general
   (general-define-key :keymaps 'global
                       "C-x g" 'magit-status
