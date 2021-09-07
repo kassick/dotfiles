@@ -326,8 +326,8 @@ It should only modify the values of Spacemacs settings."
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
    ;; dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
 
-   ;;; dotspacemacs-mode-line-theme '(vanilla)
-   dotspacemacs-mode-line-theme '(spacemacs)
+   dotspacemacs-mode-line-theme '(vanilla)
+   ;; dotspacemacs-mode-line-theme '(spacemacs)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -810,14 +810,27 @@ before packages are loaded."
   (message "setting gcmh mode")
   (gcmh-mode t)
 
-  ;; (diminish 'company-mode)
-  ;; (diminish 'smartparens-mode)
-  ;; (diminish 'purpose-mode)
-  ;; (diminish 'visual-line-mode)
-  ;; (diminish 'which-key-mode)
-  ;; (diminish 'editorconfig-mode)
-  ;; vanilla(diminish 'gcmh-mode)
-  ;; (diminish 'spacemacs-whitespace-cleanup-mode)
+  ;; (message "setting gcmh mode")
+  (message "diminishing")
+  (with-eval-after-load 'company (diminish 'company-mode) )
+  (with-eval-after-load 'smartparens (diminish 'smartparens-mode))
+  (with-eval-after-load 'importmagic (diminish 'importmagic-mode))
+  (with-eval-after-load 'window-purpose (diminish 'purpose-mode))
+  (diminish 'visual-line-mode)
+  (with-eval-after-load 'which-key (diminish 'which-key-mode))
+  (with-eval-after-load 'editorconfig (diminish 'editorconfig-mode))
+  (with-eval-after-load 'gcmh (diminish 'gcmh-mode))
+  (diminish 'spacemacs-whitespace-cleanup-mode)
+  (with-eval-after-load 'yasnippet
+   (diminish 'yas-minor-mode " Y")
+   (diminish 'yas-global-mode " Y")
+   )
+  (with-eval-after-load 'lsp (diminish 'lsp-mode))
+
+  (with-eval-after-load 'filladapt (diminish 'filladapt-mode))
+  (with-eval-after-load 'flycheck (diminish 'flycheck-mode " C"))
+  (message "diminished")
+
 
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
