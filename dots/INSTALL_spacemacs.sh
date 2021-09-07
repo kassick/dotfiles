@@ -9,7 +9,7 @@ if [ -d $DEST ]; then
     cd $DEST
     if [ -d .git ]; then
         if git remote show origin -n | grep -q $REPO; then
-            git pull origin master
+            git pull origin develop
             exit 0
         fi
     fi
