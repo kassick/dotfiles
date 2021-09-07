@@ -262,10 +262,17 @@
 
 (spacemacs/set-leader-keys "ps" 'projectile-save-project-buffers)
 
-(add-hook 'prog-mode-hook (lambda ()
-                            (message "enabling truncate lines for a prog buffer")
-                            (make-variable-buffer-local 'toggle-truncate-lines)
-                            (setq truncate-lines t)))
+
+(add-hook 'prog-mode-hook
+          (lambda ()
+            ;;; use long lines -- visual lines are annoying for lsp and many
+            ;;; programming languages
+            (make-variable-buffer-local 'toggle-truncate-lines)
+            (setq truncate-lines t)
+
+            ;;; make tab indent -- not complete. surprise auto-completion is
+            ;;; annoying
+            (setq tab-always-indent t)))
 
 
 (provide 'kzk-devel)
