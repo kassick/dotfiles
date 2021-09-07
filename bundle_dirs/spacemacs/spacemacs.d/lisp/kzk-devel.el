@@ -166,8 +166,8 @@
 
 (add-hook 'python-mode-hook
           (lambda ()
-            (filladapt-mode t)
-            (display-fill-column-indicator-mode t)))
+            (filladapt-mode t)))
+
 
 ;;     }}}
 
