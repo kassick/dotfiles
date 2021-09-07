@@ -75,6 +75,8 @@ This function should only modify configuration layer settings."
      emacs-lisp
      shell-scripts
      (python :variables
+             ;; lsp-pyright-log-level "trace"
+             lsp-pyright-venv-path "/home/kassick/.pyenv/versions"
              python-test-runner 'pytest
              python-backend 'lsp
              python-lsp-server 'pyright
