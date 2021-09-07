@@ -213,11 +213,11 @@ It should only modify the values of Spacemacs settings."
    ;; Set `gc-cons-threshold' and `gc-cons-percentage' when startup finishes.
    ;; This is an advanced option and should not be changed unless you suspect
    ;; performance issues due to garbage collection operations.
-   ;; (default '(100000000 0.1))
-   ;; dotspacemacs-gc-cons '(10000000000 0.6)
+   ;; (default          '(100000000 0.1))
+   ;; dotspacemacs-gc-cons '(1000000000 0.1)
    ;; gc-cons-threshold  10000000000
    ;; gc-cons-percentage 0.6
-   garbage-collection-messages t
+   ;; garbage-collection-messages t
 
 
    ;; Set `read-process-output-max' when startup finishes.
@@ -807,10 +807,9 @@ before packages are loaded."
   (global-unset-key (kbd "C-x C-c"))
 
   (setq evil-escape-delay 0.08)
-  (message "setting gcmh mode")
-  (gcmh-mode t)
-
   ;; (message "setting gcmh mode")
+  ;;(gcmh-mode t)
+
   (message "diminishing")
   (with-eval-after-load 'company (diminish 'company-mode) )
   (with-eval-after-load 'smartparens (diminish 'smartparens-mode))
