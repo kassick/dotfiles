@@ -168,6 +168,16 @@
           (lambda ()
             (filladapt-mode t)))
 
+(with-eval-after-load 'helm-pydoc
+  ;;; Rewrite helm-pydoc to support current region
+  (defun helm-pydoc (start end)
+    (interactive "r")
+    (let ((initial-input (when (region-active-p)
+                           (buffer-substring-no-properties start end))))
+      (helm :sources '(helm-pydoc--imported-source helm-pydoc--installed-source)
+            :buffer "*helm pydoc*" :history 'helm-pydoc--history
+            :input initial-input)))
+  )
 
 (defun kzk/around-pyenv-pyenv-mode-set (fn args)
   (interactive (list (pyenv-mode-read-version)))
