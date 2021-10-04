@@ -276,6 +276,21 @@
 (with-eval-after-load 'elec-pair
   (setq electric-pair-open-newline-between-pairs nil))
 
+(defun kzk/lsp-help-at-point (&optional arg)
+  "Displays lsp-help for thing at point in a help window. When
+called with a prefix, kills the window"
+  (interactive "P")
+
+  (if arg
+      ;;; Calling with prefix, kill help window
+      (let* ((help-buffer (get-buffer "*lsp-help*"))
+             (help-window (when help-buffer (get-buffer-window help-buffer))))
+        (when help-window
+          (delete-window help-window)))
+    ;;; called without prefix, describe at point
+    (let ((help-window-select nil))
+      (lsp-describe-thing-at-point))))
+
 (with-eval-after-load 'lsp-mode
   (message "setting lsp imenu index function")
   (setq
@@ -292,10 +307,7 @@
     (message "Setting lsp-mode custom keys")
     (general-define-key :keymaps 'lsp-mode-map
                         "C-c C-h" 'lsp-ui-doc-glance
-                        "C-c h" (lambda ()
-                                  (interactive)
-                                  (let ((help-window-select nil))
-                                    (lsp-describe-thing-at-point))))))
+                        "C-c h" 'kzk/lsp-help-at-point)))
 
 
 (setq shell-default-shell 'vterm)
