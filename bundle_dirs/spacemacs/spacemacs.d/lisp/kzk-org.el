@@ -49,7 +49,8 @@
         org-agenda-include-diary t
         ;; org-export-babel-evaluate nil
         org-confirm-babel-evaluate nil
-        org-capture-bookmark nil)
+        org-capture-bookmark nil
+        org-startup-indented t)
 
   (add-hook 'org-mode-hook 'org-display-inline-images)
 
