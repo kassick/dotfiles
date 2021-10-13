@@ -65,20 +65,28 @@
   (with-helm-alive-p
     (helm-exit-and-execute-action 'kzk-helm/ff-insert-file-name)))
 
-(defun helm-ff-run-elscreen-find-file ()
-  "Run helm-elscreen-find-file on current selection"
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-elscreen-find-file)))
-
-(defun helm-buffers-run-find-buffer-on-elscreen ()
-  "Run helm-find-buffer-on-elscreen"
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-find-buffer-on-elscreen)))
-
 (defun helm-esw/show-buffer (candidate)
   (set-window-buffer (esw/select-window nil t t) (get-buffer candidate)))
+
+
+(defun helm-esw/find-file-splitted-window (filename)
+  "Use esw to select the target window for filename"
+  (let* ((buffer (find-file-noselect filename))
+         (new-window (esw/select-window nil t t)))
+    (set-window-buffer new-window buffer)
+    (select-window new-window)
+
+    buffer))
+
+(defun helm-esw/ag-find-file (candidate)
+  "Selects a target window with esw before finding the file"
+  (helm-ag--find-file-action candidate 'helm-esw/find-file-splitted-window (helm-ag--search-this-file-p)))
+
+(defun helm-esw/run-ag-find-file ()
+  "Show the selected match in the selected window"
+  (interactive)
+  (with-helm-alive-p
+    (helm-exit-and-execute-action 'helm-esw/ag-find-file)))
 
 (defun helm-esw/find-file (candidate)
   (set-window-buffer (esw/select-window nil t t) (find-file-noselect candidate)))
@@ -97,51 +105,43 @@
 
 ;;(eval-after-load 'helm-files
 (defun kzk/helm-ff-hacks-setup ()
-    ;;(if (locate-library "elscreen")
-        ;;(progn
-          ;;;; Add the shortcut description
-          ;;(setf (car (rassoc 'helm-elscreen-find-file helm-find-files-actions))
-                ;;"Find file in Elscreen `C-c C-z'")
-          ;;;; Bind C-c C-z
-          ;;(define-key helm-find-files-map (kbd "C-c C-z") 'helm-ff-run-elscreen-find-file)))
-
   ;; Bind C-c i to insert file name and add it to the find file action list
   (add-to-list 'helm-find-files-actions
                '("Insert file name at point `C-c C-i'" . kzk-helm/ff-insert-file-name)
                t)
   (define-key helm-find-files-map (kbd "C-c C-i") 'kzk-helm/run-ff-insert-file-name)
 
-    (if (locate-library "es-windows")
-        (progn
-          ;; Add description
-          (add-to-list 'helm-find-files-actions
-                       '("Find file in in new splited window `C-c w'" . helm-esw/find-file ) t)
+    (when (locate-library "es-windows")
+      ;; Add description
+      (add-to-list 'helm-find-files-actions
+                   '("Find file in in new splited window `C-c w'" . helm-esw/find-file ) t)
 
-          ;; Bind C-c C-w
-          (define-key helm-find-files-map (kbd "C-c w") 'helm-esw/run-find-file))))
+      ;; Bind C-c C-w
+      (define-key helm-find-files-map (kbd "C-c w") 'helm-esw/run-find-file)))
 
 ;;(eval-after-load 'helm-buffers
 (defun kzk/helm-buffers-hacks-setup ()
-    ;; (if (locate-library "elscreen")
-        ;; (progn
-          ;; ;; Add the shortcut description
-          ;; (setf (car (rassoc 'helm-find-buffer-on-elscreen helm-type-buffer-actions))
-                ;; "Display Buffer in Elscreen `C-c C-z'")
-          ;; (define-key helm-buffer-map (kbd "C-c C-z") 'helm-buffers-run-find-buffer-on-elscreen)))
-    (if (locate-library "es-windows")
-        (progn
-          ;; Add description
-          (add-to-list 'helm-type-buffer-actions
-                       '("Display buffer(s) in new splited window `C-c w'" . helm-esw/show-buffer) t)
-          ;; Bind C-c C-w
-          (define-key helm-buffer-map (kbd "C-c w") 'helm-esw/run-show-buffer))))
+    (when (locate-library "es-windows")
+      ;; Add description
+      (add-to-list 'helm-type-buffer-actions
+                   '("Display buffer(s) in new splited window `C-c w'" . helm-esw/show-buffer) t)
+      ;; Bind C-c C-w
+      (define-key helm-buffer-map (kbd "C-c w") 'helm-esw/run-show-buffer)))
 
 ;;(eval-after-load 'helm-projectile
 (defun kzk/helm-projectile-hacks-setup ()
-    ;; (if (locate-library "elscreen")
-        ;; (define-key helm-projectile-find-file-map (kbd "C-c C-z") 'helm-ff-run-elscreen-find-file))
     (if (locate-library "es-windows")
         (define-key helm-projectile-find-file-map (kbd "C-c w") 'helm-esw/run-find-file)))
+
+(defun kzk/helm-ag-hacks-setup ()
+  (message "running hacks")
+  (when (locate-library "es-windows")
+    (add-to-list 'helm-ag--actions
+                 '("Find match in in new splited window `C-c w'" . helm-esw/ag-find-file ) t)
+
+    ;; Bind C-c C-w
+    (message "binding run-ag-find-file")
+    (define-key helm-ag-map (kbd "C-c w") 'helm-esw/run-ag-find-file)))
 
 (provide 'funcs)
 ;;; funcs.el ends here

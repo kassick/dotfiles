@@ -106,6 +106,7 @@ Each entry is either:
   ;; add post-init hooks to setup some hacks on helm
   (eval-after-load 'helm-files #'kzk/helm-ff-hacks-setup)
   (eval-after-load 'helm-buffers #'kzk/helm-buffers-hacks-setup)
+  (eval-after-load 'helm-ag #'kzk/helm-ag-hacks-setup)
 
   ;; Force helm mode
   (helm-mode t)
