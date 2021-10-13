@@ -51,6 +51,7 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      (unicode-fonts :variables unicode-fonts-enable-ligatures t)
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
+     spacemacs-purpose
      theming
      helm
      (auto-completion :variables

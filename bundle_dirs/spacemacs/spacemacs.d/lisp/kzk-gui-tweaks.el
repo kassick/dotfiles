@@ -74,4 +74,9 @@
  ;;; keep consistent with the rest of the system
  mouse-wheel-flip-direction t)
 
+
+(with-eval-after-load 'window-purpose
+  (message "Forcing prefer-other-frame to popup new frame")
+  (setcdr (assq 'prefer-other-frame purpose-action-sequences)
+        '(purpose-display-maybe-pop-up-frame)))
 ;;; kzk-gui-tweaks.el ends here
