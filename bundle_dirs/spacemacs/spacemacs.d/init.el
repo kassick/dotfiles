@@ -385,7 +385,7 @@ It should only modify the values of Spacemacs settings."
    ;; Thus M-RET should work as leader key in both GUI and terminal modes.
    ;; C-M-m also should work in terminal mode, but not in GUI mode.
    ;; dotspacemacs-major-mode-emacs-leader-key (if window-system "<M-return>" "C-M-m")
-   dotspacemacs-major-mode-emacs-leader-key "M-N"
+   dotspacemacs-major-mode-emacs-leader-key "M-M"
 
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
