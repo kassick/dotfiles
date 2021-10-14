@@ -63,7 +63,10 @@ This function should only modify configuration layer settings."
                       ;; auto-completion-enable-sort-by-usage t
                       )
      git
-     version-control
+     (version-control :variables
+                      version-control-diff-tool 'git-gutter
+                      version-control-global-margin nil
+                      version-control-diff-side 'left)
      ;; (treemacs :variables treemacs-use-git-mode 'deferred)
      (spell-checking :variables
                      spell-checking-enable-by-default nil
