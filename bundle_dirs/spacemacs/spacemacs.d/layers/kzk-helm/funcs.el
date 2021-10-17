@@ -50,7 +50,6 @@
 
 (defun kzk-helm/ff-insert-file-name (candidate)
   "Inserts the candidate into the buffer. With prefix, insert full path"
-  (message "candidate is %S args is %S" candidate helm-current-prefix-arg)
   (cond ((eq nil helm-current-prefix-arg )
          ;; (message "rel path %S" (file-relative-name candidate))
          (insert (file-relative-name candidate)))
@@ -105,21 +104,22 @@
 
 ;;(eval-after-load 'helm-files
 (defun kzk/helm-ff-hacks-setup ()
+
   ;; Bind C-c i to insert file name and add it to the find file action list
-  (add-to-list 'helm-find-files-actions
-               '("Insert file name at point `C-c C-i'" . kzk-helm/ff-insert-file-name)
-               t)
+  ;; helm-ff actions
+  (add-to-list 'helm-find-files-actions '("Insert file name at point `C-c C-i'" . kzk-helm/ff-insert-file-name) t)
   (define-key helm-find-files-map (kbd "C-c C-i") 'kzk-helm/run-ff-insert-file-name)
+  ;; helm-type-file (apparently, ff does not inherit typefile actions)
+  (add-to-list 'helm-type-file-actions '("Insert file name at point `C-c C-i'" . kzk-helm/ff-insert-file-name) t)
+  (define-key helm-generic-files-map (kbd "C-c C-i") 'kzk-helm/run-ff-insert-file-name)
 
-    (when (locate-library "es-windows")
-      ;; Add description
-      (add-to-list 'helm-find-files-actions
-                   '("Find file in in new splited window `C-c w'" . helm-esw/find-file ) t)
+  (when (locate-library "es-windows")
+    (add-to-list 'helm-find-files-actions '("Find file in in new splited window `C-c w'" . helm-esw/find-file ) t)
+    (define-key helm-find-files-map (kbd "C-c w") 'helm-esw/run-find-file)
 
-      ;; Bind C-c C-w
-      (define-key helm-find-files-map (kbd "C-c w") 'helm-esw/run-find-file)))
+    (add-to-list 'helm-type-file-actions '("Find file in in new splited window `C-c w'" . helm-esw/find-file ) t)
+    (define-key helm-generic-files-map (kbd "C-c w") 'helm-esw/run-find-file)))
 
-;;(eval-after-load 'helm-buffers
 (defun kzk/helm-buffers-hacks-setup ()
     (when (locate-library "es-windows")
       ;; Add description
@@ -128,7 +128,6 @@
       ;; Bind C-c C-w
       (define-key helm-buffer-map (kbd "C-c w") 'helm-esw/run-show-buffer)))
 
-;;(eval-after-load 'helm-projectile
 (defun kzk/helm-projectile-hacks-setup ()
     (if (locate-library "es-windows")
         (define-key helm-projectile-find-file-map (kbd "C-c w") 'helm-esw/run-find-file)))
