@@ -8,6 +8,7 @@ export ZSH_CUSTOM="$ZSH_USER_LOCAL/custom"
 # Chase symlinks and avoid a lot of nonsense
 setopt chaselinks
 
+fpath+="$ZSH_CUSTOM/zfunc"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
