@@ -4,6 +4,9 @@ export ZSH=${HOME}/.oh-my-zsh
 # User machine local settings
 export ZSH_USER_LOCAL="$HOME/.local/share/zsh/"
 export ZSH_CUSTOM="$ZSH_USER_LOCAL/custom"
+if [ -d "$HOME/.local/bin" ] ; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
 
 # Chase symlinks and avoid a lot of nonsense
 setopt chaselinks
