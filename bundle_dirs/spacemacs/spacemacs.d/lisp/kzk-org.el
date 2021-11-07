@@ -52,6 +52,12 @@
         org-capture-bookmark nil
         org-startup-indented t)
 
+  ;;; allow ordered lists to use a. a) etc. as items.
+  ;;; this value must be set before org is loaded, otherwise we
+  ;;; must call org-element-update-syntax
+  (setq org-list-allow-alphabetical t)
+  (org-element-update-syntax)
+
   (add-hook 'org-mode-hook 'org-display-inline-images)
 
   (require 'kzk-org-babel)
