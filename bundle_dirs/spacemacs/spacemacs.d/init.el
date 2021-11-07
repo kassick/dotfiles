@@ -715,7 +715,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                                                    ; can not see what is
                                                    ; being selected when
                                                    ; lsp-mode highlights
-                                                   ; the current sumvol
+                                                   ; the current symbol
                             :background "papaya whip"
                             :foreground "#655370"))))
 
