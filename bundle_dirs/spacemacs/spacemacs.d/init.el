@@ -723,6 +723,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (require 'kzk-evil-init)
   (require 'kzk-gui-tweaks)
+  (require 'kzk-smart-home-end)
 
   (require 'kzk-devel)   ; devel stuff
   ;; (require 'kzk-latex)   ; latex-mode settings
