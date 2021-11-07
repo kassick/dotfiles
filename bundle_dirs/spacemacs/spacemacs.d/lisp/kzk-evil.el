@@ -23,6 +23,16 @@
 ;;
 
 ;;; Code:
+(when (not (boundp 'evil-redirect-digit-argument))
+  ;;; Evil refactored this function out of existence, causing several other packages to break :(
+  ;;; https://github.com/emacs-evil/evil/pull/1519/files , evil-common.el
+  ;;; This kludge should be necessary just for a while
+  (defmacro evil-redirect-digit-argument (map keys target)
+    (warn (concat "evil-redirect-digit-argument is deprecated -- "
+                  "see https://github.com/emacs-evil/evil/pull/1519. "
+                  "Called with args %S %S %S")
+          map keys target)
+     `(define-key ,map ,keys ,target)))
 
 (global-evil-matchit-mode t)
 
