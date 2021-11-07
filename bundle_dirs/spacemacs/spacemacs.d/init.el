@@ -62,6 +62,7 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip t
                       ;; auto-completion-enable-sort-by-usage t
                       )
+     multiple-cursors
      git
      (version-control :variables
                       version-control-diff-tool 'git-gutter
@@ -90,7 +91,8 @@ This function should only modify configuration layer settings."
              python-lsp-server 'pyright
              python-spacemacs-indent-guess nil
              python-formatter 'yapf)
-     ;; c-c++
+     (c-c++ :variables c-c++-backend 'lsp-clangd)
+     cmake
      ;; (scala :variables
      ;;        scala-backend 'scala-metals
      ;;        lsp-metals-server-command "~/.local/dev/metals/metals"
