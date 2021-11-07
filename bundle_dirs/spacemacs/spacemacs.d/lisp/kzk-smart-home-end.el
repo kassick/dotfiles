@@ -6,11 +6,11 @@
   "
   (interactive "^p")
   (or n (setq n 1))
-  (let ((opoint (point)))
-    (when (/= n 1)
-      (let ((line-move-visual t))
-        (line-move (1- n) t)))
+  (when (/= n 1)
+    (let ((line-move-visual t))
+      (line-move (1- n) t)))
 
+  (let ((opoint (point)))
     (defun point-or-bail ()
       (if (= (point) opoint)
           -1
@@ -43,13 +43,19 @@
   "
   (interactive "^p")
   (or n (setq n 1))
+
+  (when (/= n 1)
+    (let ((line-move-visual t))
+      (line-move (1- n) t)))
+
   (let ((opoint (point)))
-    (when (/= n 1)
-      (let ((line-move-visual t))
-        (line-move (1- n) t)))
     ;; Unlike `move-beginning-of-line', `move-end-of-line' doesn't
     ;; constrain to field boundaries, so we don't either.
-    (vertical-motion (cons (window-width) 0))
+
+    ;;; trick: only move to end of window when in visual-line-mode
+    ;;; otherwise, do not move
+    (when (bound-and-true-p visual-line-mode)
+      (vertical-motion (cons (window-width) 0)))
 
     (when (= opoint (point))
       (end-of-line 1))))
