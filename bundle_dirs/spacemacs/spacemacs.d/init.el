@@ -814,8 +814,11 @@ before packages are loaded."
 
   (with-eval-after-load 'helm (helm-mode t))
 
-  ;; Don't be annoying, emacs. C-x C-c is to close to EVERY OTHER SHORTCUT and can be used accidently too often. Also, no C-g on the confirmation prompt!? what the hell?
+  ;; Don't be annoying, emacs. C-x C-c is to close to EVERY OTHER SHORTCUT and
+  ;; can be used accidently too often. Also, no C-g on the confirmation prompt!?
+  ;; what the hell?
   (global-unset-key (kbd "C-x C-c"))
+  (global-unset-key (kbd "C-x C-z"))
 
   (setq evil-escape-delay 0.08)
   ;; (message "setting gcmh mode")
