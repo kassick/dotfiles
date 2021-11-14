@@ -1,0 +1,9 @@
+description: Oh-my-zsh setup
+actions:
+  - git_clone:
+      - url: https://github.com/robbyrussell/oh-my-zsh.git
+        to: ~/.oh-my-zsh
+  - mkdir: .local/share/zsh/custom/zfunc
+  - link: zshrc
+  - link_recursively: local
+  - copy_once: zprofile
