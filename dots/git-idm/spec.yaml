@@ -1,0 +1,10 @@
+description: Git identity manager
+actions:
+  - git_clone:
+      - url: https://github.com/samrocketman/git-identity-manager.git
+        to: ~/.local/share/git-idm
+        branch: main
+  - mkdir: .local/bin
+  - link:
+      - from: ~/.local/share/git-idm/git-idm
+        to: ~/.local/bin/git-idm
