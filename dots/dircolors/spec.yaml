@@ -1,0 +1,4 @@
+description: dircolors for solarized
+actions:
+  - link: dir_colors
+  - link_recursively: local
