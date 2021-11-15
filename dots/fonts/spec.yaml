@@ -1,0 +1,5 @@
+description: ttf fonts
+actions:
+  - link_recursively:
+      - local
+      - config
