@@ -1,6 +1,4 @@
-dot_select.txt
-dots/emacs.d/
-dots/oh-my-zsh/
-/bundle_dirs/spacemacs/spacemacs.d/customize.el
-/bundle_dirs/spacemacs/spacemacs.d/.spacemacs.env
 .dir-locals.el
+/dots/emacs/spacemacs.d/customize.el
+/dots/emacs/spacemacs.d/.spacemacs.env
+/.python-version
