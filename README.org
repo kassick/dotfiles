@@ -1,20 +1,6 @@
-#+TITLE: Kassick's DOT files documentation
+#+TITLE: Dot files
 #+AUTHOR: Rodrigo Kassick
 #+LANGUAGE: pt_BR
-#+LATEX_HEADER: \usepackage[margin=2cm,a4paper]{geometry}
-#+LATEX_HEADER: \usepackage[]{babel}
-#+LATEX_HEADER: \usepackage{ifxetex}
-#+LATEX_HEADER: \ifxetex
-#+LATEX_HEADER:     \usepackage{tgtermes}
-#+LATEX_HEADER: \else
-#+LATEX_HEADER:     \usepackage[utf-8]{inputenc}
-#+LATEX_HEADER:     \usepackage{times}              % pacote para usar fonte Adobe Times
-#+LATEX_HEADER:     \usepackage[T1]{fontenc}
-#+LATEX_HEADER: \fi
-#+TAGS: noexport(n) deprecated(d) success(s) failed(f) pending(p)
-#+EXPORT_SELECT_TAGS: export
-#+EXPORT_EXCLUDE_TAGS: noexport
-#+SEQ_TODO: TODO(t!) STARTED(s!) WAITING(w!) REVIEW(r!) PENDING(p!) | DONE(d!) CANCELLED(c!) DEFERRED(f!)
 #+STARTUP: overview indent
 #+OPTIONS: ^:nil
 #+OPTIONS: _:nil
@@ -23,44 +9,8 @@
 
 Dot files. Duh.
 
-* Commands
+Managed with [[https://github.com/kassick/dotdot][dotdot]].
 
-- ~dot~: Installs dot files on a new machine
-- ~update.sh~: Updates the current dot files
-
-** ~dot~
-
-- ~dot list~: lists available packages to install
-- ~dot install [pkg1] [pkg2] [...]~: Installs the package
-
-** ~update.sh~
-
-- Runs a recursive git update on the current repository.
-
-* DOT structure
-
-A package can be composed of the following components:
-- ~dot~ : A file or directory which will be symlinked to the user's home
-- ~bundle~ : A set of files that are needed by the package, but that are spread all over the user's home. E.g. ~.desktop~ files and other helper files.
-- =bundle_dir=: A set of directories that should be symlinked on the user's home
-- ~install~ : A script that runs after linking the dot and the bundles
-
-~dot~'s live in the ~dots~ directory. ~bundle~'s live in the ~bundle~ directory.
-
-~install~ scripts can live in any of the main directories, as long as they're called ~INSTALL-<some_name>~, where /some_name/ is the name of the package they manage.
-
-Install scripts are executed with CWD on the $HOME directory. An extra DOT_PATH environment variable is set to the path of the dotfiles main path, in case the script needs access to anything else.
-
-Install scripts can be used to clone external repositories, so we don't need to keep submodules and keep on checking them out and commiting sub-modules changes of current commit and all.
-
-* EMACS dot
-
-- dot: just a stub .emacs.d directory
-- bundle: the emacsclient.desktop launcher that's missing on recent fedore because.
-- install: The install script clones my emacs setup and runs the bootstrap script.
-
-* YCM dot
-
-- dot: none
-- bundle: the ycm.conf file. It loooks for a .clang_complete file with compiler flags (useful for editing headers) and for a compilation database from cmake or other build tool.
-- install: clones the YCM repository into ~/.local/dev/ycm, install needed packages and compiles YCM
+#+begin_src sh
+$ pip install git+https://github.com/kassick/dotdot
+#+end_src
