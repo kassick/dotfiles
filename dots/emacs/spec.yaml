@@ -1,0 +1,66 @@
+description: emacs setup with spacemacs
+
+common_actions: &link_spacemacs
+  - git_clone:
+      - url: https://github.com/syl20bnr/spacemacs
+        to: .emacs.d
+        branch: develop
+  - link: spacemacs.d
+
+
+fedora-compile-deps: &fedora-compile-deps
+  - execute:
+      - echo Will need password to install dependencies
+      - sudo dnf builddep emacs
+      - sudo dnf install ImageMagick-devel.x86_64
+      - sudo dnf install libgccjit-devel
+
+compile-emacs-28-git: &compile-emacs-28-git
+  - git_clone:
+      - url: git://git.sv.gnu.org/emacs.git
+        to: Sources/user/emacs
+        branch: emacs-28
+  - execute:
+      - cd ~/Sources/user/emacs
+      - ./autogen.sh
+      - |
+        ./configure \
+          --build x86_64-linux-gnu \
+          --prefix=/usr/local \
+          --sharedstatedir=/var/lib \
+          --localstatedir=/var/lib \
+          --enable-libsystemd \
+          --with-pop=yes \
+          --build x86_64-linux-gnu \
+          --enable-locallisppath=/etc/emacs:/usr/local/share/emacs/28/site-lisp:/usr/local/share/emacs/site-lisp:/usr/share/emacs/28/site-lisp:/usr/share/emacs/site-lisp \
+          --with-sound=alsa \
+          --without-gconf \
+          --with-mailutils \
+          --with-cairo \
+          --with-x=yes \
+          --with-x-toolkit=gtk3 \
+          --with-toolkit-scroll-bars \
+          --with-xwidgets \
+          --with-imagemagick \
+          --with-native-compilation
+      - make NATIVE_FULL_AOT=1 -j4
+      - echo Installation may require password again
+      - sudo make install
+
+emacs-client: &emacs-client
+  - link:
+      - from: emacs-client.desktop
+        to: .local/share/applications/emacsclient.desktop
+
+variants:
+  distro: &distro
+    - *link_spacemacs
+    - *emacs-client
+
+  fedora-emacs-28-git:
+    - *fedora-compile-deps
+    - *compile-emacs-28-git
+    - *link_spacemacs
+    - *emacs-client
+
+  default: *distro
