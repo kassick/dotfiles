@@ -97,13 +97,15 @@
 
   (with-eval-after-load 'general
     (general-define-key :keymaps 'company-mode-map
-                        "C-=" 'company-manual-begin
                         "C-c o" 'company-manual-begin
+                        ;; "C-=" 'company-manual-begin
+                        "C-;" 'company-manual-begin
                         "C-c f" 'company-files
                         "C-c y" 'company-yasnippet)
 
     (general-define-key :keymaps 'company-active-map
-                        "C-=" 'company-complete-common
+                        ;; "C-=" 'company-complete-common-or-cycle
+                        "C-;" 'company-complete-common-or-cycle
                         "M-h" #'company-quickhelp-manual-begin
                         "C-e" #'company-other-backend
                         "C-w" 'company-abort
@@ -111,8 +113,7 @@
                         "<left>" 'company-abort
                         "<right>" 'company-abort
                         "<home>" 'company-abort
-                        "<end>" 'company-abort
-                        )
+                        "<end>" 'company-abort)
 
     ;;; NO LINGERING COMPANY POPUP AFTER ESCAPING TO NORMAL
     ;;; This is very annoying
