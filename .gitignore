@@ -2,3 +2,5 @@
 /dots/emacs/spacemacs.d/customize.el
 /dots/emacs/spacemacs.d/.spacemacs.env
 /.python-version
+*.elc
+*.eln
