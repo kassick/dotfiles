@@ -86,7 +86,7 @@ Each entry is either:
   ;; Helm find files
   (setq helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
         helm-ff-file-name-history-use-recentf t
-        hhelm-ff-fuzzy-matching  nil)
+        helm-ff-fuzzy-matching  t)
 
   ;; Helm-M-x
   (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
@@ -122,8 +122,6 @@ Each entry is either:
 (defun kzk-helm/post-init-flyspell-correct-helm ()
   ;; Helm flyspell
 
-  (message "Post-init of helm-flyspell")
-  (print "Hello")
   (with-eval-after-load 'general
     (message "Settings keys for flyspell-mode-map")
     (general-define-key :keymaps 'flyspell-mode-map
