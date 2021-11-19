@@ -48,9 +48,6 @@
 ;; evilem on SPACE m
 (evilem-default-keybindings "\\" )
 
-;; evil embrace
-(add-hook 'org-mode-hook 'embrace-org-mode-hook)
-(evil-embrace-enable-evil-surround-integration)
 ;; MAP C-v
 ;; evil-args
 (general-define-key "L" '(evil-forward-arg :which-key "Arg Forward")

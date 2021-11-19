@@ -59,6 +59,7 @@
   (org-element-update-syntax)
 
   (add-hook 'org-mode-hook 'org-display-inline-images)
+  (add-hook 'org-mode-hook 'embrace-org-mode-hook)
 
   (require 'kzk-org-babel)
 

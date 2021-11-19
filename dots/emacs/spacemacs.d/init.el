@@ -730,7 +730,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; (require 'kzk-latex)   ; latex-mode settings
   (require 'kzk-org)     ; org-mode settings
   ;; (require 'kzk-headers) ; headers for files
-  ;(require 'kzk-embrace)
 
   ;; Extra code and customizations
   ;;(custom-set-faces '(default ((t (:slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Meslo LG S for Powerline")))))
@@ -781,6 +780,7 @@ before packages are loaded."
   (require 'kzk-evil)              ; my settings for evil. Load NOW, no layer
   (require 'kzk-window-management) ; window movement shortcuts
   (require 'kzk-shell)   ; shell tweaks
+  (require 'kzk-embrace)
 
   ;; Language tweaks
   (setq default-process-coding-system '(utf-8 . utf-8)) ; utf8

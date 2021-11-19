@@ -78,5 +78,6 @@
               :after 'kzk/del-advise-kill-surround-help-window)
   )
 
+(evil-embrace-enable-evil-surround-integration)
 (provide 'kzk-embrace)
 ;;; kzk-embrace.el ends here
