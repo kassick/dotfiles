@@ -30,35 +30,7 @@
   (message "Readjusting font for new frame %S" (if frame frame "before"))
   (let* ((frame-font (frame-parameter frame 'font)))
     (message "Setting frame font to \"%s\"" frame-font)
-    (set-face-attribute 'default frame :font frame-font))
-  ;; (catch 'break
-  ;;   (dolist (cur-font dotspacemacs-default-font)
-  ;;     (let* ((name (car cur-font))
-  ;;            (raw-props (cdr cur-font))
-  ;;            (props-no-powerline (spacemacs/mplist-remove raw-props :powerline-scale))
-  ;;            (props (spacemacs/mplist-remove props-no-powerline :powerline-offset))
-  ;;            (foundry (plist-get props ':foundry))
-  ;;            (full-name (s-trim (concat name " " foundry))))
-  ;;       (message "Trying \"%s\"" full-name)
-  ;;       (when (find-font (font-spec :name full-name))
-  ;;         (message "Setting default face to \"%s\"" full-name)
-  ;;         (apply 'set-face-attribute
-  ;;                'default nil
-  ;;                :family name
-  ;;                props)
-  ;;         (throw 'break t))))
-  ;;   (message "No valid font found :/"))
-  )
-
-
-    ;; ;; (spacemacs/set-default-font dotspacemacs-default-font)
-    ;; (set-face-attribute 'default nil
-    ;;                      :family "Fira Code"
-    ;;                      :foundry "Retina"
-    ;;                      :height 120
-    ;;                      :weight 'normal
-    ;;                      :width 'normal
-    ;;                      ))
+    (set-face-attribute 'default frame :font frame-font)))
 
 (defun kzk/set-frame-font (&optional frame)
   (run-at-time "3 seconds" nil (lambda () (kzk/set-default-face frame)))
