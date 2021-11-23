@@ -169,6 +169,10 @@ This function should only modify configuration layer settings."
                                     flx-ido
                                     ;; I prefer org in text mode
                                     org-bullets
+                                    ;;; helm-ls-git is kidnapping git-rebase buffers
+                                    ;;; and screwing with the experience
+                                    ;;; https://github.com/syl20bnr/spacemacs/issues/15089
+                                    helm-ls-git
                                     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
