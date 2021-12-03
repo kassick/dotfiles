@@ -103,9 +103,9 @@
 
 
 ;; Extract value to variable!
-(defun kzk/py-refactor-extract-arg (prefix new-name &rest)
+(defun kzk/py-refactor-extract-arg (new-name)
   "Extracts an argument to a variable immediately above the current statement"
-  (interactive "P\nsVariable Name: ")
+  (interactive "sVariable Name: ")
 
   (let* ((bounds (if (region-active-p)
                      (car (region-bounds)) ;; no support for non contiguous regions ...
