@@ -1,0 +1,9 @@
+description: Git identity manager
+actions:
+  - execute:
+    - cd /tmp
+    - wget -q  https://raw.githubusercontent.com/petervanderdoes/gitflow-avh/develop/contrib/gitflow-installer.sh
+    - export PREFIX=$HOME/.local
+    - export REPO_NAME=$HOME/.local/share/git-flow
+    - bash gitflow-installer.sh install stable
+    - rm gitflow-installer.sh
