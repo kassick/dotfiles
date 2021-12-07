@@ -34,7 +34,8 @@
           map keys target)
      `(define-key ,map ,keys ,target)))
 
-(global-evil-matchit-mode t)
+(add-hook 'prog-mode-hook (lambda () (evil-matchit-mode t)))
+(add-hook 'text-mode-hook (lambda () (evil-matchit-mode t)))
 
 (define-key evil-insert-state-map (kbd "C-v") 'yank)
 (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
