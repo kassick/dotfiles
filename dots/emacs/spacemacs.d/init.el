@@ -63,7 +63,7 @@ This function should only modify configuration layer settings."
                       ;; auto-completion-enable-sort-by-usage t
                       )
      multiple-cursors
-     git
+     (git :variables git-enable-magit-gitflow-plugin t)
      (version-control :variables
                       version-control-diff-tool 'git-gutter
                       version-control-global-margin nil
