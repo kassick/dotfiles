@@ -47,20 +47,20 @@ compile-emacs-28-git: &compile-emacs-28-git
       - echo Installation may require password again
       - sudo make install
 
-emacs-client: &emacs-client
+emacs-launcher: &emacs-launcher
   - link:
-      - from: emacs-client.desktop
-        to: .local/share/applications/emacsclient.desktop
+      - from: emacs.desktop
+        to: .local/share/applications/emacs.desktop
 
 variants:
   distro: &distro
     - *link_spacemacs
-    - *emacs-client
+    - *emacs-launcher
 
   fedora-emacs-28-git:
     - *fedora-compile-deps
     - *compile-emacs-28-git
     - *link_spacemacs
-    - *emacs-client
+    - *emacs-launcher
 
   default: *distro
