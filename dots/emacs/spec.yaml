@@ -47,6 +47,39 @@ compile-emacs-28-git: &compile-emacs-28-git
       - echo Installation may require password again
       - sudo make install
 
+compile-emacs-git-master: &compile-emacs-git-master
+  - git_clone:
+      - url: git://git.sv.gnu.org/emacs.git
+        to: Sources/user/emacs
+        branch: master
+  - execute:
+      - cd ~/Sources/user/emacs
+      - ./autogen.sh
+      - |
+        ./configure \
+          --build x86_64-linux-gnu \
+          --prefix=/usr/local \
+          --sharedstatedir=/var/lib \
+          --localstatedir=/var/lib \
+          --enable-libsystemd \
+          --with-pop=yes \
+          --build x86_64-linux-gnu \
+          --enable-locallisppath=/etc/emacs:/usr/local/share/emacs/29/site-lisp:/usr/local/share/emacs/site-lisp:/usr/share/emacs/29/site-lisp:/usr/share/emacs/site-lisp \
+          --with-sound=alsa \
+          --without-gconf \
+          --with-mailutils \
+          --with-cairo \
+          --with-x=yes \
+          --with-x-toolkit=gtk3 \
+          --with-pgtk \
+          --with-toolkit-scroll-bars \
+          --without-xwidgets \
+          --with-imagemagick \
+          --with-native-compilation
+      - make NATIVE_FULL_AOT=1 -j4
+      - echo Installation may require password again
+      - sudo make install
+
 emacs-launcher: &emacs-launcher
   - link:
       - from: emacs.desktop
@@ -60,6 +93,12 @@ variants:
   fedora-emacs-28-git:
     - *fedora-compile-deps
     - *compile-emacs-28-git
+    - *link_spacemacs
+    - *emacs-launcher
+
+  fedora-emacs-git-master:
+    - *fedora-compile-deps
+    - *compile-emacs-git-master
     - *link_spacemacs
     - *emacs-launcher
 
