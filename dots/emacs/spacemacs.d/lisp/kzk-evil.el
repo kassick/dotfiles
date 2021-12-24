@@ -59,6 +59,8 @@
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
 (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 
+;;; missing from spacemacs PR :/
+(defalias 'evil-digit-argument-or-evil-beginning-of-visual-line 'evil-beginning-of-visual-line)
 
 (provide 'kzk-evil)
 ;;; kzk-evil.el ends here
