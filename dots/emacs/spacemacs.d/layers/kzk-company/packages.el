@@ -43,7 +43,7 @@
   :group 'kzk-company)
 
 (defun kzk-company/post-init-company ()
-  (setq company-idle-delay 2
+  (setq company-idle-delay 1
         ;; company-transformers '(company-sort-by-backend-importance)
         company-selection-wrap-around t
         company-show-numbers t
@@ -96,31 +96,38 @@
   ;; ;;(define-key company-active-map (kbd ;;"S-TAB" 'company-select-previous)
 
   (with-eval-after-load 'general
-    (general-define-key :keymaps 'company-mode-map
-                        "C-c o" 'company-manual-begin
-                        ;; "C-=" 'company-manual-begin
-                        "C-;" 'company-manual-begin
-                        "C-c f" 'company-files
-                        "C-c y" 'company-yasnippet)
+    (with-eval-after-load 'company
+      (general-define-key :keymaps 'company-mode-map
+                          "C-c o" 'company-manual-begin
+                          "C-;" 'company-manual-begin
+                          "C-c f" 'company-files
+                          "C-c y" 'company-yasnippet)
 
-    (general-define-key :keymaps 'company-active-map
-                        ;; "C-=" 'company-complete-common-or-cycle
-                        "C-;" 'company-complete-common-or-cycle
-                        "M-h" #'company-quickhelp-manual-begin
-                        "C-e" #'company-other-backend
-                        "C-w" 'company-abort
-                        "<C-backspace>" 'company-abort
-                        "<left>" 'company-abort
-                        "<right>" 'company-abort
-                        "<home>" 'company-abort
-                        "<end>" 'company-abort)
+      (general-define-key :keymaps 'company-active-map
+                          "C-;" 'company-complete-common-or-cycle
+                          "M-h" #'company-quickhelp-manual-begin
+                          "C-e" #'company-other-backend
+                          "C-w" 'company-abort
+                          "<C-backspace>" 'company-abort
+                          )
+
+      (general-define-key :keymaps 'company-active-map
+                          :predicate '(company-explicit-action-p)
+                          "RET" 'company-complete-selection
+                          "<return>" 'company-complete-selection
+                          "<home>" 'company-select-first
+                          "<end>" 'company-select-last
+                          )
+      )
+    )
 
     ;;; NO LINGERING COMPANY POPUP AFTER ESCAPING TO NORMAL
     ;;; This is very annoying
     (with-eval-after-load 'evil
       (add-hook 'evil-insert-state-exit-hook 'company-abort))
+
+    ;;; end of kzk-company/post-init-company
     )
-  )
 
 (defun kzk-company/post-init-company-quickhelp ()
   (company-quickhelp-mode 1)
