@@ -100,6 +100,9 @@ This function should only modify configuration layer settings."
      ;;        scala-enable-eldoc t)
      ;; (rust :variables rust-backend 'lsp)
      javascript
+     (typescript ;; :variables
+                 ;; typescript-linter 'eslint ; let lsp to the linting
+                 )
      ;; cscope
      ;; fsharp
      ;; csharp
