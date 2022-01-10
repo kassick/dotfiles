@@ -32,7 +32,8 @@
 (defconst kzk-company-packages
   '(company
     company-quickhelp
-    helm-company))
+    helm-company
+    company-posframe))
 
 (defcustom kzk-company/ignored-files-extensions
   '("fbd_latexmk" "aux" "log" "pdf" "bbl"
@@ -142,5 +143,14 @@
     (define-key company-mode-map (kbd "C-:") 'helm-company)
     (define-key company-active-map (kbd "C-:") 'helm-company))
   )
+
+(defun kzk-company/init-company-posframe ()
+  ;;; this fixes an issue with a very slow posframe -- something in GNOME interferes with emacs frames causing delays
+  ;;; https://github.com/tumashu/company-posframe/issues/2#issuecomment-609945180
+  ;;; This is a workaround to have posframe working without 2sec lag under gnome
+  ;;; see documentation for possible values. 'hide may introduce flickr, but I haven't noticed it with pgtk builds
+  (setq x-gtk-resize-child-frames 'hide)
+
+  (company-posframe-mode))
 
 ;;; packages.el ends here
