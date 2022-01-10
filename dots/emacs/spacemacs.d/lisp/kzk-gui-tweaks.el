@@ -24,7 +24,6 @@
 
 ;;; Code:
 
-(provide 'kzk-gui-tweaks)
 
 (defun kzk/set-default-face (&optional frame)
   (message "Readjusting font for new frame %S" (if frame frame "before"))
@@ -52,3 +51,5 @@
   (setcdr (assq 'prefer-other-frame purpose-action-sequences)
         '(purpose-display-maybe-pop-up-frame)))
 ;;; kzk-gui-tweaks.el ends here
+
+(provide 'kzk-gui-tweaks)
