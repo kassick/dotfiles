@@ -74,6 +74,7 @@ This function should only modify configuration layer settings."
                      spell-checking-enable-auto-dictionary t
                      ;; enable-flyspell-auto-completion t
                      )
+     dtrt-indent
      (lsp :variables
           lsp-keymap-prefix "C-c C-l"
           lsp-ui-doc-enable nil
