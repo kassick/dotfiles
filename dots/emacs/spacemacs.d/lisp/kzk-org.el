@@ -30,7 +30,7 @@
         ;; revert-without-query (quote ("google.org"))
         org-id-method (quote uuidgen)
                                         ;(setq org-latex-listings 'listings)
-        org-hide-emphasis-markers t ;; to hide the *,=, or / markers
+        ;; org-hide-emphasis-markers t ;; to hide the *,=, or / markers
         org-pretty-entities t       ;; to have \alpha, \to and others display as utf8 http://orgmode.org/manual/Special-symbols.html
         org-hide-leading-stars t
         org-alphabetical-lists t
