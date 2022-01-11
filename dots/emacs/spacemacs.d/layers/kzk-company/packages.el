@@ -131,9 +131,6 @@
     )
 
 (defun kzk-company/post-init-company-quickhelp ()
-  (company-quickhelp-mode 1)
-
-  (setq company-quickhelp-delay 0.5)
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "M-h") #'company-quickhelp-manual-begin))
   )
