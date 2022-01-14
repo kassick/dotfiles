@@ -11,27 +11,19 @@
 
 ;;; Commentary:
 
-;; See the Spacemacs documentation and FAQs for instructions on how to implement
-;; a new layer:
-;;
-;;   SPC h SPC layers RET
-;;
-;;
-;; Briefly, each package to be installed or configured by this layer should be
-;; added to `kzk-company-packages'. Then, for each package PACKAGE:
-;;
-;; - If PACKAGE is not referenced by any other Spacemacs layer, define a
-;;   function `kzk-company/init-PACKAGE' to load and initialize the package.
-
-;; - Otherwise, PACKAGE is already referenced by another Spacemacs layer, so
-;;   define the functions `kzk-company/pre-init-PACKAGE' and/or
-;;   `kzk-company/post-init-PACKAGE' to customize the package as it is loaded.
 
 ;;; Code:
 
 (defconst kzk-company-packages
   '(company
-    helm-company))
+    helm-company
+
+    ;;; company-box has some lag if we keep pressing next/previous key
+    ;;; only AFTER pressing C-h to get company-box-doc
+    ;;; usable, but annoying
+    ;; company-box
+
+    ))
 
 (defcustom kzk-company/ignored-files-extensions
   '("fbd_latexmk" "aux" "log" "pdf" "bbl"
@@ -40,6 +32,14 @@
   "List of extensions for dabbrev to ignore during completion"
   :type '(repeat string)
   :group 'kzk-company)
+
+(defun kzk-company/post-init-company-box ()
+  (setq company-frontends '(company-box-frontend
+                            company-preview-frontend
+                            company-echo-metadata-frontend
+          )
+        )
+)
 
 (defun kzk-company/post-init-company ()
   (setq company-idle-delay 1
