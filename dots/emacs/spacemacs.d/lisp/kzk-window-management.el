@@ -36,16 +36,19 @@
 
 ;;; }}}
 
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x p") 'evil-window-mru)
+(general-define-key :keymaps 'global
+                    "C-x <up>"  'windmove-up
+                    "C-x <down>" 'windmove-down
+                    "C-x <left>" 'windmove-left
+                    "C-x <right>" 'windmove-right
+                    "C-x p" 'evil-window-mru
 
-(global-set-key (kbd "C-x C-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "C-x C-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "C-x C-<down>") 'shrink-window)
-(global-set-key (kbd "C-x C-<up>") 'enlarge-window)
+                    ;; resize
+                    "C-x C-<left>" 'shrink-window-horizontally
+                    "C-x C-<right>" 'enlarge-window-horizontally
+                    "C-x C-<down>" 'shrink-window
+                    "C-x C-<up>" 'enlarge-window
+)
 
 (general-define-key :keymaps 'global
                     "C-x 7 2" 'esw/select-window
