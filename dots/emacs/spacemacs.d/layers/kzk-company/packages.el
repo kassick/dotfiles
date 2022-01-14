@@ -31,7 +31,6 @@
 
 (defconst kzk-company-packages
   '(company
-    company-quickhelp
     helm-company))
 
 (defcustom kzk-company/ignored-files-extensions
@@ -105,7 +104,6 @@
 
       (general-define-key :keymaps 'company-active-map
                           "C-;" 'company-complete-common-or-cycle
-                          "M-h" #'company-quickhelp-manual-begin
                           "C-e" #'company-other-backend
                           "C-w" 'company-abort
                           "<C-backspace>" 'company-abort
@@ -128,11 +126,6 @@
 
     ;;; end of kzk-company/post-init-company
     )
-
-(defun kzk-company/post-init-company-quickhelp ()
-  (with-eval-after-load 'company
-    (define-key company-active-map (kbd "M-h") #'company-quickhelp-manual-begin))
-  )
 
 (defun kzk-company/post-init-helm-company ()
   (with-eval-after-load 'company
