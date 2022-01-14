@@ -11,7 +11,6 @@
 
 ;;; Commentary:
 
-
 ;;; Code:
 
 (defconst kzk-company-packages
@@ -23,6 +22,10 @@
     ;;; usable, but annoying
     ;; company-box
 
+    ;;; posframe had some strange behaviour when being used in emacsclient. The
+    ;;; magic flag to make the popup update (see below) would not fix the
+    ;;; issue... but not it's working... let's test it!
+    company-posframe
     ))
 
 (defcustom kzk-company/ignored-files-extensions
@@ -33,6 +36,7 @@
   :type '(repeat string)
   :group 'kzk-company)
 
+
 (defun kzk-company/post-init-company-box ()
   (setq company-frontends '(company-box-frontend
                             company-preview-frontend
@@ -41,6 +45,20 @@
         )
 )
 
+(defun kzk-company/init-company-posframe ()
+    ;;; this fixes an issue with a very slow posframe -- something in GNOME interferes with emacs frames causing delays
+    ;;; https://github.com/tumashu/company-posframe/issues/2#issuecomment-609945180
+    ;;; This is a workaround to have posframe working without 2sec lag under gnome
+    ;;; see documentation for possible values. 'hide may introduce flickr, but I haven't noticed it with pgtk builds
+    (setq x-gtk-resize-child-frames 'hide)
+
+    (company-posframe-mode)
+
+    (setq company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
+                              company-preview-frontend
+                              company-echo-metadata-frontend)))
+
+
 (defun kzk-company/post-init-company ()
   (setq company-idle-delay 1
         ;; company-transformers '(company-sort-by-backend-importance)
@@ -48,11 +66,11 @@
         company-show-numbers t
         ;; company-require-match nil
         ;; company-auto-complete #'kzk/company-visible-and-explicit-action-p
-        company-frontends '(company-pseudo-tooltip-unless-just-one-frontend-with-delay
-                            company-preview-frontend
-                            company-echo-metadata-frontend
-                            ;;kzk/company-doc-buffer-frontend)
-                            )
+        ;; company-frontends '(company-pseudo-tooltip-unless-just-one-frontend-with-delay
+        ;;                     company-preview-frontend
+        ;;                     company-echo-metadata-frontend
+        ;;                     ;;kzk/company-doc-buffer-frontend)
+        ;;                    )
 
         )
 
