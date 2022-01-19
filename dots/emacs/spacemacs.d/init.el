@@ -354,7 +354,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font or prioritized list of fonts. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
-   dotspacemacs-default-font '(("Iosevka Light 11" :weight light :width expanded :height 113)
+   dotspacemacs-default-font '(("Iosevka" :weight light :width expanded :size 11.3)
                                ;; ("Fira Code" :height 120)
                                ;; ("Meslo LG S for Powerline"
                                ;;  :height 113
