@@ -91,12 +91,6 @@
                             (setq this-command func
                                   last-command func)
                             (call-interactively func)
-                            ;; (let ((res (call-interactively func)))
-                            ;;   (message "calling func %S resulted in %S" func rec)
-                            ;;   res)
-                            (message "movement at %S" (point))
-
-                            (message "inclue visible %S" include-invisible)
 
                             (unless include-invisible
                               (let ((ov (car (overlays-at (point)))))
