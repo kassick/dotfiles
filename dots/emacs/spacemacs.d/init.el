@@ -694,39 +694,51 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (setq theming-modifications          ; fix some way-too-dark settings on ample
-        `((ample (hl-line :background "gray20")
-                 (header-line :background "#3d3d3f"
-                              :foreground "white smoke"
-                              :weight semi-bold)
-                 (region :background "gray30")
-                 (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
-                 (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold)
-                 )
-          (spacemacs-light (font-latex-bold-face   ; fix latex bold looking
-                                                   ; weird in light theme
-                            :foreground "#6c4173"
-                            :weight bold)
-                           ;;; fix some issues with auto-highlight-symbol default faces vs spacemacs-light
-                           (ahs-plugin-default-face ; fix auto-highlight looking
-                                                    ; exagerated and hiding the
-                                                    ; cursor under the char
-                            :foreground "black"
-                            :background "papaya whip")
-                           (ahs-plugin-default-face-unfocused
-                            :foreground "black"
-                            :background "antique white")
-                           (ahs-face :inherit ahs-plugin-default-face)
-                           (ahs-face-unfocused :inherit ahs-plugin-default-face-unfocused)
-                           (highlight              ; Fix using the same
-                                                   ; color as visual
-                                                   ; selection, as then we
-                                                   ; can not see what is
-                                                   ; being selected when
-                                                   ; lsp-mode highlights
-                                                   ; the current symbol
-                            :background "papaya whip"
-                            :foreground "#655370"))))
+  (setq theming-modifications
+        `(
+
+          ;; --- Ample theme ---
+          (ample
+           ;; fix some way-too-dark settings on ample
+           (hl-line :background "gray20")
+           (header-line :background "#3d3d3f"
+                        :foreground "white smoke"
+                        :weight semi-bold)
+           (region :background "gray30")
+           (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
+           (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold))
+
+          ;; --- Spacemacs Light ---
+          (spacemacs-light
+
+           ;; fix latex bold looking weird in light theme
+           (font-latex-bold-face :foreground "#6c4173"
+                                 :weight bold)
+
+           ;; fix some issues with auto-highlight-symbol default faces vs spacemacs-light
+           ;; fix auto-highlight looking exagerated and hiding the cursor under the char
+           (ahs-plugin-default-face :foreground "black"
+                                    :background "papaya whip")
+           (ahs-plugin-default-face-unfocused :foreground "black"
+                                              :background "antique white")
+           (ahs-face :inherit ahs-plugin-default-face)
+           (ahs-face-unfocused :inherit ahs-plugin-default-face-unfocused)
+
+           ;; Fix using the same color as visual selection, as then we can not
+           ;; see what is being selected when lsp-mode highlights the current
+           ;; symbol
+           (highlight :background "papaya whip"
+                      :foreground "#655370"))
+
+          ;; --- Spacemacs Dark ---
+          (spacemacs-dark
+
+           ;; Fix using the same color as visual selection, as then we can not
+           ;; see what is being selected when lsp-mode highlights the current
+           ;; symbol
+           (highlight :background "#5f5c70"
+                      :foreground "#b2b2b2"))
+          ))
 
   (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
 
