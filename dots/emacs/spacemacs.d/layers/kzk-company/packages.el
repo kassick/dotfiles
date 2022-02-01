@@ -51,6 +51,7 @@
     ;;; This is a workaround to have posframe working without 2sec lag under gnome
     ;;; see documentation for possible values. 'hide may introduce flickr, but I haven't noticed it with pgtk builds
     (setq x-gtk-resize-child-frames 'hide)
+    (setq company-tooltip-minimum-width 40)
 
     (company-posframe-mode)
 
