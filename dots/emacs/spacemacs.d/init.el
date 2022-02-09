@@ -2,6 +2,39 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(setq kzk/hack-original-display (getenv "DISPLAY"))
+(defun kzk/hack-reset-original-display-env-var (&optional frame)
+  ;;; the message will insist it's resetting from :0 to :0, but if this is not
+  ;;; executed, (getenv "DISPLAY") will return the wrong value because reasons
+  (message "Resetting DISPLAY from %S to %S" (getenv "DISPLAY") kzk/hack-original-display)
+  (run-at-time "3 seconds" nil (lambda () (setenv "DISPLAY" kzk/hack-original-display)))
+  (remove-hook 'after-make-frame-functions #'kzk/hack-reset-original-display-env-var)
+  "$DISPLAY kludge"
+  )
+
+(add-hook 'after-make-frame-functions #'kzk/hack-reset-original-display-env-var)
+
+
+;; (message "early display is %S in process %S" (getenv "DISPLAY") (emacs-pid))
+;; keep around for debug, may be necessary
+;; (defun handle-set-env (VARIABLE &optional VALUE SUBSTITUTE-ENV-VARS)
+
+;;   (when (equal VARIABLE "DISPLAY")
+;;     (require 'backtrace)
+;;     (message "Calling setenv %S with value %S subs %S in process %S" VARIABLE VALUE SUBSTITUTE-ENV-VARS (emacs-pid))
+;;     (message "from %S" (backtrace-to-string)))
+;;   )
+;; (defun handle-set-env-internal (ENV VARIABLE &optional VALUE KEEP-EMPTY)
+
+;;   (when (equal VARIABLE "DISPLAY")
+;;     (message "Calling setenv-internal %S with value %S keep empty %S in process %S" VARIABLE VALUE KEEP-EMPTY (emacs-pid))
+;;     (require 'backtrace)
+;;     (message "from %S" (backtrace-to-string)))
+;;   )
+
+;; (advice-add 'setenv :before 'handle-set-env)
+;; (advice-add 'setenv-internal :before 'handle-set-env-internal)
+
 (if (and (fboundp 'native-comp-available-p)
          (native-comp-available-p))
     (message "Native compilation is available")
