@@ -28,15 +28,18 @@
 (defun kzk/set-default-face (&optional frame)
   (message "Readjusting font for new frame %S" (if frame frame "before"))
   (let* ((frame-font (frame-parameter frame 'font)))
-    (message "Setting frame font to \"%s\"" frame-font)
-    (set-face-attribute 'default frame :font frame-font)))
+    (message "Readjusting frame font")
+    (set-face-attribute 'default frame :font frame-font))
+    "Frame font set"
+  )
 
 (defun kzk/set-frame-font (&optional frame)
   (run-at-time "3 seconds" nil (lambda () (kzk/set-default-face frame)))
   (remove-hook 'after-make-frame-functions #'kzk/set-frame-font)
+  "Font Adjusted"
   )
 
-(add-hook 'after-make-frame-functions #'kzk/set-frame-font)
+;(add-hook 'after-make-frame-functions #'kzk/set-frame-font)
 
 (setq
  ;;; enable horizontal scrolling
