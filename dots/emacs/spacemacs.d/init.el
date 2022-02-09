@@ -125,6 +125,7 @@ This function should only modify configuration layer settings."
              python-lsp-server 'pyright
              python-spacemacs-indent-guess nil
              python-formatter 'yapf)
+     rust
      (c-c++ :variables c-c++-backend 'lsp-clangd)
      cmake
      ;; (scala :variables
