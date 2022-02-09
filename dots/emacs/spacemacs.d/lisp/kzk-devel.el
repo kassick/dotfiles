@@ -326,5 +326,8 @@ called with a prefix, kills the window"
             (setq tab-always-indent t)))
 
 
+(add-hook 'makefile-mode-hook
+          (lambda ()
+            (setq-local indent-line-function 'indent-relative)))
 (provide 'kzk-devel)
 ;;; kzk-devel.el ends here
