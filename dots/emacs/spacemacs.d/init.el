@@ -770,7 +770,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
            ;; see what is being selected when lsp-mode highlights the current
            ;; symbol
            (highlight :background "#5f5c70"
-                      :foreground "#b2b2b2"))
+                      :foreground "#b2b2b2")
+           (default :foreground "#c1c1c1")
+           (scrollbar :foreground "gray52"))
+
           ))
 
   (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
