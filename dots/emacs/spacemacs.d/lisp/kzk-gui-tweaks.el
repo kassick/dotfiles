@@ -41,6 +41,30 @@
 
 ;(add-hook 'after-make-frame-functions #'kzk/set-frame-font)
 
+(defun kzk/delete-help-window ()
+  "Deletes the first window displaying a help buffer"
+  (interactive)
+  (-if-let ( help-window (-first (lambda (wnd)
+                                   (with-current-buffer (window-buffer wnd)
+                                     (eq major-mode 'help-mode)))
+                                 (window-list)) )
+      (delete-window help-window)
+      ))
+
+(with-eval-after-load 'general
+  (general-define-key
+   :keymaps 'global
+   "C-h D" '(kzk/delete-help-window :which-key "Delete help window"))
+
+  (general-define-key
+   :keymaps 'global
+   :prefix dotspacemacs-leader-key
+   :states '(normal motion visual)
+
+   "hD" '(kzk/delete-help-window :which-key "Delete help window")
+   ))
+
+
 (setq
  ;;; enable horizontal scrolling
  mouse-wheel-tilt-scroll t
