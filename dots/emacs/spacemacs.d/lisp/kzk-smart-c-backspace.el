@@ -129,42 +129,6 @@
     ;; either at indent or no smartparens
     (apply fn args)))
 
-;; (defun kzk/around-clean-aindent--bsunindent (fn &rest args)
-;;   "Checks if we're erasing an openin parenthesis and call sp-backward-delete-char instead"
-
-;;   (if (bound-and-true-p smartparens-mode)
-;;       (cond
-
-;;        ;; inside parenthesis with some space to the left, delete all space inside the parenthesis
-;;        ( (and (looking-back "(\s+")
-;;               (looking-at "\s*)") )
-;;          (message "inside parenthesis, zapping ")
-;;          (ignore-errors (zap-up-to-char 1 ?\) ))
-;;          (ignore-errors (zap-up-to-char -1 ?\( )) )
-
-;;        ;; cursor outsize of a close parenthesis plus space; erase up to parenthesis
-;;        ( (looking-back ")\s+")
-;;          (zap-up-to-char -1 ?\) ) )
-
-;;        ;; cursor right outside of closing parenthesis; cal sp-backward-delete-char
-;;        ( (char-equal (char-before) ?\) ) (call-interactively 'sp-backward-delete-char) )
-
-;;        ;; cursor to the right of an open parenthesis; smart-parens delete it
-;;        ( (char-equal (char-before) ?\( )  (call-interactively 'sp-backward-delete-char) )
-
-;;        ;; default case: call clean-aindent--bsunindent
-;;        ( t (apply fn args)) )
-
-;;     ;; if not smartparens
-;;     (apply fn args)
-;;     )
-
-;;   ;; (if (and (bound-and-true-p smartparens-mode)
-;;   ;;          (char-equal (char-before) ?\( ))
-;;   ;;     (call-interactively 'sp-backward-delete-char)
-;;   ;;   (apply fn args))
-;;   )
-
 (advice-add 'clean-aindent--bsunindent :around #'kzk/around-clean-aindent--bsunindent)
 (with-eval-after-load 'clean-aindent-mode
   (general-define-key :keymaps 'clean-aindent-mode--keymap
