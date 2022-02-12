@@ -13,62 +13,118 @@
           (backward-delete-char-untabify arg)
         (clean-aindent--bsunindent arg)))
 
+(setq kzk/smart-kill-word-mode-special-stoppers-list
+      '((python-mode . (":" "->"))))
+
+(defun kzk/smart-kill-backwards-mode-stopper-regex ()
+  (let ((mode-cons (or (assq major-mode kzk/smart-kill-word-mode-special-stoppers-list)
+                       (assq t kzk/smart-kill-word-mode-special-stoppers-list))))
+    (when mode-cons
+      (string-join (cdr mode-cons) "\\|"))
+    )
+  )
+
+(defun kzk/smart-kill-looking-at-stopper-backwards()
+  (-if-let* ((regexp (kzk/smart-kill-backwards-mode-stopper-regex)))
+      (looking-back regexp)))
+
+(defun kzk/smart-kill-backwards-stopper-before-word ()
+  "If there's a stopper before the last backwards word, return it's ending position"
+  (-if-let  (regexp (kzk/smart-kill-backwards-mode-stopper-regex))
+      (let* ((prev-word (save-excursion
+                          (backward-word)
+                          (point)))
+             (prev-stopper (save-excursion
+                             (search-backward-regexp regexp prev-word t))))
+    (when (and prev-stopper (< prev-word prev-stopper))
+      (match-end 0))) ))
+
 (defun kzk/around-clean-aindent--bsunindent (fn &rest args)
-  "Checks if we're erasing an openin parenthesis and call sp-backward-delete-char instead"
+  "Checks if we're erasing an opening pair or some special sequence
+ that should be treated as a word in some language. Adds more
+ stops and is very conservative erasing pairs
+
+ Calling bs-unindent with this advice will result in the following sequence:
+
+ def some(other) -> thing: pass|
+ def some(other) -> thing: |
+ def some(other) -> thing:|
+ def some(other) -> thing|
+ def some(other) -> |
+ def some(other) ->|
+ def some(other) ->|
+ def some(other)|
+ def some(other|)
+ def some(|)
+ def some|
+ def |
+ |
+"
 
   (if (and (not (clean-aindent--inside-indentp))
            (bound-and-true-p smartparens-mode))
 
-     (let* ((opening-regex (sp--get-opening-regexp))
-            (closing-regex (sp--get-closing-regexp))
-            (closing-pair-and-spaces-regex (concat closing-regex "[[:space:]]+"))
-            (opening-pair-and-spaces-regex (concat opening-regex "[[:space:]]+")))
+      ;; def some(other) ->|
+      (if (kzk/smart-kill-looking-at-stopper-backwards)
+            (progn
+              (delete-region (match-beginning 0) (match-end 0)) ; def some(other) |
+              (delete-horizontal-space t))                      ; def some(other)|
 
-       (cond
+        ;; def some(other) -> thing|
+        (-if-let (last-stopper (kzk/smart-kill-backwards-stopper-before-word))
+          (delete-region last-stopper (point)) ; def some(other) ->|
 
-        ;; some ( thing )     |
-        ( (looking-back closing-pair-and-spaces-regex)
-          (delete-horizontal-space t))  ; some ( thing )|
+          ;; now handle parens
+          (let* ((opening-regex (sp--get-opening-regexp))
+                 (closing-regex (sp--get-closing-regexp))
+                 (closing-pair-and-spaces-regex (concat closing-regex "[[:space:]]+"))
+                 (opening-pair-and-spaces-regex (concat opening-regex "[[:space:]]+")))
 
-        ;; some( thing )|
-        ( (looking-back closing-regex)
-          (sp-backward-delete-char)     ; some( thing |)
-          (delete-horizontal-space t))  ; some( thing|)
+            (cond
 
-        ;; some ( |thing )
-        ( (looking-back opening-pair-and-spaces-regex)
-          (delete-horizontal-space t))  ; some(|thing)
+             ;; some ( thing )     |
+             ( (looking-back closing-pair-and-spaces-regex)
+               (delete-horizontal-space t))  ; some ( thing )|
 
-        ;; some (|  ) thing      or
-        ;; some (|) thing        or
-        ;; some (|other) thing   or
-        ;; some (| } thing       or  (not a pair)
-        ;; some (|other } thing      (not a pair)
-        ( (looking-back opening-regex)
+             ;; some( thing )|
+             ( (looking-back closing-regex)
+               (sp-backward-delete-char)     ; some( thing |)
+               (delete-horizontal-space t))  ; some( thing|)
 
-          (let* ((thing (sp-get-thing t))
-                 (thing-contents (when thing (buffer-substring (+ (plist-get thing :beg) 1)
-                                                               (- (plist-get thing :end) 1)))))
-            ;; thing will be some plist if we are inside a valid pair
-            ;; or nil in case of an invalid pair
-            (if (not thing-contents)
-                ;; if not (unbalanced pair) fallback to clean-aindent
-                (apply fn args)
+             ;; some ( |thing )
+             ( (looking-back opening-pair-and-spaces-regex)
+               (delete-horizontal-space t))  ; some(|thing)
 
-              ;; inside a valid pair
-              (if (length= (string-trim thing-contents) 0)
-                    ;; empty pair
-                  (delete-region (plist-get thing :beg)
-                                 (plist-get thing :end)) ; some | thing
-                ;; non-empty pair
-                (left-char))                             ; some |(other) thing
+             ;; some (|  ) thing      or
+             ;; some (|) thing        or
+             ;; some (|other) thing   or
+             ;; some (| } thing       or  (not a pair)
+             ;; some (|other } thing      (not a pair)
+             ( (looking-back opening-regex)
 
-                ;; either way, clean horizontal space to the left
-                (delete-horizontal-space t)))  ; some| thing         or
-                                               ; some|other thing
-              )
+               (let* ((thing (sp-get-thing t))
+                      (thing-contents (when thing (buffer-substring (+ (plist-get thing :beg) (length (plist-get thing :op)))
+                                                                    (- (plist-get thing :end) (length (plist-get thing :cl)))))))
+                 ;; thing will be some plist if we are inside a valid pair
+                 ;; or nil in case of an invalid pair
+                 (if (not thing-contents)
+                     ;; if not (unbalanced pair) fallback to clean-aindent
+                     (apply fn args)
 
-        ( t (apply fn args)) ))
+                   ;; inside a valid pair
+                   (if (length= (string-trim thing-contents) 0)
+                       ;; empty pair
+                       (delete-region (plist-get thing :beg)
+                                      (plist-get thing :end)) ; some | thing
+                     ;; non-empty pair
+                     (left-char))                             ; some |(other) thing
+
+                   ;; either way, clean horizontal space to the left
+                   (delete-horizontal-space t)))  ; some| thing         or
+                                        ; some|other thing
+               )
+
+             ( t (apply fn args)) )) ))
 
     ;; either at indent or no smartparens
     (apply fn args)))
