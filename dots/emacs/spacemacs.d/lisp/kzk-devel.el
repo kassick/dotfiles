@@ -277,9 +277,6 @@
 ;; (with-eval-after-load 'yas
 ;;   (yas-global-mode 1))
 
-(with-eval-after-load 'elec-pair
-  (setq electric-pair-open-newline-between-pairs nil))
-
 (defun kzk/lsp-help-at-point (&optional arg)
   "Displays lsp-help for thing at point in a help window. When
 called with a prefix, kills the window"

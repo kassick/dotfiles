@@ -828,7 +828,6 @@ before packages are loaded."
   (ido-mode -1)          ; no ido
   (general-evil-setup)   ; evil general is my leader
   (key-chord-mode 1)     ; keychord integrates with general
-  ;; (electric-pair-mode 1) ; electric-pair instead of smartparens
   (show-paren-mode t)
   (global-page-break-lines-mode 1)
   ;; (global-visual-line-mode t)
