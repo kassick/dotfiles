@@ -24,8 +24,11 @@
     )
   )
 
-(defun kzk/smart-kill-looking-at-stopper-backwards()
-  (-if-let* ((regexp (kzk/smart-kill-backwards-mode-stopper-regex)))
+(defun kzk/smart-kill-looking-at-stopper-backwards(&optional greedy)
+  (-if-let* ((regexp (kzk/smart-kill-backwards-mode-stopper-regex))
+             (regexp (if greedy
+                         (concat "\\(" regexp "\\)" "[[:space:]]*")
+                       regexp)))
       (looking-back regexp)))
 
 (defun kzk/smart-kill-backwards-stopper-before-word ()
@@ -48,11 +51,8 @@
 
  def some(other) -> thing: pass|
  def some(other) -> thing: |
- def some(other) -> thing:|
  def some(other) -> thing|
  def some(other) -> |
- def some(other) ->|
- def some(other) ->|
  def some(other)|
  def some(other|)
  def some(|)
@@ -64,8 +64,9 @@
   (if (and (not (clean-aindent--inside-indentp))
            (bound-and-true-p smartparens-mode))
 
-      ;; def some(other) ->|
-      (if (kzk/smart-kill-looking-at-stopper-backwards)
+      ;; def some(other) ->|    or
+      ;; def some(other) -> |   or
+      (if (kzk/smart-kill-looking-at-stopper-backwards t)
             (progn
               (delete-region (match-beginning 0) (match-end 0)) ; def some(other) |
               (delete-horizontal-space t))                      ; def some(other)|
