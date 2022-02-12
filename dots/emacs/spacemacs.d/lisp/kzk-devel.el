@@ -24,71 +24,6 @@
 
 ;;; Code:
 
-;; ycmd setup
-;; (defun ycmd-force-enable ()
-
-;;   ;; Turn off semantic idle, as it clears the echo area from ycmd semantic info
-;;   (semantic-idle-summary-mode 0)
-
-;;   (message "Force Enable YCMD for major mode %s" major-mode)
-;;   (ycmd-mode 1))
-
-;; ;; (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
-;; ;(add-hook 'c++-mode-hook 'ycmd-force-enable)
-;; ;(add-hook 'c-mode-hook 'ycmd-force-enable)
-;; ; (add-hook 'python-mode-hook 'ycmd-force-enable)
-
-;; ;; (with-eval-after-load 'ycmd
-;; ;;   (set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
-;; ;;   (set-variable 'ycmd-server-command
-;; ;;                 `("/usr/bin/python2.7"
-;; ;;                   ,(expand-file-name
-;; ;;                     "~/.local/dev/ycm/third_party/ycmd/ycmd")))
-
-;;   (require 'company-ycmd)
-;;   (setq company-ycmd-insert-arguments nil
-;;         company-ycmd-request-sync-timeout 1.0)
-
-;;   ;; (require 'ycmd-eldoc)
-
-;;   (defun ycm ()
-;;     (interactive)
-;;     (company-cancel)
-;;     (let ((ycmd-force-semantic-completion (not (company-ycmd--in-include))))
-;;       (setq company-backend 'company-ycmd)
-;;       (company-manual-begin)))
-
-;;   (with-eval-after-load 'general
-;;     (message "Imapping ycm")
-;;     (general-define-key :keymaps 'ycmd-mode-map
-;;                         :states 'insert
-;;                   "<C-tab>" 'ycm))
-
-;;   )
-
-
-;; helm dash
-(with-eval-after-load 'helm-dash
-  (add-hook 'c-mode-hook (lambda ()
-                           (setq-local helm-dash-docsets '("C"))))
-  (add-hook 'c++-mode-hook (lambda ()
-                             (setq-local helm-dash-docsets '("C" "C++"))))
-  (add-hook 'csharp-mode-hook (lambda ()
-                                (setq-local helm-dash-docsets '("NET Framework"))))
-  (setq helm-dash-docsets-path "~/.docset")
-  (setq helm-dash-docsets-url "https://raw.github.com/Kapeli/feeds/master")
-  (setq helm-dash-min-length 3)
-  (setq helm-dash-candidate-format "%d %n (%t)")
-  (setq helm-dash-enable-debugging nil)
-  (setq helm-dash-browser-func 'browse-url)
-  )
-
-;; (with-eval-after-load 'general
-;;   (general-define-key :keymaps 'global
-;;                       :states 'normal
-;;                       :prefix dotspacemacs-leader-key
-;;                       "doc" 'helm-dash)
-;; )
 
 ;; magit
 (with-eval-after-load 'magit
@@ -326,9 +261,72 @@ called with a prefix, kills the window"
             ;;; annoying
             (setq tab-always-indent t)))
 
+;; helm dash
+;; (with-eval-after-load 'helm-dash
+;;   (add-hook 'c-mode-hook (lambda ()
+;;                            (setq-local helm-dash-docsets '("C"))))
+;;   (add-hook 'c++-mode-hook (lambda ()
+;;                              (setq-local helm-dash-docsets '("C" "C++"))))
+;;   (add-hook 'csharp-mode-hook (lambda ()
+;;                                 (setq-local helm-dash-docsets '("NET Framework"))))
+;;   (setq helm-dash-docsets-path "~/.docset")
+;;   (setq helm-dash-docsets-url "https://raw.github.com/Kapeli/feeds/master")
+;;   (setq helm-dash-min-length 3)
+;;   (setq helm-dash-candidate-format "%d %n (%t)")
+;;   (setq helm-dash-enable-debugging nil)
+;;   (setq helm-dash-browser-func 'browse-url)
+;;   )
 
 (add-hook 'makefile-mode-hook
           (lambda ()
             (setq-local indent-line-function 'indent-relative)))
 (provide 'kzk-devel)
 ;;; kzk-devel.el ends here
+;; (with-eval-after-load 'general
+;;   (general-define-key :keymaps 'global
+;;                       :states 'normal
+;;                       :prefix dotspacemacs-leader-key
+;;                       "doc" 'helm-dash)
+;; )
+
+;; ycmd setup
+;; (defun ycmd-force-enable ()
+
+;;   ;; Turn off semantic idle, as it clears the echo area from ycmd semantic info
+;;   (semantic-idle-summary-mode 0)
+
+;;   (message "Force Enable YCMD for major mode %s" major-mode)
+;;   (ycmd-mode 1))
+
+;; ;; (add-hook 'ycmd-mode-hook #'ycmd-eldoc-mode)
+;; ;(add-hook 'c++-mode-hook 'ycmd-force-enable)
+;; ;(add-hook 'c-mode-hook 'ycmd-force-enable)
+;; ; (add-hook 'python-mode-hook 'ycmd-force-enable)
+
+;; ;; (with-eval-after-load 'ycmd
+;; ;;   (set-variable 'ycmd-global-config "~/.local/dev/ycm_conf.py")
+;; ;;   (set-variable 'ycmd-server-command
+;; ;;                 `("/usr/bin/python2.7"
+;; ;;                   ,(expand-file-name
+;; ;;                     "~/.local/dev/ycm/third_party/ycmd/ycmd")))
+
+;;   (require 'company-ycmd)
+;;   (setq company-ycmd-insert-arguments nil
+;;         company-ycmd-request-sync-timeout 1.0)
+
+;;   ;; (require 'ycmd-eldoc)
+
+;;   (defun ycm ()
+;;     (interactive)
+;;     (company-cancel)
+;;     (let ((ycmd-force-semantic-completion (not (company-ycmd--in-include))))
+;;       (setq company-backend 'company-ycmd)
+;;       (company-manual-begin)))
+
+;;   (with-eval-after-load 'general
+;;     (message "Imapping ycm")
+;;     (general-define-key :keymaps 'ycmd-mode-map
+;;                         :states 'insert
+;;                   "<C-tab>" 'ycm))
+
+;;   )
