@@ -103,27 +103,25 @@
              ;; some (|other } thing      (not a pair)
              ( (looking-back opening-regex)
 
-               (let* ((thing (sp-get-thing t))
-                      (thing-contents (when thing (buffer-substring (+ (plist-get thing :beg) (length (plist-get thing :op)))
-                                                                    (- (plist-get thing :end) (length (plist-get thing :cl)))))))
-                 ;; thing will be some plist if we are inside a valid pair
-                 ;; or nil in case of an invalid pair
-                 (if (not thing-contents)
-                     ;; if not (unbalanced pair) fallback to clean-aindent
-                     (apply fn args)
+               (-if-let (thing (sp-get-thing t))
+                   ;; thing will be some plist if we are inside a valid pair
+                   (let* ((thing-beg (plist-get thing :beg))
+                          (thing-end (plist-get thing :end))
+                          (thing-inside-beg (+ thing-beg (length (plist-get thing :op))))
+                          (thing-inside-end (- thing-end (length (plist-get thing :cl))))
+                          (thing-contents (buffer-substring thing-inside-beg thing-inside-end)))
 
-                   ;; inside a valid pair
                    (if (length= (string-trim thing-contents) 0)
                        ;; empty pair
-                       (delete-region (plist-get thing :beg)
-                                      (plist-get thing :end)) ; some | thing
-                     ;; non-empty pair
-                     (left-char))                             ; some |(other) thing
+                       (delete-region thing-beg thing-end) ; some | thing
 
-                   ;; either way, clean horizontal space to the left
-                   (delete-horizontal-space t)))  ; some| thing         or
-                                        ; some|other thing
-               )
+                     ;; else, non-empty pair
+                     (goto-char thing-beg)                 ; some |(other) thing
+                     ;; either way, clean horizontal space to the left
+                     (delete-horizontal-space t))) ; some| thing    or   some|other thing
+
+                 ;; if not thing, it's an unbalanced pair fallback to clean-aindent
+                 (apply fn args)))
 
              ( t (apply fn args)) )) ))
 
