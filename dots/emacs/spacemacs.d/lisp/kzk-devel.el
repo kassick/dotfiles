@@ -24,20 +24,20 @@
 
 ;;; Code:
 
-
-;; magit
+;:; {{{ magit
 (with-eval-after-load 'magit
   (add-hook 'magit-process-mode-hook 'goto-address-mode))
 
 (with-eval-after-load 'general
+  (require 'magit)                      ; dispatch popup is not autoloaded :(
   (general-define-key :keymaps 'global
                       "C-x g" 'magit-status
                       "C-x M-g"  'magit-dispatch-popup))
+;;; }}}
+
 
 ;; {{{ python
 
-
-;; Extract value to variable!
 (defun kzk/py-refactor-extract-arg (new-name)
   "Extracts an argument to a variable immediately above the current statement"
   (interactive "sVariable Name: ")
@@ -118,14 +118,70 @@
   (message "Adjust importmagic edit configurations")
   (setq importmagic-style-configuration-alist '((multiline . backslash) (max_columns . 120))))
 
+;;; }}} python
+
+;;; {{{ lsp
+(defun kzk/lsp-help-at-point (&optional arg)
+  "Displays lsp-help for thing at point in a help window. When
+called with a prefix, kills the window"
+  (interactive "P")
+
+  (if arg
+      ;;; Calling with prefix, kill help window
+      (let* ((help-buffer (get-buffer "*lsp-help*"))
+             (help-window (when help-buffer (get-buffer-window help-buffer))))
+        (when help-window
+          (delete-window help-window)))
+    ;;; called without prefix, describe at point
+    (let ((help-window-select nil))
+      (lsp-describe-thing-at-point))))
+
+(with-eval-after-load 'lsp-mode
+  (message "setting lsp imenu index function")
+  (setq
+
+   ;;; categorize entries in imenu -- makes it easier to find stuff
+   lsp-imenu-index-function 'lsp-imenu-create-categorized-index
+
+   ;;; show less documentation lines in minibuffer. the default uses too much
+   ;;; vertical space
+   lsp-signature-doc-lines 5
+   )
+
+  (with-eval-after-load 'general
+    (message "Setting lsp-mode custom keys")
+    (general-define-key :keymaps 'lsp-mode-map
+                        "C-c C-h" 'lsp-ui-doc-glance
+                        "C-c h" 'kzk/lsp-help-at-point)))
+
+;;; }}} lsp
 
 
+;;; {{{ makefile
+(add-hook 'makefile-mode-hook
+          (lambda ()
+            (setq-local indent-line-function 'indent-relative)))
+
+;;; }}} makefile
 
 
+(add-hook 'prog-mode-hook
+          (lambda ()
+            ;;; use long lines -- visual lines are annoying for lsp and many
+            ;;; programming languages
+            (make-variable-buffer-local 'toggle-truncate-lines)
+            (setq truncate-lines t)
 
+            ;;; make tab indent -- not complete. surprise auto-completion is
+            ;;; annoying
+            (setq tab-always-indent t)))
 
+(setq shell-default-shell 'vterm)
+(spacemacs/set-leader-keys "ps" 'projectile-save-project-buffers)
 
-;;     }}}
+(provide 'kzk-devel)
+
+;;; kzk-devel.el ends here
 
 ;; {{{ C / C++ support
 ;; (require 'google-c-style) ; google-ish style configured in my lisp directory
@@ -192,55 +248,6 @@
 ;; (with-eval-after-load 'yas
 ;;   (yas-global-mode 1))
 
-(defun kzk/lsp-help-at-point (&optional arg)
-  "Displays lsp-help for thing at point in a help window. When
-called with a prefix, kills the window"
-  (interactive "P")
-
-  (if arg
-      ;;; Calling with prefix, kill help window
-      (let* ((help-buffer (get-buffer "*lsp-help*"))
-             (help-window (when help-buffer (get-buffer-window help-buffer))))
-        (when help-window
-          (delete-window help-window)))
-    ;;; called without prefix, describe at point
-    (let ((help-window-select nil))
-      (lsp-describe-thing-at-point))))
-
-(with-eval-after-load 'lsp-mode
-  (message "setting lsp imenu index function")
-  (setq
-
-   ;;; categorize entries in imenu -- makes it easier to find stuff
-   lsp-imenu-index-function 'lsp-imenu-create-categorized-index
-
-   ;;; show less documentation lines in minibuffer. the default uses too much
-   ;;; vertical space
-   lsp-signature-doc-lines 5
-   )
-
-  (with-eval-after-load 'general
-    (message "Setting lsp-mode custom keys")
-    (general-define-key :keymaps 'lsp-mode-map
-                        "C-c C-h" 'lsp-ui-doc-glance
-                        "C-c h" 'kzk/lsp-help-at-point)))
-
-
-(setq shell-default-shell 'vterm)
-(spacemacs/set-leader-keys "ps" 'projectile-save-project-buffers)
-
-
-(add-hook 'prog-mode-hook
-          (lambda ()
-            ;;; use long lines -- visual lines are annoying for lsp and many
-            ;;; programming languages
-            (make-variable-buffer-local 'toggle-truncate-lines)
-            (setq truncate-lines t)
-
-            ;;; make tab indent -- not complete. surprise auto-completion is
-            ;;; annoying
-            (setq tab-always-indent t)))
-
 ;; helm dash
 ;; (with-eval-after-load 'helm-dash
 ;;   (add-hook 'c-mode-hook (lambda ()
@@ -257,11 +264,6 @@ called with a prefix, kills the window"
 ;;   (setq helm-dash-browser-func 'browse-url)
 ;;   )
 
-(add-hook 'makefile-mode-hook
-          (lambda ()
-            (setq-local indent-line-function 'indent-relative)))
-(provide 'kzk-devel)
-;;; kzk-devel.el ends here
 ;; (with-eval-after-load 'general
 ;;   (general-define-key :keymaps 'global
 ;;                       :states 'normal
