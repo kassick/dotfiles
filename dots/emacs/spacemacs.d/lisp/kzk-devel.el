@@ -92,7 +92,8 @@
   ;;; spacemacs bind needs bind-map, which is not loaded at the time
   ;;; this code is called.
   (spacemacs/set-leader-keys-for-major-mode 'python-mode
-    "re" 'kzk/py-refactor-extract-arg))
+    "re" 'kzk/py-refactor-extract-arg
+    "=y" 'yapfify-region-or-buffer))
 
 (with-eval-after-load 'smartparens-python
   ;; disable this annoying behaviour, since pressing colon does not jump over
