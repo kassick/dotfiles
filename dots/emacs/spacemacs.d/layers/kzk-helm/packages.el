@@ -31,7 +31,6 @@
 
 (defconst kzk-helm-packages
   '(helm
-    ;helm-flyspell
     flyspell-correct-helm
     general
     helm-projectile
@@ -125,12 +124,12 @@ Each entry is either:
   (with-eval-after-load 'general
     (message "Settings keys for flyspell-mode-map")
     (general-define-key :keymaps 'flyspell-mode-map
-                        "C-;" 'helm-flyspell-correct)
+                        "C-M-;" 'flyspell-correct-wrapper)
 
     (general-define-key :keymaps 'flyspell-mode-map
                         :prefix dotspacemacs-leader-key
                         :states '(normal motion visual)
-                        "S ;" 'helm-flyspell-correct)
+                        "S ;" 'flyspell-correct-wrapper)
     )
   )
 
