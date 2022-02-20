@@ -113,7 +113,8 @@ This function should only modify configuration layer settings."
           lsp-keymap-prefix "C-c C-l"
           lsp-ui-doc-enable nil
           lsp-ui-doc-position 'at-point
-          lsp-ui-doc-max-height 15)
+          lsp-ui-doc-max-height 15
+          lsp-use-upstream-bindings nil)
 
      emacs-lisp
      shell-scripts
