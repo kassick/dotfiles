@@ -663,7 +663,7 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues, instead of calculating the frame title by
    ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I - %a (%t)"
+   dotspacemacs-frame-title-format "%I - %b (%t)"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
