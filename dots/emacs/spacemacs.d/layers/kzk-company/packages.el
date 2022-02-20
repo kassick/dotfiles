@@ -53,7 +53,7 @@
     (setq x-gtk-resize-child-frames 'hide)
     (setq company-tooltip-minimum-width 40)
 
-    (company-posframe-mode)
+    ;; (company-posframe-mode)
 
     (setq company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
                               company-preview-frontend

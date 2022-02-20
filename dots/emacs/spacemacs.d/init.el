@@ -92,6 +92,7 @@ This function should only modify configuration layer settings."
                       auto-completion-front-end 'company
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip nil
+                      auto-completion-use-company-posframe t
                       ;; auto-completion-use-company-box t
                       ;; auto-completion-enable-sort-by-usage t
                       )
