@@ -97,7 +97,9 @@ This function should only modify configuration layer settings."
                       ;; auto-completion-enable-sort-by-usage t
                       )
      multiple-cursors
-     (git :variables git-enable-magit-gitflow-plugin t)
+     (git :variables
+          git-enable-magit-gitflow-plugin t
+          magit-bury-buffer-function 'magit-mode-quit-window)
      (version-control :variables
                       version-control-diff-tool 'git-gutter
                       version-control-global-margin nil
