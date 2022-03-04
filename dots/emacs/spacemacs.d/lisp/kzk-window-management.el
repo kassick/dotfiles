@@ -65,8 +65,6 @@
   (push '("^\\*Flycheck.+\\*$" :regexp t
           :dedicated t :position bottom :stick t :noselect t)
         popwin:special-display-config)
-  (push '(compilation-mode :noselect t)
-        popwin:special-display-config)
 
 ;; dedicated
 ;; (use-package dedicated :ensure t)
