@@ -112,8 +112,7 @@
   )
 
 (with-eval-after-load 'importmagic
-  (message "Adjust importmagic edit configurations")
-  (setq importmagic-style-configuration-alist '((multiline . backslash) (max_columns . 120))))
+  (setq importmagic-style-configuration-alist '((multiline . backslash) (max_columns . 1200))))
 
 ;;; }}} python
 
