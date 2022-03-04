@@ -100,10 +100,6 @@
   ;; the included colon
   (setq sp-python-insert-colon-in-function-definitions nil))
 
-(add-hook 'python-mode-hook
-          (lambda ()
-            (filladapt-mode t)))
-
 (with-eval-after-load 'helm-pydoc
   ;;; Rewrite helm-pydoc to support current region
   (defun helm-pydoc (start end)

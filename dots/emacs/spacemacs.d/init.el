@@ -198,7 +198,6 @@ This function should only modify configuration layer settings."
                                       company-quickhelp
                                       ;; flycheck-ycmd
                                       yasnippet-snippets
-                                      filladapt
                                       )
 
    ;; A list of packages that cannot be updated.
@@ -902,7 +901,6 @@ before packages are loaded."
    )
   (with-eval-after-load 'lsp (diminish 'lsp-mode))
 
-  (with-eval-after-load 'filladapt (diminish 'filladapt-mode))
   (with-eval-after-load 'flycheck (diminish 'flycheck-mode " C"))
   (message "diminished")
 
