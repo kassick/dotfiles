@@ -46,6 +46,9 @@
     (message "Native JSON is available")
   (message "Native JSON is *not* available"))
 
+(add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
+(require 'kzk-utils)
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -165,6 +168,7 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom)
 
      kzk-general
+     kzk-evil
      kzk-projectile
      kzk-code-tweaks
      kzk-embrace
@@ -195,9 +199,6 @@ This function should only modify configuration layer settings."
                                       gcmh
                                       key-chord
                                       evil-multiedit
-                                      evil-matchit
-                                      evil-easymotion
-                                      evil-args
                                       (evil-org :location elpa)
                                       es-windows
                                       ;; dedicated
@@ -787,9 +788,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
           ))
 
-  (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
 
-  (require 'kzk-evil-init)
   (require 'kzk-gui-tweaks)
   (require 'kzk-smart-home-end)
   (require 'kzk-smart-c-backspace)
@@ -842,8 +841,11 @@ before packages are loaded."
 
   (add-hook 'text-mode-hook (lambda () (visual-line-mode t)))
 
+  ;; this one has to be kept here, as if it's loaded on layers, somehow it does
+  ;; not respect inclusivity
+  (require 'kzk-evil-easymotion)
+
   ;; Don't lazy load these ones, as they're kind of core features
-  (require 'kzk-evil)              ; my settings for evil. Load NOW, no layer
   (require 'kzk-window-management) ; window movement shortcuts
   (require 'kzk-shell)   ; shell tweaks
   (require 'kzk-mc)

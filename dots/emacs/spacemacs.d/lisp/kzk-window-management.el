@@ -82,11 +82,12 @@
                     "w |" 'evil-window-set-width)
 
 ;; {{{ imenu-list
-(general-define-key :keymaps    'global
-                    "<C-f12>"   'imenu-list-smart-toggle)
-
-(with-eval-after-load 'imenu-list
-  (add-hook 'imenu-list-major-mode-hook 'dedicated-mode))
+;; MOVE THIS TO IMENU LAYER OR PROG
+;; (general-define-key :keymaps    'global
+;;                     "<C-f12>"   'imenu-list-smart-toggle)
+;; (push 'imenu-list-major-mode evil-emacs-state-modes)
+;; (with-eval-after-load 'imenu-list
+;;   (add-hook 'imenu-list-major-mode-hook 'dedicated-mode))
 ;; }}}
 
 ;; Directly copied from frame.el but now hide Emacs instead of killing

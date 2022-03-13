@@ -46,4 +46,8 @@
     (insert date-str)))
 
 
+(defmacro kzk/after-init (&rest FORMS)
+  `(add-hook (quote after-init-hook) (lambda () ,@FORMS)))
+
+
 (provide 'kzk-utils)
