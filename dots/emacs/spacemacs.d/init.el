@@ -165,8 +165,9 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom)
 
      kzk-general
-     kzk-code-tweaks
      kzk-projectile
+     kzk-code-tweaks
+     kzk-embrace
      kzk-magit
      kzk-lsp
      kzk-makefile
@@ -196,7 +197,6 @@ This function should only modify configuration layer settings."
                                       evil-multiedit
                                       evil-matchit
                                       evil-easymotion
-                                      evil-embrace
                                       evil-args
                                       (evil-org :location elpa)
                                       es-windows
@@ -846,7 +846,6 @@ before packages are loaded."
   (require 'kzk-evil)              ; my settings for evil. Load NOW, no layer
   (require 'kzk-window-management) ; window movement shortcuts
   (require 'kzk-shell)   ; shell tweaks
-  (require 'kzk-embrace)
   (require 'kzk-mc)
 
   ;; Language tweaks
