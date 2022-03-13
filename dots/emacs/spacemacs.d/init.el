@@ -187,6 +187,7 @@ This function should only modify configuration layer settings."
                                       gcmh
                                       general
                                       key-chord
+                                      evil-multiedit
                                       evil-matchit
                                       evil-easymotion
                                       evil-embrace
