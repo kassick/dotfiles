@@ -164,6 +164,13 @@ This function should only modify configuration layer settings."
             shell-default-height 30
             shell-default-position 'bottom)
 
+     kzk-general
+     kzk-code-tweaks
+     kzk-projectile
+     kzk-magit
+     kzk-lsp
+     kzk-makefile
+     kzk-python
      kzk-ahs
      kzk-visual-editing ; fix adaptive wrap for org
      kzk-helm
@@ -185,7 +192,6 @@ This function should only modify configuration layer settings."
                                       memory-usage
                                       diminish
                                       gcmh
-                                      general
                                       key-chord
                                       evil-multiedit
                                       evil-matchit
@@ -788,7 +794,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (require 'kzk-smart-home-end)
   (require 'kzk-smart-c-backspace)
 
-  (require 'kzk-devel)   ; devel stuff
   ;; (require 'kzk-latex)   ; latex-mode settings
   (require 'kzk-org)     ; org-mode settings
   ;; (require 'kzk-headers) ; headers for files
