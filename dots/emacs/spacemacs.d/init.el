@@ -786,7 +786,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (require 'kzk-gui-tweaks)
   (require 'kzk-smart-home-end)
   (require 'kzk-smart-c-backspace)
-  (require 'kzk-mc)
 
   (require 'kzk-devel)   ; devel stuff
   ;; (require 'kzk-latex)   ; latex-mode settings
@@ -842,6 +841,7 @@ before packages are loaded."
   (require 'kzk-window-management) ; window movement shortcuts
   (require 'kzk-shell)   ; shell tweaks
   (require 'kzk-embrace)
+  (require 'kzk-mc)
 
   ;; Language tweaks
   (setq default-process-coding-system '(utf-8 . utf-8)) ; utf8
