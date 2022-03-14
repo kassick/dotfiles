@@ -15,6 +15,7 @@
 
 
 (custom-set-variables
+ '(spacemacs-theme-org-height nil)
  '(org-startup-truncated nil)
  '(org-startup-indented t)
  ;; revert-without-query (quote ("google.org"))

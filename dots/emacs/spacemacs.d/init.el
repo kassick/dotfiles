@@ -88,7 +88,6 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      (unicode-fonts :variables unicode-fonts-enable-ligatures t)
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
-     spacemacs-purpose
      theming
      helm
      (auto-completion :variables
@@ -197,16 +196,10 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
-                                      memory-usage
+                                      ;; memory-usage
+                                      ;; gcmh
                                       diminish
-                                      gcmh
                                       key-chord
-                                      (evil-org :location elpa)
-                                      es-windows
-                                      ;; dedicated
-                                      helm-company
-                                      company-quickhelp
-                                      ;; flycheck-ycmd
                                       yasnippet-snippets
                                       )
 
@@ -829,7 +822,6 @@ before packages are loaded."
 
   (message "Running user config")
 
-  (setq spacemacs-theme-org-height nil) ; set this here instead of -init
 
   ;; Default modes
   (ido-mode -1)          ; no ido
@@ -837,16 +829,13 @@ before packages are loaded."
   (key-chord-mode 1)     ; keychord integrates with general
   (show-paren-mode t)
   (global-page-break-lines-mode 1)
-  ;; (global-visual-line-mode t)
 
   (add-hook 'text-mode-hook (lambda () (visual-line-mode t)))
 
   ;; this one has to be kept here, as if it's loaded on layers, somehow it does
   ;; not respect inclusivity
   (require 'kzk-evil-easymotion)
-
-  ;; Don't lazy load these ones, as they're kind of core features
-  (require 'kzk-shell)   ; shell tweaks
+  ;;(require 'kzk-shell)   ; shell tweaks
 
   ;; Language tweaks
   (setq default-process-coding-system '(utf-8 . utf-8)) ; utf8
@@ -887,28 +876,9 @@ before packages are loaded."
   (global-unset-key (kbd "C-x C-z"))
 
   (setq evil-escape-delay 0.08)
+
   ;; (message "setting gcmh mode")
-  ;;(gcmh-mode t)
-
-  (message "diminishing")
-  (with-eval-after-load 'company (diminish 'company-mode) )
-  (with-eval-after-load 'smartparens (diminish 'smartparens-mode))
-  (with-eval-after-load 'importmagic (diminish 'importmagic-mode))
-  (with-eval-after-load 'window-purpose (diminish 'purpose-mode))
-  (diminish 'visual-line-mode)
-  (with-eval-after-load 'which-key (diminish 'which-key-mode))
-  (with-eval-after-load 'editorconfig (diminish 'editorconfig-mode))
-  (with-eval-after-load 'gcmh (diminish 'gcmh-mode))
-  (diminish 'spacemacs-whitespace-cleanup-mode)
-  (with-eval-after-load 'yasnippet
-   (diminish 'yas-minor-mode " Y")
-   (diminish 'yas-global-mode " Y")
-   )
-  (with-eval-after-load 'lsp (diminish 'lsp-mode))
-
-  (with-eval-after-load 'flycheck (diminish 'flycheck-mode " C"))
-  (message "diminished")
-
+  ;; (gcmh-mode t)
 
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
