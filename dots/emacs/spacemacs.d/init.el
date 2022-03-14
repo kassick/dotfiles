@@ -174,6 +174,7 @@ This function should only modify configuration layer settings."
      kzk-mc
      kzk-embrace
      kzk-magit
+     kzk-org
      kzk-lsp
      kzk-makefile
      kzk-python
