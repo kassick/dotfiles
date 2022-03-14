@@ -32,40 +32,9 @@
 (defconst kzk-helm-packages
   '(helm
     flyspell-correct-helm
-    general
-    helm-projectile
-    helm-swoop
-    ;; general
-    )
-  "The list of Lisp packages required by the kzk-helm layer.
-
-Each entry is either:
-
-1. A symbol, which is interpreted as a package to be installed, or
-
-2. A list of the form (PACKAGE KEYS...), where PACKAGE is the
-    name of the package to be installed or loaded, and KEYS are
-    any number of keyword-value-pairs.
-
-    The following keys are accepted:
-
-    - :excluded (t or nil): Prevent the package from being loaded
-      if value is non-nil
-
-    - :location: Specify a custom installation location.
-      The following values are legal:
-
-      - The symbol `elpa' (default) means PACKAGE will be
-        installed using the Emacs package manager.
-
-      - The symbol `local' directs Spacemacs to load the file at
-        `./local/PACKAGE/PACKAGE.el'
-
-      - A list beginning with the symbol `recipe' is a melpa
-        recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
+    helm-swoop))
 
 (defun kzk-helm/post-init-helm ()
-  (message "post init of helm")
   ;; Helm genral setq
   ;;; workaround for issue https://github.com/syl20bnr/spacemacs/issues/9549
   (require 'helm-bookmark)
@@ -74,54 +43,43 @@ Each entry is either:
   (require 'dired)
   (setq helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
         helm-echo-input-in-header-line t
-                                        ;helm-autoresize-max-height 0
+        ;; helm-autoresize-max-height 0
         helm-autoresize-min-height 20
         helm-semantic-fuzzy-match t
-        helm-imenu-fuzzy-match    t)
+        helm-imenu-fuzzy-match t
 
-  (setq helm-apropos-fuzzy-match t)
-  (setq helm-lisp-fuzzy-completion t)
+        helm-apropos-fuzzy-match t
+        helm-lisp-fuzzy-completion t
 
-  ;; Helm find files
-  (setq helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+        ;; Helm find files
+        helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
         helm-ff-file-name-history-use-recentf t
-        helm-ff-fuzzy-matching  t)
+        helm-ff-fuzzy-matching  t
 
-  ;; Helm-M-x
-  (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
+        ;; Helm-M-x
+        helm-M-x-fuzzy-match t ;; optional fuzzy matching for helm-M-x
 
-  ;; Helm-mini
-  (setq helm-buffers-fuzzy-matching t
+        ;; Helm-mini
+        helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match    t)
 
-  (with-eval-after-load 'general
+  (kzk/after-init
     (general-define-key :prefix dotspacemacs-leader-key
                         :states '(normal visual motion)
-                        "h a"  '(helm-ag :which-key "Ag (cwd)")
+                        "h a"  '(spacemacs/helm-dir-smart-do-search :which-key "Smart Search")
                         "s /" '(helm-find :which-key "Find")
-                        )
-  )
+                        ))
 
   ;; add post-init hooks to setup some hacks on helm
   (eval-after-load 'helm-files #'kzk/helm-ff-hacks-setup)
-  (eval-after-load 'helm-buffers #'kzk/helm-buffers-hacks-setup)
-  (eval-after-load 'helm-ag #'kzk/helm-ag-hacks-setup)
 
   ;; Force helm mode
-  (helm-mode t)
-  )
-
-(defun kzk-helm/post-init-helm-projectile ()
-  (with-eval-after-load 'projectile
-   (helm-projectile-on)
-   (kzk/helm-projectile-hacks-setup)
-   )
-  )
+  (helm-mode t))
 
 (defun kzk-helm/post-init-flyspell-correct-helm ()
   ;; Helm flyspell
 
-  (with-eval-after-load 'general
+  (kzk/after-init
     (message "Settings keys for flyspell-mode-map")
     (general-define-key :keymaps 'flyspell-mode-map
                         "C-M-;" 'flyspell-correct-wrapper)
@@ -129,24 +87,17 @@ Each entry is either:
     (general-define-key :keymaps 'flyspell-mode-map
                         :prefix dotspacemacs-leader-key
                         :states '(normal motion visual)
-                        "S ;" 'flyspell-correct-wrapper)
-    )
-  )
+                        "S ;" 'flyspell-correct-wrapper)))
 
 (defun kzk-helm/post-init-helm-swoop ()
-  (with-eval-after-load 'general
+  (kzk/after-init
     (general-define-key :keymaps 'global
                         "C-*" 'helm-swoop
                         "C-S-s" 'helm-swoop-without-pre-input)
     (general-define-key :keymaps 'global :states 'motion
                         "C-M-*" 'helm-swoop-from-evil-search)
     (general-define-key :keymaps 'isearch-mode-map
-                        "C-*" 'helm-swoop-from-isearch)
-   )
-  )
+                        "C-*" 'helm-swoop-from-isearch)))
 
-(defun kzk-helm/post-init-general ()
-  ; nop
-  )
 
 ;;; packages.el ends here

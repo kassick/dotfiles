@@ -169,6 +169,7 @@ This function should only modify configuration layer settings."
 
      kzk-general
      kzk-evil
+     kzk-window-management
      kzk-projectile
      kzk-code-tweaks
      kzk-mc
@@ -795,7 +796,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (require 'kzk-smart-c-backspace)
 
   ;; (require 'kzk-latex)   ; latex-mode settings
-  (require 'kzk-org)     ; org-mode settings
   ;; (require 'kzk-headers) ; headers for files
 
   ;; Extra code and customizations
@@ -847,7 +847,6 @@ before packages are loaded."
   (require 'kzk-evil-easymotion)
 
   ;; Don't lazy load these ones, as they're kind of core features
-  (require 'kzk-window-management) ; window movement shortcuts
   (require 'kzk-shell)   ; shell tweaks
 
   ;; Language tweaks
