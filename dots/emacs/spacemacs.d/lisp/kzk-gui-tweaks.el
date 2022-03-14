@@ -25,6 +25,8 @@
 ;;; Code:
 
 
+;; {{{
+;; this hack does not seem necessary any longed
 (defun kzk/set-default-face (&optional frame)
   (message "Readjusting font for new frame %S" (if frame frame "before"))
   (let* ((frame-font (frame-parameter frame 'font)))
@@ -40,43 +42,7 @@
   )
 
 ;(add-hook 'after-make-frame-functions #'kzk/set-frame-font)
+;; }}}
 
-(defun kzk/delete-help-window ()
-  "Deletes the first window displaying a help buffer"
-  (interactive)
-  (-if-let ( help-window (-first (lambda (wnd)
-                                   (with-current-buffer (window-buffer wnd)
-                                     (eq major-mode 'help-mode)))
-                                 (window-list)) )
-      (delete-window help-window)
-      ))
-
-(with-eval-after-load 'general
-  (general-define-key
-   :keymaps 'global
-   "C-h D" '(kzk/delete-help-window :which-key "Delete help window"))
-
-  (general-define-key
-   :keymaps 'global
-   :prefix dotspacemacs-leader-key
-   :states '(normal motion visual)
-
-   "hD" '(kzk/delete-help-window :which-key "Delete help window")
-   ))
-
-
-(setq
- ;;; enable horizontal scrolling
- mouse-wheel-tilt-scroll t
-
- ;;; keep consistent with the rest of the system
- mouse-wheel-flip-direction t)
-
-
-(with-eval-after-load 'window-purpose
-  (message "Forcing prefer-other-frame to popup new frame")
-  (setcdr (assq 'prefer-other-frame purpose-action-sequences)
-        '(purpose-display-maybe-pop-up-frame)))
-;;; kzk-gui-tweaks.el ends here
 
 (provide 'kzk-gui-tweaks)

@@ -791,7 +791,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
           ))
 
 
-  (require 'kzk-gui-tweaks)
   (require 'kzk-smart-home-end)
   (require 'kzk-smart-c-backspace)
 

@@ -1,6 +1,8 @@
 (defconst kzk-window-management-packages
   '(popwin
-    es-windows))
+    es-windows
+    window-purpose
+    ))
 
 (defun kzk-window-management/post-init-popwin ()
   (kzk/after-init
@@ -37,8 +39,24 @@
                       "C-x C-<left>" 'shrink-window-horizontally
                       "C-x C-<right>" 'enlarge-window-horizontally
                       "C-x C-<down>" 'shrink-window
-                      "C-x C-<up>" 'enlarge-window)
+                      "C-x C-<up>" 'enlarge-window
+                      )
 
   (general-define-key :keymaps 'spacemacs-cmds
                       "w _" 'evil-window-set-height
-                      "w |" 'evil-window-set-width))
+                      "w |" 'evil-window-set-width)
+
+  ;; help window hacks
+  (general-define-key :keymaps 'global
+                      "C-h D" '(kzk/delete-help-window :which-key "Delete help window"))
+  (general-define-key :keymaps 'global
+                      :prefix dotspacemacs-leader-key
+                      :states '(normal motion visual)
+
+                      "hD" '(kzk/delete-help-window :which-key "Delete help window"))
+  )
+
+(defun kzk-window-management/post-init-window-purpose ()
+  ;; Forcing prefer-other-frame to popup new frame
+  (setcdr (assq 'prefer-other-frame purpose-action-sequences)
+          '(purpose-display-maybe-pop-up-frame)))
