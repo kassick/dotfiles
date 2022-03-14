@@ -1,20 +1,9 @@
-(defvar kzk/evil-mc-custom-known-commands
-  '((kzk/beginning-of-visual-line-or-indent . ((:default . evil-mc-execute-default-call-with-count)))
-    (kzk/end-of-visual-line-or-eol . ((:default . evil-mc-execute-default-call-with-count)))
-    (evil-inner-arg . ((:default . evil-mc-execute-default-call-with-count)
-                       (visual . evil-mc-execute-visual-text-object)))
-    (evil-outer-arg . ((:default . evil-mc-execute-default-call-with-count)
-                       (visual . evil-mc-execute-visual-text-object)))
-    ;; (evil-quoted-insert . ((:default . evil-mc-execute-default-call-with-count)))
-    )
-  )
+(defconst kzk-mc-packages
+  '(evil-mc
+    evil-multiedit))
 
-(defvar kzk/evil-mc-incompatible-minor-modes
-  '(smartparens-mode))
-
-(with-eval-after-load 'evil-mc
+(defun kzk-mc/post-init-evil-mc ()
   ;;; Include my custom movement to MC
-
   (setq evil-mc-custom-known-commands
         (if (boundp 'evil-mc-custom-known-commands)
             (append evil-mc-custom-known-commands kzk/evil-mc-custom-known-commands)
@@ -22,8 +11,9 @@
 
   ;; (setq evil-mc-incompatible-minor-modes (append evil-mc-incompatible-minor-modes kzk/evil-mc-incompatible-minor-modes))
 
-  ;; (after! (:and evil-mc smartparens)
+  ;; permit sp commands in evil-mc mode
   (dolist (sp-command '(sp-up-sexp
+
                         sp-copy-sexp
                         sp-down-sexp
                         sp-join-sexp
@@ -53,14 +43,9 @@
      'evil-mc-custom-known-commands
      `(,sp-command
        (:default . evil-mc-execute-call))))
-
   )
 
-
-
-(with-eval-after-load 'evil
- (require 'evil-multiedit)
- (evil-multiedit-default-keybinds)
- )
-
-(provide 'kzk-mc)
+(defun kzk-mc/init-evil-multiedit ()
+  (require 'evil-multiedit)
+  (evil-multiedit-default-keybinds)
+  )

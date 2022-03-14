@@ -171,6 +171,7 @@ This function should only modify configuration layer settings."
      kzk-evil
      kzk-projectile
      kzk-code-tweaks
+     kzk-mc
      kzk-embrace
      kzk-magit
      kzk-lsp
@@ -198,7 +199,6 @@ This function should only modify configuration layer settings."
                                       diminish
                                       gcmh
                                       key-chord
-                                      evil-multiedit
                                       (evil-org :location elpa)
                                       es-windows
                                       ;; dedicated
@@ -848,7 +848,6 @@ before packages are loaded."
   ;; Don't lazy load these ones, as they're kind of core features
   (require 'kzk-window-management) ; window movement shortcuts
   (require 'kzk-shell)   ; shell tweaks
-  (require 'kzk-mc)
 
   ;; Language tweaks
   (setq default-process-coding-system '(utf-8 . utf-8)) ; utf8
