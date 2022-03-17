@@ -1,3 +1,14 @@
+(defmacro kzk/execute-and-get-point-or-bail (&rest FORMS)
+  `(let ((opoint (point)))
+     (or (boundp 'bail) (setq bail -1))
+     ;; (message "bailing to %S" bail)
+     (save-excursion
+       (eval ,@FORMS)
+       ;;(message "moved to %S from %S" (point) opoint)
+       (if (= (point) opoint)
+           bail
+         (point)))))
+
 (defun kzk/beginning-of-visual-line-or-indent (&optional n)
   "Move point to closest point among:
   - beginning of current visual line
@@ -5,36 +16,36 @@
   - first character
   "
   (interactive "^p")
+
   (or n (setq n 1))
   (when (/= n 1)
     (let ((line-move-visual t))
       (line-move (1- n) t)))
 
-  (let ((opoint (point)))
-    (defun point-or-bail ()
-      (if (= (point) opoint)
-          -1
-        (point))
-      )
+  (let* (
+         (point-field
+          (kzk/execute-and-get-point-or-bail (field-beginning)))
 
-    (let ((target
-           (save-excursion
-             (max (progn
-                    (vertical-motion 0)
-                    (goto-char (constrain-to-field (point) opoint (/= n 1)))
+         (point-starting-of-visual-line
+          (kzk/execute-and-get-point-or-bail (when (bound-and-true-p visual-line-mode)
+                                               (vertical-motion 0))))
 
-                    (point-or-bail))
-                  (progn
-                    (back-to-indentation)
-                    (point-or-bail))
+         (point-indent
+          ;; back-to-indentation moves to the next char after indentation. In a
+          ;; blank line, this will always move to the next char, resultin in
+          ;; this movement never bailing
+          (kzk/execute-and-get-point-or-bail (when (not (looking-back "^[[:space:]]\+"))
+                                               (back-to-indentation))))
 
-                  (progn
-                    (move-beginning-of-line 1)
-                    (point-or-bail))
-           ))))
+         (point-starting-of-line
+          (kzk/execute-and-get-point-or-bail (move-beginning-of-line 1)))
 
-      (if (/= target -1)
-          (goto-char target)))))
+         (target (max point-field point-starting-of-visual-line point-indent point-starting-of-line)))
+
+    ;; (message "cur: %S field: %S visual: %S indent: %S line: %S" (point) point-field point-starting-of-visual-line point-indent point-starting-of-line)
+
+    (when (/= target -1)
+      (goto-char target))) )
 
 (defun kzk/end-of-visual-line-or-eol (&optional n)
   "Move point to the closest point among:
@@ -48,17 +59,32 @@
     (let ((line-move-visual t))
       (line-move (1- n) t)))
 
-  (let ((opoint (point)))
-    ;; Unlike `move-beginning-of-line', `move-end-of-line' doesn't
-    ;; constrain to field boundaries, so we don't either.
+  (let* ((bail (1+ (point-max)))
 
-    ;;; trick: only move to end of window when in visual-line-mode
-    ;;; otherwise, do not move
-    (when (bound-and-true-p visual-line-mode)
-      (vertical-motion (cons (window-width) 0)))
+         (point-end-of-field
+          (kzk/execute-and-get-point-or-bail (field-end)))
 
-    (when (= opoint (point))
-      (end-of-line 1))))
+         (point-end-of-visual-line
+          (kzk/execute-and-get-point-or-bail (when (bound-and-true-p visual-line-mode)
+                                                    (vertical-motion (cons (window-width) 0)))))
+
+         (point-end-of-line-non-blank
+          (kzk/execute-and-get-point-or-bail (evil-last-non-blank)
+                                             (right-char 1)
+                                             ))
+
+         (point-end-of-line
+          (kzk/execute-and-get-point-or-bail (end-of-line 1)))
+
+         (target (min point-end-of-field point-end-of-visual-line
+                      point-end-of-line-non-blank
+                      point-end-of-line)))
+
+    ;; (message "target: %S field: %S visual: %S target line-non-blank: %S eol: %S" target point-end-of-field point-end-of-visual-line point-end-of-line-non-blank point-end-of-line)
+    (when (/= target bail)
+      (goto-char target))
+    ))
+
 
 
 (global-set-key (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent)
