@@ -719,6 +719,11 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil then byte-compile some of Spacemacs files.
    dotspacemacs-byte-compile nil
   )
+
+  ;; General settings
+  (custom-set-variables
+   `(undo-tree-history-directory-alist '(("." . ,(expand-file-name "~/tmp")))))
+
   )
 
 (defun dotspacemacs/user-env ()
