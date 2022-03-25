@@ -1,5 +1,6 @@
 (defconst kzk-mc-packages
-  '(evil-mc
+  '(evil
+    evil-mc
     evil-multiedit))
 
 (defun kzk-mc/post-init-evil-mc ()
@@ -49,3 +50,9 @@
   (require 'evil-multiedit)
   (evil-multiedit-default-keybinds)
   )
+
+(defun kzk-mc/post-init-evil ()
+  (kzk/after-init
+   (define-key evil-ex-search-keymap
+               (kbd "C-E") 'kzk/evil-iedit-from-current-ex-search)
+   (spacemacs/set-leader-keys "s E" 'kzk/evil-iedit-from-last-ex-search)))
