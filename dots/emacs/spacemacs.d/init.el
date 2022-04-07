@@ -159,7 +159,7 @@ This function should only modify configuration layer settings."
      ;; pandoc
      ;; pdf-tools
      yaml
-     markdown
+     (markdown :variables markdown-live-preview-engine 'vmd)
      org
      (latex :variables
             latex-enable-folding t
@@ -204,6 +204,7 @@ This function should only modify configuration layer settings."
                                       diminish
                                       key-chord
                                       yasnippet-snippets
+                                      edit-indirect ;; required by markdown
                                       )
 
    ;; A list of packages that cannot be updated.
