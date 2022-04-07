@@ -833,7 +833,6 @@ before packages are loaded."
 
   ;; Default modes
   (ido-mode -1)          ; no ido
-  (general-evil-setup)   ; evil general is my leader
   (key-chord-mode 1)     ; keychord integrates with general
   (show-paren-mode t)
   (global-page-break-lines-mode 1)
