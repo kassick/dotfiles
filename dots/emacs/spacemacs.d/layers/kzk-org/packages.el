@@ -43,21 +43,25 @@
    (general-define-key :keymaps 'global
                        "C-c C" 'kzk/org-capture)))
 
-(defun kzk-org/post-init-helm-org ()
-  ;;; redefine helm-org-indent-headings to sort candidates by position
-  ;;; helm-org tries to use helm-generic-sort-fn as metadata sort-fn -- but sort-fn is only used
-  ;;; in emacs style completion -- and spacemacs uses helm style completion
-;;   (defun helm-org-indent-headings (candidates _source)
-;;     "Indent headings and hide leading stars displayed in the helm buffer.
-;; If `org-startup-indented' and `org-hide-leading-stars' are nil, do
-;; nothing to CANDIDATES."
-;;     (let  ((indented-candidates
-;;             (cl-loop for disp in candidates collect
-;;                      (helm-org-indent-headings-1 disp)) ) )
-;;       (sort indented-candidates (lambda (c1 c2)
-;;                                   (let ((pos-c1 (get-text-property 0 'helm-realvalue c1))
-;;                                         (pos-c2 (get-text-property 0 'helm-realvalue c2)))
-;;                                     (< pos-c1 pos-c2))))))
-  )
+
+;; Spacemacs layer hooks run too late -- add this hook right after init
+(kzk/after-init
+ (with-eval-after-load 'helm-org
+   ;; redefine helm-org-indent-headings to sort candidates by position
+   ;; helm-org tries to use helm-generic-sort-fn as metadata sort-fn -- but sort-fn is only used
+   ;; in emacs style completion -- and spacemacs uses helm style completion
+   (defun helm-org-indent-headings (candidates _source)
+     "Indent headings and hide leading stars displayed in the helm buffer.
+If `org-startup-indented' and `org-hide-leading-stars' are nil, do
+nothing to CANDIDATES."
+
+     (let  ((indented-candidates
+             (cl-loop for disp in candidates collect
+                      (helm-org-indent-headings-1 disp)) ) )
+       (message "sorting candidates by my function")
+       (sort indented-candidates (lambda (c1 c2)
+                                   (let ((pos-c1 (get-text-property 0 'helm-realvalue c1))
+                                         (pos-c2 (get-text-property 0 'helm-realvalue c2)))
+                                     (< pos-c1 pos-c2))))))))
 
 (defun kzk-org/post-init-evil-org ())
