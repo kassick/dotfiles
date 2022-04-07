@@ -721,8 +721,8 @@ It should only modify the values of Spacemacs settings."
   )
 
   ;; General settings
-  (custom-set-variables
-   `(undo-tree-history-directory-alist '(("." . ,(expand-file-name "~/tmp")))))
+  ;; (custom-set-variables
+  ;;  `(undo-tree-history-directory-alist '(("." . ,(expand-file-name "~/tmp")))))
 
   )
 
