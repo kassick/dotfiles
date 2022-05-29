@@ -1,7 +1,6 @@
 (defconst kzk-org-packages
   '((org :location elpa :min-version "9.5")
     (evil-org :location elpa)
-    helm-org
 
     ))
 
