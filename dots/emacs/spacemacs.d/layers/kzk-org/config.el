@@ -66,17 +66,17 @@
      entry
      (file+headline ,(kzk/org-directory-file "todo.org")
                     "Tasks")
-     ,kzk/org-capture-task-template :prepend t)
+     ,kzk/org-capture-task-template :prepend t :empty-lines-before 1 :empty-lines-after 1)
     ("j" "Journal entry with context"
      entry
      (file+datetree ,(kzk/org-directory-file "journal.org"))
-     ,kzk/org-capture-template-context-entry)
+     ,kzk/org-capture-template-context-entry :empty-lines-before 1 :empty-lines-after 1)
     ("e" "Journal entry"
      entry
      (file+datetree ,(kzk/org-directory-file "journal.org"))
-     ,kzk/org-capture-template-entry)
+     ,kzk/org-capture-template-entry :empty-lines-before 1 :empty-lines-after 1)
     ("i" "Item on journal entry"
      item
      (file+function ,(kzk/org-directory-file "journal.org")
                     spacemacs/helm-jump-in-buffer)
-     "%?\n%i")))
+     "%?\n%i" :empty-lines-before 1 :empty-lines-after 1)))
