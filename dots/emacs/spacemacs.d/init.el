@@ -88,6 +88,7 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      (unicode-fonts :variables unicode-fonts-enable-ligatures t)
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
+     nav-flash
      theming
      helm
      (auto-completion :variables
@@ -388,8 +389,8 @@ It should only modify the values of Spacemacs settings."
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
    ;; dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
 
-   dotspacemacs-mode-line-theme '(doom)
-   ;; dotspacemacs-mode-line-theme '(spacemacs)
+   ;; dotspacemacs-mode-line-theme '(doom)
+   dotspacemacs-mode-line-theme '(spacemacs :separator-scale 1.2)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -398,7 +399,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font or prioritized list of fonts. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
-   dotspacemacs-default-font '(("Iosevka" :weight light :width expanded :size 11.3)
+   dotspacemacs-default-font '(("Iosevka" :weight light :width expanded :size 9.8)
                                ;; ("Fira Code" :height 120)
                                ;; ("Meslo LG S for Powerline"
                                ;;  :height 113
@@ -413,11 +414,11 @@ It should only modify the values of Spacemacs settings."
                                ;;  :weight normal
                                ;;  :width normal
                                ;;  :powerline-scale 1.0)
-                               ;; ("Dejavu Sans Mono"
-                               ;;  :height 120
-                               ;;  :weight normal
-                               ;;  :width normal
-                               ;;  :powerline-scale 1.0)
+                               ("Dejavu Sans Mono"
+                                :size 9.8
+                                :weight regular
+                                :width normal
+                                :powerline-scale 1.0)
                                )
 
    ;; The leader key (default "SPC")
@@ -725,6 +726,7 @@ It should only modify the values of Spacemacs settings."
   ;; (custom-set-variables
   ;;  `(undo-tree-history-directory-alist '(("." . ,(expand-file-name "~/tmp")))))
 
+  ;; end
   )
 
 (defun dotspacemacs/user-env ()
@@ -743,6 +745,14 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+
+  (custom-set-variables
+   ;; trying to see if ediff is the one causing me headaches with surrogate minibuffer frames
+   '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+
+   ;; emacs 29 prefers completing-read for answers, which does not feel so good with helm
+   '(use-short-answers t))
+
   (setq theming-modifications
         `(
 
@@ -793,6 +803,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
           ))
 
 
+  (require 'kzk-gui-tweaks)
   (require 'kzk-smart-home-end)
   (require 'kzk-smart-c-backspace)
 

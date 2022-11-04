@@ -26,11 +26,11 @@
 
 
 ;; {{{
-;; this hack does not seem necessary any longed
+;; this hack does not seem necessary any longer
 (defun kzk/set-default-face (&optional frame)
   (message "Readjusting font for new frame %S" (if frame frame "before"))
   (let* ((frame-font (frame-parameter frame 'font)))
-    (message "Readjusting frame font")
+    (message "Readjusting frame font: %S" frame-font)
     (set-face-attribute 'default frame :font frame-font))
     "Frame font set"
   )
@@ -38,10 +38,10 @@
 (defun kzk/set-frame-font (&optional frame)
   (run-at-time "3 seconds" nil (lambda () (kzk/set-default-face frame)))
   (remove-hook 'after-make-frame-functions #'kzk/set-frame-font)
-  "Font Adjusted"
+  "Font will be adjusted Adjusted"
   )
 
-;(add-hook 'after-make-frame-functions #'kzk/set-frame-font)
+;; (add-hook 'after-make-frame-functions #'kzk/set-frame-font)
 ;; }}}
 
 
