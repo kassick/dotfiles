@@ -20,4 +20,4 @@ Exec=env -u XMODIFIERS -u QT_IM_MODULE emacsclient --alternate-editor= -c %F
 
 [Desktop Action new-instance]
 Name=New Instance
-Exec=emacs %F
+Exec=env -u XMODIFIERS -u QT_IM_MODULE emacs %F
