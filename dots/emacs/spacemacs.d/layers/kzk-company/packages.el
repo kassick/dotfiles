@@ -123,6 +123,12 @@
 
       (general-define-key :keymaps 'company-active-map
                           "C-;" 'company-complete-common-or-cycle
+                          "C-." (lambda ()
+                                  (interactive)
+                                  (company-complete-selection)
+                                  (insert ".")
+                                  (company-manual-begin)
+                                  )
                           "C-e" #'company-other-backend
                           "C-w" 'company-abort
                           "<C-backspace>" 'company-abort
