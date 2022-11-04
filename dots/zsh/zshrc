@@ -69,12 +69,6 @@ plugins=(gitfast python sudo pyenv)
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-if [ -n "$SSH_CONNECTION" ]; then
-   export EDITOR='emacsclient -t --alternate-editor="" '
-else
-   export EDITOR='emacsclient -n -c --alternate-editor="" '
-fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -91,25 +85,15 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export EDITOR=vi
 alias e=$EDITOR
-
-# Fix for emacs
-if [[ "$TERM" == "dumb" ]]
-then
-    unsetopt zle
-    unsetopt prompt_cr
-    unsetopt prompt_subst
-    unset precmd_functions
-    unset preexec_functions
-    PS1='$ '
-fi
 
 # custom user environment
 if [ -f $HOME/.zprofile ] ; then
     source $HOME/.zprofile
 fi
 
-# global environment. Should just export variables
+# global environment. Should just export variables and aliases
 if [ -d ~/.local/etc/env.d/ ]; then
     for env_file in `ls ~/.local/etc/env.d/* | sort` ; do
         source $env_file
