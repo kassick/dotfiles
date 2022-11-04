@@ -37,10 +37,10 @@
 
 (if (and (fboundp 'native-comp-available-p)
          (native-comp-available-p))
-    (message "Native compilation is available")
-  (message "Native complation is *not* available")
-  (setq comp-deferred-compilation t)
-  )
+    (progn
+      (message "Native compilation is available")
+      (setq comp-deferred-compilation t))
+  (message "Native complation is *not* available"))
 
 (if (functionp 'json-serialize)
     (message "Native JSON is available")
