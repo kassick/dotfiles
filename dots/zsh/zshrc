@@ -19,6 +19,9 @@ fpath+="$ZSH_CUSTOM/zfunc"
 # time that oh-my-zsh is loaded.
 ZSH_THEME="frontcube"
 
+# Disable magic quoting of URLs
+export DISABLE_MAGIC_FUNCTIONS=true
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -65,7 +68,6 @@ plugins=(gitfast python sudo pyenv fzf )
 
 # User configuration
 
-
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -110,23 +112,22 @@ fi
 # and can execute more complex commands, redefine aliases, etc.
 
 # EARLY rc.d
+# these can update plugins and set environment variables that may be used by oh-my-zsh
 if [ -d ~/.local/etc/rc.d ]; then
     for rc in ~/.local/etc/rc.d/[0-4]*; do
         source $rc
     done
 fi
 
-
+# Classic profile
 if [ -f ${HOME}/.profile ]; then
    source ${HOME}/.profile
 fi
 
-export DISABLE_MAGIC_FUNCTIONS=true
 source $ZSH/oh-my-zsh.sh
 
-
-eval "$(dircolors -b)"
 # LATE rc.d script
+# These files are supposed to execute at the end of startup, after zsh has already been started
 if [ -d ~/.local/etc/rc.d ]; then
     for rc in ~/.local/etc/rc.d/[5-9]*; do
         source $rc
