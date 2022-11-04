@@ -61,14 +61,13 @@ bindkey \^u backward-kill-line
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gitfast python sudo pyenv)
+plugins=(gitfast python sudo pyenv fzf )
 
 # User configuration
 
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
-
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -109,8 +108,10 @@ fi
 # Shell setup
 # These scripts are used to initialize interactive aspects of the shell
 # and can execute more complex commands, redefine aliases, etc.
+
+# EARLY rc.d
 if [ -d ~/.local/etc/rc.d ]; then
-    for rc in ~/.local/etc/rc.d/*; do
+    for rc in ~/.local/etc/rc.d/[0-4]*; do
         source $rc
     done
 fi
@@ -125,3 +126,9 @@ source $ZSH/oh-my-zsh.sh
 
 
 eval "$(dircolors -b)"
+# LATE rc.d script
+if [ -d ~/.local/etc/rc.d ]; then
+    for rc in ~/.local/etc/rc.d/[5-9]*; do
+        source $rc
+    done
+fi
