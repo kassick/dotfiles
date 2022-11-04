@@ -1,11 +1,14 @@
 description: emacs setup with spacemacs
 
-common_actions: &link_spacemacs
+link_spacemacs: &link_spacemacs
   - git_clone:
       - url: https://github.com/syl20bnr/spacemacs
         to: .emacs.d
         branch: develop
+
+link_dot_config: &link_dot_config
   - link: spacemacs.d
+  - link_recursively: local
 
 
 fedora-compile-deps: &fedora-compile-deps
@@ -87,18 +90,24 @@ emacs-launcher: &emacs-launcher
 
 variants:
   distro: &distro
+    - *link_dot_config
     - *link_spacemacs
     - *emacs-launcher
+
+  config_only:
+    - *link_dot_config
 
   fedora-emacs-28-git:
     - *fedora-compile-deps
     - *compile-emacs-28-git
+    - *link_dot_config
     - *link_spacemacs
     - *emacs-launcher
 
   fedora-emacs-git-master:
     - *fedora-compile-deps
     - *compile-emacs-git-master
+    - *link_dot_config
     - *link_spacemacs
     - *emacs-launcher
 
