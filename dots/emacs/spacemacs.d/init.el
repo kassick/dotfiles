@@ -133,6 +133,9 @@ This function should only modify configuration layer settings."
              python-spacemacs-indent-guess nil
              python-formatter 'yapf)
      rust
+     (go :variables
+         go-backend 'lsp
+         go-format-before-save t)
      (c-c++ :variables c-c++-backend 'lsp-clangd)
      cmake
      ;; (scala :variables
