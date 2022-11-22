@@ -1,20 +1,39 @@
+;;; package --- Summary
+
+;;; This mode provides a smart home/end keys, moving the cursor to the nearest logical point.
+
+;;; - home: places the cursor in one of the following points, by priority:
+;;;   - beginning of visual line
+;;;   - indent
+;;;   - start of line
+;;; - end: places the cursor by priority in:
+;;;   - end of visual line
+
+;;; Commentary:
+
+;;; Code:
+
 (defmacro kzk/execute-and-get-point-or-bail (&rest FORMS)
-  `(let ((opoint (point)))
-     (or (boundp 'bail) (setq bail -1))
+  "Return the point after executing FORMS, or the value of bail."
+
+  `(let ((opoint (point))
+         (bail-value (if (boundp 'bail) bail -1)))
+     ;; (or (boundp 'bail) (setq bail -1))
      ;; (message "bailing to %S" bail)
      (save-excursion
        (eval ,@FORMS)
        ;;(message "moved to %S from %S" (point) opoint)
        (if (= (point) opoint)
-           bail
+           bail-value
          (point)))))
 
 (defun kzk/beginning-of-visual-line-or-indent (&optional n)
-  "Move point to closest point among:
+  "Go to the logical beginning of the N'th line.
+
+  Move point to closest point among:
   - beginning of current visual line
   - indent
-  - first character
-  "
+  - first character"
   (interactive "^p")
 
   (or n (setq n 1))
@@ -34,7 +53,7 @@
           ;; back-to-indentation moves to the next char after indentation. In a
           ;; blank line, this will always move to the next char, resultin in
           ;; this movement never bailing
-          (kzk/execute-and-get-point-or-bail (when (not (looking-back "^[[:space:]]\+"))
+          (kzk/execute-and-get-point-or-bail (when (not (looking-back "^[[:space:]]\+" 0))
                                                (back-to-indentation))))
 
          (point-starting-of-line
@@ -48,10 +67,12 @@
       (goto-char target))) )
 
 (defun kzk/end-of-visual-line-or-eol (&optional n)
-  "Move point to the closest point among:
+  "Move cursor to the logical end of the N'thline.
+
+  Move point to the closest point among:
   - end of visual line
-  - end of line
-  "
+  - end of line"
+
   (interactive "^p")
   (or n (setq n 1))
 
@@ -86,13 +107,57 @@
     ))
 
 
+(defvar kzk-smart-home-end-mode-keymap (make-sparse-keymap)
+  "Keymap for kzk/smart-home-end-mode.")
 
-(global-set-key (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent)
-(global-set-key (kbd "<end>") 'kzk/end-of-visual-line-or-eol)
 
-(with-eval-after-load 'general
-  (general-define-key :states '(normal visual motion insert)
-                      "<home>" 'kzk/beginning-of-visual-line-or-indent
-                      "<end>" 'kzk/end-of-visual-line-or-eol))
+(defgroup kzk-smart-home-end ()
+  "Smart home end mode."
+  :group 'editing
+  :prefix "kzk-smart-home-end-mode")
+
+(defcustom kzk-smart-home-end-mode-ignored-major-modes
+  '(vterm-mode term-mode eshelm-mode)
+  "List of modes where the global mode won't be automatically initialized."
+  :group 'kzk-smart-home-end
+  :type '(repeat symbol))
+
+
+(define-key kzk-smart-home-end-mode-keymap
+            (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent)
+(define-key kzk-smart-home-end-mode-keymap
+            (kbd "<end>") 'kzk/end-of-visual-line-or-eol)
+
+(with-eval-after-load 'evil
+  (require 'evil-commands)
+  (evil-define-key '(normal visual motion insert hybrid replace iedit-insert) kzk-smart-home-end-mode-keymap
+                      (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent
+                      (kbd "<end>") 'kzk/end-of-visual-line-or-eol))
+
+
+(define-minor-mode kzk-smart-home-end-mode
+  "Toggle kzk/smart-home-end-mode."
+
+  :init-value nil
+  :lighter (" 🏠")
+  :group 'kzk-smart-home-end
+  :keymap kzk-smart-home-end-mode-keymap
+  )
+
+
+(defun turn-on-kzk-smart-home-end-mode ()
+  "Turn on the smart home end mode."
+  (interactive)
+  (unless (or (member major-mode kzk-smart-home-end-mode-ignored-major-modes)
+              (and (not (derived-mode-p 'comint-mode))
+                   (eq (get major-mode 'mode-class) 'special)))
+    (kzk-smart-home-end-mode t)))
+
+
+
+(define-global-minor-mode kzk-smart-home-end-global-mode
+  kzk-smart-home-end-mode
+  turn-on-kzk-smart-home-end-mode)
 
 (provide 'kzk-smart-home-end)
+;;; kzk-smart-home-end.el ends here

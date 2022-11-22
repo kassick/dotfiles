@@ -812,6 +812,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (require 'kzk-gui-tweaks)
   (require 'kzk-smart-home-end)
+  (kzk-smart-home-end-global-mode)
   (require 'kzk-smart-c-backspace)
 
   ;; (require 'kzk-latex)   ; latex-mode settings
