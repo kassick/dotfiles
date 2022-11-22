@@ -226,6 +226,10 @@ This function should only modify configuration layer settings."
                                     ;;; and screwing with the experience
                                     ;;; https://github.com/syl20bnr/spacemacs/issues/15089
                                     helm-ls-git
+                                    term-cursor  ;; the termcursor hook is
+                                                 ;; misbehaving. I mostly use
+                                                 ;; the GUI and I can live
+                                                 ;; without it
                                     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
