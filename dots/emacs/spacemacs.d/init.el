@@ -385,7 +385,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark spacemacs-light)
+   dotspacemacs-themes '(ample modus-operandi spacemacs-dark spacemacs-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -763,6 +763,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq theming-modifications
         `(
 
+          (modus-operandi
+           (default :foreground "#000000")
+           )
           ;; --- Ample theme ---
           (ample
            ;; fix some way-too-dark settings on ample
@@ -773,6 +776,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
            (region :background "gray30")
            (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
            (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold))
+
+          (ample-light
+           (default :foreground "#0A0A0A")
+           )
 
           ;; --- Spacemacs Light ---
           (spacemacs-light
