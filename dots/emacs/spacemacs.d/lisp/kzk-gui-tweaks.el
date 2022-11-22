@@ -45,4 +45,21 @@
 ;; }}}
 
 
+(defun kzk/frames-minibuffer-window ()
+  (mapcar (lambda (frame)
+            (let ((frame-window (minibuffer-window frame))
+                  (frame-minibuffer (frame-parameter frame 'minibuffer))
+                  (frame-name (frame-parameter frame 'name)))
+              (message "Frame `%s' (%S) %s minibuffer window %S"
+                       (if (string-empty-p frame-name) "!!! untitled !!!" frame-name)
+                       frame
+                       (cond
+                        ((eq t frame-minibuffer) "has own")
+                        ((eq 'only frame-minibuffer) "is only a")
+                        ((windowp frame-minibuffer) "shares"))
+                       frame-window)))
+          (frame-list))
+  )
+
+
 (provide 'kzk-gui-tweaks)
