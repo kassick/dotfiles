@@ -117,7 +117,7 @@
   :prefix "kzk-smart-home-end-mode")
 
 (defcustom kzk-smart-home-end-mode-ignored-major-modes
-  '(vterm-mode term-mode eshelm-mode)
+  '(vterm-mode term-mode eshelm-mode helm-mode minibuffer-mode)
   "List of modes where the global mode won't be automatically initialized."
   :group 'kzk-smart-home-end
   :type '(repeat symbol))
