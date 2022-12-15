@@ -794,7 +794,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                         :weight semi-bold)
            (region :background "gray30")
            (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
-           (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold))
+           (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold)
+           (evil-ex-lazy-highlight :foreground "white" :background "DarkOliveGreen4")
+           (highlight :background "gray30")
+           )
 
           (ample-light
            (default :foreground "#0A0A0A")
