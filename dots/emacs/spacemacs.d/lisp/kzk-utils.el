@@ -13,12 +13,12 @@
 (defun kzk/open-fun (fname)
   (save-window-excursion
     (let ((process-connection-type nil)
-          (fname-for-cmd (shell-quote-argument (expand-file-name fname)))
-          (cmd kzk/open-externally-command))
-      (message "Running %s for %s" cmd fname-for-cmd)
-      (start-process-shell-command (format "%s '%s'" cmd fname-for-cmd)
-                                   nil
-                                   (format "%s '%s'" cmd fname-for-cmd)))))
+          (fname-for-cmd (expand-file-name fname)))
+      (message "Running %s for %s" kzk/open-externally-command fname-for-cmd)
+      (start-process (format "%s %s" kzk/open-externally-command fname-for-cmd)
+                             nil
+                             kzk/open-externally-command
+                             fname-for-cmd))))
 
 (defun kzk/insert-date (prefix)
   "Insert the current date. With prefix-argument, use ISO format. With
