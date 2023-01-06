@@ -41,27 +41,37 @@
 
   ;;; Workaround for helm-buffer--details faililng due to missing dired-buffers variable
   (require 'dired)
-  (setq helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-        helm-echo-input-in-header-line t
-        ;; helm-autoresize-max-height 0
-        helm-autoresize-min-height 20
-        helm-semantic-fuzzy-match t
-        helm-imenu-fuzzy-match t
+  (setq
+   ;; {{{ https://github.com/emacs-helm/helm/issues/2579
+   ;;
+   ;; the way to workaround
+   ;; the bug in helm-20230101.1922 is to have the following setup, no need
+   ;; to use helm-hide-minibuffer-maybe:
+   helm-echo-input-in-header-line t
+   helm-display-header-line t
+   helm-echo-input-in-header-line nil
 
-        helm-apropos-fuzzy-match t
-        helm-lisp-fuzzy-completion t
+   ;; }}}
 
-        ;; Helm find files
-        helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-        helm-ff-file-name-history-use-recentf t
-        helm-ff-fuzzy-matching  t
+   helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
 
-        ;; Helm-M-x
-        helm-M-x-fuzzy-match t ;; optional fuzzy matching for helm-M-x
+   ;; helm-autoresize-max-height 0
+   helm-autoresize-min-height 20
 
-        ;; Helm-mini
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match    t)
+   helm-semantic-fuzzy-match t
+   helm-imenu-fuzzy-match t
+   helm-apropos-fuzzy-match t
+   helm-lisp-fuzzy-completion t
+   helm-M-x-fuzzy-match t ;; optional fuzzy matching for helm-M-x
+   helm-buffers-fuzzy-matching t
+   helm-recentf-fuzzy-match    t
+   helm-ff-fuzzy-matching  t
+
+   ;; Helm find files
+   ;; helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+   ;; helm-ff-file-name-history-use-recentf t
+   )
+
 
   (kzk/after-init
     (general-define-key :prefix dotspacemacs-leader-key
