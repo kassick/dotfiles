@@ -63,8 +63,10 @@
 
     ;; (message "cur: %S field: %S visual: %S indent: %S line: %S" (point) point-field point-starting-of-visual-line point-indent point-starting-of-line)
 
-    (when (/= target -1)
-      (goto-char target))) )
+    (if (= (point) point-starting-of-line)
+        (back-to-indentation)
+      (when (/= target -1)
+        (goto-char target))) ))
 
 (defun kzk/end-of-visual-line-or-eol (&optional n)
   "Move cursor to the logical end of the N'thline.
@@ -102,13 +104,13 @@
                       point-end-of-line)))
 
     ;; (message "target: %S field: %S visual: %S target line-non-blank: %S eol: %S" target point-end-of-field point-end-of-visual-line point-end-of-line-non-blank point-end-of-line)
-    (when (/= target bail)
-      (goto-char target))
+    (if (/= (point) point-end-of-line)
+        (when (/= target bail)
+          (goto-char target))
+      ;; else
+      (evil-last-non-blank)
+      (right-char 1))
     ))
-
-
-(defvar kzk-smart-home-end-mode-keymap (make-sparse-keymap)
-  "Keymap for kzk/smart-home-end-mode.")
 
 
 (defgroup kzk-smart-home-end ()
@@ -123,26 +125,36 @@
   :type '(repeat symbol))
 
 
-(define-key kzk-smart-home-end-mode-keymap
-            (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent)
-(define-key kzk-smart-home-end-mode-keymap
-            (kbd "<end>") 'kzk/end-of-visual-line-or-eol)
-
-(with-eval-after-load 'evil
-  (require 'evil-commands)
-  (evil-define-key '(normal visual motion insert hybrid replace iedit-insert) kzk-smart-home-end-mode-keymap
-                      (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent
-                      (kbd "<end>") 'kzk/end-of-visual-line-or-eol))
-
-
 (define-minor-mode kzk-smart-home-end-mode
   "Toggle kzk/smart-home-end-mode."
 
   :init-value nil
   :lighter (" 🏠")
   :group 'kzk-smart-home-end
-  :keymap kzk-smart-home-end-mode-keymap
+  ;;:keymap kzk-smart-home-end-mode-keymap
   )
+
+(with-eval-after-load 'evil
+  (evil-define-minor-mode-key
+    '(normal visual motion insert hybrid replace iedit-insert emacs operator)
+    'kzk-smart-home-end-mode
+    (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent
+    (kbd "<end>") 'kzk/end-of-visual-line-or-eol))
+  ;;(evil-define-minor-mode-key '(normal visual motion insert hybrid replace iedit-insert) 'kzk-smart-home-end-mode (kbd "<end>") 'kzk/end-of-visual-line-or-eol))
+;; (defvar kzk-smart-home-end-mode-keymap (make-sparse-keymap)
+;;   "Keymap for kzk/smart-home-end-mode.")
+;;
+;; (define-key kzk-smart-home-end-mode-keymap
+;;             (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent)
+;; (define-key kzk-smart-home-end-mode-keymap
+;;             (kbd "<end>") 'kzk/end-of-visual-line-or-eol)
+;; (with-eval-after-load 'evil
+;;   (require 'evil-commands)
+;;   (evil-define-key '(normal visual motion insert hybrid replace iedit-insert) kzk-smart-home-end-mode-keymap
+;;     (kbd "<home>") 'kzk/beginning-of-visual-line-or-indent
+;;     (kbd "<end>") 'kzk/end-of-visual-line-or-eol))
+
+
 
 
 (defun turn-on-kzk-smart-home-end-mode ()
