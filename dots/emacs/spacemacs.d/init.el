@@ -801,11 +801,12 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
            (header-line :background "#3d3d3f"
                         :foreground "white smoke"
                         :weight semi-bold)
-           (region :background "gray30")
+           (region :background "gray35")
            (helm-ff-dotted-directory :foreground "#6aaf50" :weight bold)
            (helm-ff-dotted-symlink-directory :foreground "DarkOrange" :weight bold)
            (evil-ex-lazy-highlight :foreground "white" :background "DarkOliveGreen4")
            (highlight :background "gray30")
+           (aw-leading-char-face :height 2.0 :foreground "red")
            )
 
           (ample-light
