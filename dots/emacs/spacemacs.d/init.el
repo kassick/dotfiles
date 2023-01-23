@@ -163,6 +163,14 @@ This function should only modify configuration layer settings."
      ;;        scala-auto-start-backend t
      ;;        scala-enable-eldoc t)
      ;; (rust :variables rust-backend 'lsp)
+
+     ;; JS thingies
+     prettier
+     (json :variables
+           json-backend 'lsp
+           json-fmt-on-save t
+           json-fmt-tool 'prettier
+           )
      javascript
      (typescript ;; :variables
                  ;; typescript-linter 'eslint ; let lsp to the linting
