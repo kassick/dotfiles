@@ -149,7 +149,8 @@ This function should only modify configuration layer settings."
              python-backend 'lsp
              python-lsp-server 'pyright
              python-spacemacs-indent-guess nil
-             python-formatter 'yapf)
+             python-formatter 'black
+             python-indent-def-block-scale 1)
      rust
      (go :variables
          go-backend 'lsp
