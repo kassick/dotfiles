@@ -913,7 +913,7 @@ before packages are loaded."
 
   ; Visual settings
   (setq-default line-spacing 0        ; Increase line-spacing (default 0)
-                fill-column 80        ; reasonable fill column
+                fill-column 78        ; reasonable fill column
                 indent-tabs-mode nil  ; tabs off by default
                 tab-width 4           ; reasonable tab-width
                 powerline-default-separator 'arrow ; Don't use separators
