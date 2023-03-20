@@ -1,7 +1,6 @@
 (defconst kzk-mc-packages
   '(evil
-    evil-mc
-    evil-multiedit))
+    evil-mc))
 
 (defun kzk-mc/post-init-evil-mc ()
   ;;; Include my custom movement to MC
