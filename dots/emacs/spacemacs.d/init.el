@@ -2,16 +2,6 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-;;; {{{ emacs-29 upstream has made use-package an upstream package. As a result,
-;;; the upstream lisp/use-package/use-package.el file is loaded before the local
-;;; one and ends up called before spacemacs adds it's custom keywords to the
-;;; use-package macro. This kludge was suggested in
-;;; https://github.com/syl20bnr/spacemacs/issues/15144 as workaround. This has
-;;; not yet been fixed in spacemacs upstream as emacs-29 is yet unreleased
-
-(fmakunbound 'use-package)
-
-;;; }}}
 (setq kzk/hack-original-display (getenv "DISPLAY"))
 (defun kzk/hack-reset-original-display-env-var (&optional frame)
   ;;; the message will insist it's resetting from :0 to :0, but if this is not
