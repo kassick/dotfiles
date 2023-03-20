@@ -258,6 +258,7 @@ This function should only modify configuration layer settings."
                                                  ;; misbehaving. I mostly use
                                                  ;; the GUI and I can live
                                                  ;; without it
+                                    mmm-mode     ;; mmm-mode causes strange behaviour with markdown. It's no longer necessary, apparently
                                     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
