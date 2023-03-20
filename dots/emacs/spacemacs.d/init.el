@@ -168,7 +168,7 @@ This function should only modify configuration layer settings."
      prettier
      (json :variables
            json-backend 'lsp
-           json-fmt-on-save t
+           json-fmt-on-save nil
            json-fmt-tool 'prettier
            )
      javascript
