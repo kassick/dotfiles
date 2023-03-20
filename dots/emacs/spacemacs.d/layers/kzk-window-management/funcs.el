@@ -1,11 +1,40 @@
-(defun kzk/delete-help-window ()
-  "Deletes the first window displaying a help buffer"
-  (interactive)
-  (-if-let ( help-window (-first (lambda (wnd)
-                                   (with-current-buffer (window-buffer wnd)
-                                     (eq major-mode 'help-mode)))
-                                 (window-list)) )
-      (delete-window help-window)))
+(defun kzk/--is-window-mode-a (wnd mode)
+  (with-current-buffer (window-buffer wnd)
+    (derived-mode-p mode)))
+
+
+(defun kzk/--delete-mode-windows (mode &optional all)
+  "Deletes the windows of mode.
+
+  When all it t, delete
+"
+  (let* ((predicate (lambda (wnd) (kzk/--is-window-mode-a wnd mode)))
+         (windows-to-kill
+          (if all
+              (-filter predicate (window-list))
+            (let ((wnd (-first predicate (window-list))))
+              (when wnd
+                (list wnd))))))
+    (-map (lambda (wnd) (when wnd (delete-window wnd)))
+          windows-to-kill)
+    (message "Killes %S windows" (length windows-to-kill))))
+
+
+(defun kzk/delete-help-window (&optional prefix)
+  "Deletes the all windows displaying a help buffer
+
+  With a prefix, deletes only one"
+
+  (interactive "P")
+  (kzk/--delete-mode-windows 'help-mode (not prefix)))
+
+(defun kzk/delete-compile-window (&optional prefix)
+  "Deletes all compilation windows.
+
+  With a prefix, deletes only one"
+
+  (interactive "P")
+  (kzk/--delete-mode-windows 'compilation-mode (not prefix)))
 
 (defun helm-esw/show-buffer (candidate)
   (set-window-buffer (esw/select-window nil t t) (get-buffer candidate)))

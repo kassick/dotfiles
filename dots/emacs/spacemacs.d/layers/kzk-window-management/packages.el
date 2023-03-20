@@ -53,7 +53,9 @@
                       :prefix dotspacemacs-leader-key
                       :states '(normal motion visual)
 
-                      "hD" '(kzk/delete-help-window :which-key "Delete help window"))
+                      "hD" '(kzk/delete-help-window :which-key "Delete help window")
+                      "cD" '(kzk/delete-compile-window :which-key "Deletes the compilation window")
+                      )
   )
 
 (defun kzk-window-management/post-init-window-purpose ()
