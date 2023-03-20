@@ -47,9 +47,9 @@
    ;; the way to workaround
    ;; the bug in helm-20230101.1922 is to have the following setup, no need
    ;; to use helm-hide-minibuffer-maybe:
+   ;; Should not be needed after https://github.com/syl20bnr/spacemacs/pull/15876 is merged
    helm-echo-input-in-header-line t
    helm-display-header-line t
-   helm-echo-input-in-header-line nil
 
    ;; }}}
 
