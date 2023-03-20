@@ -237,6 +237,7 @@ This function should only modify configuration layer settings."
                                       key-chord
                                       yasnippet-snippets
                                       edit-indirect ;; required by markdown
+                                      envrc
                                       )
 
    ;; A list of packages that cannot be updated.
@@ -897,6 +898,7 @@ before packages are loaded."
   (key-chord-mode 1)     ; keychord integrates with general
   (show-paren-mode t)
   (global-page-break-lines-mode 1)
+  (envrc-global-mode)
 
   (add-hook 'text-mode-hook (lambda () (visual-line-mode t)))
 
