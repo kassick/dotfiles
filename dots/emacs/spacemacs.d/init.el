@@ -119,7 +119,12 @@ This function should only modify configuration layer settings."
           lsp-ui-doc-enable nil
           lsp-ui-doc-position 'at-point
           lsp-ui-doc-max-height 15
-          lsp-use-upstream-bindings nil)
+          lsp-use-upstream-bindings nil
+          ;; hint from https://github.com/emacs-lsp/lsp-pyright/issues/66
+          ;; trying multiple instances to see if improves performance
+          ;; when not all of the projects are opened
+          lsp-pyright-multi-root nil
+          )
 
      ;; testing tree-sitter
      (tree-sitter :variables
@@ -135,6 +140,7 @@ This function should only modify configuration layer settings."
              ;; lsp-pyright-log-level "trace"
              lsp-pyright-venv-path "/home/kassick/.pyenv/versions"
              python-auto-set-local-pyenv-version nil
+             python-auto-set-local-pyvenv-virtualenv nil
              python-test-runner 'pytest
              python-backend 'lsp
              python-lsp-server 'pyright
