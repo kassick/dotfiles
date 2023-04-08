@@ -1,6 +1,8 @@
 (defconst kzk-python-packages
   '(smartparens
-    helm-pydoc))
+    helm-pydoc
+    ;pyvenv
+    ))
 
 (custom-set-variables
  '(importmagic-style-configuration-alist '((multiline . backslash) (max_columns . 1200))))
@@ -24,3 +26,8 @@
       (helm :sources '(helm-pydoc--imported-source helm-pydoc--installed-source)
             :buffer "*helm pydoc*" :history 'helm-pydoc--history
             :input initial-input))))
+
+
+;; (defun kzk-python/post-init-pyvenv ()
+;;   (message "advising spacemacs pyenv")
+;;   (advice-add 'spacemacs//pyvenv-mode-set-local-virtualenv :around #'kzk/spacemacs-pyenv-mode-set-local-virtualenv))

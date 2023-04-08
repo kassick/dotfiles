@@ -47,3 +47,26 @@
     ;; clear markers
     (set-marker start-of-arg-marker nil)
     (set-marker cur-statement-end-marker nil)))
+
+(defun kzk/pyenv-mode-set-local-virtualenv ()
+  "If a pyenv .python-version file is available in the directory tree, use it as pyvenv-activate"
+  (interactive)
+  (message "kzk find pyenv python version")
+  (when-let* ((root-path (locate-dominating-file default-directory ".python-version"))
+              (file-path (expand-file-name ".python-version" root-path)))
+    (message "found stuff %S" file-path)
+    (when (file-regular-p file-path)
+      (message "regular file")
+      (let* ((venv-name (with-temp-buffer
+                         (insert-file-contents file-path)
+                         (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+             (venv-full-path (concat (expand-file-name "~/.pyenv/versions") "/" venv-name)))
+        (message "found venv name %S at %S" venv-name venv-full-path)
+        (make-variable-buffer-local 'pyvenv-activate)
+        (setq pyvenv-activate  venv-full-path)))))
+
+(defun kzk/spacemacs-pyenv-mode-set-local-virtualenv (orig-fun &rest args)
+  (message "in kzk set local virtualenv")
+  (when (not (kzk/pyenv-mode-set-local-virtualenv))
+    (message "original func")
+    (apply orig-fun args)))
