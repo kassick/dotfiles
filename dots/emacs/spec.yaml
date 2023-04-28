@@ -14,9 +14,9 @@ link_dot_config: &link_dot_config
 fedora-compile-deps: &fedora-compile-deps
   - execute:
       - echo Will need password to install dependencies
-      - sudo dnf builddep emacs
-      - sudo dnf install ImageMagick-devel.x86_64
-      - sudo dnf install libgccjit-devel
+        #- sudo dnf builddep emacs
+        #- sudo dnf install ImageMagick-devel.x86_64
+        #- sudo dnf install libgccjit-devel
 
 compile-emacs-28-git: &compile-emacs-28-git
   - git_clone:

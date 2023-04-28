@@ -13,6 +13,8 @@ if [ -d "$HOME/.local/bin" ] ; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
+export PATH="$HOME/go/bin:$PATH"
+
 # Chase symlinks and avoid a lot of nonsense
 setopt chaselinks
 

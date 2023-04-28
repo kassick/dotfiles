@@ -14,7 +14,6 @@
 
 (add-hook 'after-make-frame-functions #'kzk/hack-reset-original-display-env-var)
 
-
 ;; (message "early display is %S in process %S" (getenv "DISPLAY") (emacs-pid))
 ;; keep around for debug, may be necessary
 ;; (defun handle-set-env (VARIABLE &optional VALUE SUBSTITUTE-ENV-VARS)
@@ -91,6 +90,7 @@ This function should only modify configuration layer settings."
      nav-flash
      theming
      helm
+     ;; syntax-checking
      (auto-completion :variables
                       auto-completion-front-end 'company
                       auto-completion-enable-snippets-in-popup t
@@ -116,7 +116,9 @@ This function should only modify configuration layer settings."
      dtrt-indent
      (lsp :variables
           lsp-keymap-prefix "C-c C-l"
-          lsp-ui-doc-enable nil
+          lsp-keep-workspace-alive nil
+          ;; lsp-ui-doc-enable nil
+          lsp-ui-doc-delay 1
           lsp-ui-doc-position 'at-point
           lsp-ui-doc-max-height 15
           lsp-use-upstream-bindings nil
@@ -150,7 +152,11 @@ This function should only modify configuration layer settings."
      rust
      (go :variables
          go-backend 'lsp
-         go-format-before-save t)
+         ;; go-format-before-save t
+         go-tab-width 4
+         ;; go-use-golangci-lint t
+         )
+     kzk-go
      (c-c++ :variables c-c++-backend 'lsp-clangd)
      cmake
      ;; (scala :variables
@@ -180,7 +186,6 @@ This function should only modify configuration layer settings."
      ;; csharp
      ;; java
      ;; antlr
-     ;; go
      ;; (haskell :variables haskell-completion-backend 'intero)
      ;; javascript
      ;; graphviz
@@ -188,7 +193,9 @@ This function should only modify configuration layer settings."
      ;; pdf-tools
      yaml
      (markdown :variables markdown-live-preview-engine 'vmd)
-     org
+     (org :variables
+          org-enable-modern-support t
+          org-enable-valign t)
      (latex :variables
             latex-enable-folding t
             latex-enable-auto-fill nil)
@@ -215,6 +222,9 @@ This function should only modify configuration layer settings."
      kzk-company
      kzk-persp
      spacemacs-editing
+     spacemacs-visual
+     spacemacs-editing-visual
+     ;; tabs
      )
 
 
