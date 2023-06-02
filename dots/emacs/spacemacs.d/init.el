@@ -155,6 +155,8 @@ This function should only modify configuration layer settings."
          ;; go-format-before-save t
          go-tab-width 4
          ;; go-use-golangci-lint t
+         company-go-insert-arguments nil
+         lsp-go-use-placeholders nil
          )
      kzk-go
      (c-c++ :variables c-c++-backend 'lsp-clangd)
@@ -737,7 +739,7 @@ It should only modify the values of Spacemacs settings."
    ;; indent handling like has been reported for `go-mode'.
    ;; If it does deactivate it here.
    ;; (default t)
-   dotspacemacs-use-clean-aindent-mode t
+   dotspacemacs-use-clean-aindent-mode nil
 
    ;; Accept SPC as y for prompts if non nil. (default nil)
    dotspacemacs-use-SPC-as-y nil
