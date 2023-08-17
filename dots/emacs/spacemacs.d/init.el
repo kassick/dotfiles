@@ -879,7 +879,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
            (highlight :background "#5f5c70"
                       :foreground "#b2b2b2")
            (default :foreground "#c1c1c1")
-           (scrollbar :foreground "gray52"))
+           (scrollbar :foreground "gray52")
+           (vterm-color-black :foreground "#708284" :background "#0a0814"))
 
           ))
 
