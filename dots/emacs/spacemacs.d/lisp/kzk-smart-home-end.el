@@ -13,19 +13,53 @@
 
 ;;; Code:
 
+(defun kzk/execute-and-get-point-or-bail-internal (bail FORMS)
+  "Return the point after executing FORMS, or the value of bail."
+
+  (let ((opoint (point)))
+     (save-excursion
+       (dolist (form FORMS)
+         (eval form))
+
+       (if (= (point) opoint)
+           bail
+         (point)))))
+
+
 (defmacro kzk/execute-and-get-point-or-bail (&rest FORMS)
   "Return the point after executing FORMS, or the value of bail."
 
+  ;; (message "macro called with forms %S" FORMS)
+  (let ((res `(let ((bail-value (if (boundp 'bail) bail -1)))
+     (kzk/execute-and-get-point-or-bail-internal bail-value ',FORMS))))
+    ;; (message "built form %S" res)
+    res
+    ))
+
+;; (defmacro kzk/execute-and-get-point-or-bail (&rest FORMS)
+;;   "Return the point after executing FORMS, or the value of bail."
+
+;;   (message "called with forms %S" FORMS)
+;;   `(let ((opoint (point))
+;;          (bail-value (if (boundp 'bail) bail -1)))
+;;      ;; (or (boundp 'bail) (setq bail -1))
+;;      ;; (message "bailing to %S" bail)
+;;      (save-excursion
+;;        (eval ,@FORMS)
+;;        ;;(message "moved to %S from %S" (point) opoint)
+;;        (if (= (point) opoint)
+;;            bail-value
+;;          (point)))))
+
+
+(defmacro kzk/point-at-p (&rest FORMS)
   `(let ((opoint (point))
-         (bail-value (if (boundp 'bail) bail -1)))
-     ;; (or (boundp 'bail) (setq bail -1))
-     ;; (message "bailing to %S" bail)
-     (save-excursion
-       (eval ,@FORMS)
-       ;;(message "moved to %S from %S" (point) opoint)
-       (if (= (point) opoint)
-           bail-value
-         (point)))))
+          (target-point (save-excursion
+                          (eval ,@FORMS)
+                          (point))))
+     ;;(message "opoint=%S target=%S" opoint target-point)
+     (= opoint target-point)))
+
 
 (defun kzk/beginning-of-visual-line-or-indent (&optional n)
   "Go to the logical beginning of the N'th line.
@@ -41,7 +75,26 @@
     (let ((line-move-visual t))
       (line-move (1- n) t)))
 
-  (let* (
+  (cond
+   ;; Alternate between start of line and indent
+
+   ;; At the beginning of line
+   ((kzk/point-at-p (beginning-of-line))
+    ;; go back to indentation
+    (back-to-indentation))
+
+   ;; At the indentation
+   ((kzk/point-at-p
+     (back-to-indentation)
+     ;; When at an empty line, back-to-indentation will leave the cursor past
+     ;; the last indent char. In that case, go back one char
+     (when (looking-at "$") (left-char)))
+    ; back to beginning of line
+    (beginning-of-line))
+
+   ;; Otherwise, find the closest target
+   (t
+    (let* (
          (point-field
           (kzk/execute-and-get-point-or-bail (field-beginning)))
 
@@ -50,11 +103,7 @@
                                                (vertical-motion 0))))
 
          (point-indent
-          ;; back-to-indentation moves to the next char after indentation. In a
-          ;; blank line, this will always move to the next char, resultin in
-          ;; this movement never bailing
-          (kzk/execute-and-get-point-or-bail (when (not (looking-back "^[[:space:]]\+" 0))
-                                               (back-to-indentation))))
+          (kzk/execute-and-get-point-or-bail (back-to-indentation)))
 
          (point-starting-of-line
           (kzk/execute-and-get-point-or-bail (move-beginning-of-line 1)))
@@ -66,7 +115,12 @@
     (if (= (point) point-starting-of-line)
         (back-to-indentation)
       (when (/= target -1)
-        (goto-char target))) ))
+        (goto-char target))) )
+    )
+   )
+
+
+  )
 
 (defun kzk/end-of-visual-line-or-eol (&optional n)
   "Move cursor to the logical end of the N'thline.
