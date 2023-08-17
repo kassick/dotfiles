@@ -98,7 +98,7 @@ This function should only modify configuration layer settings."
                       auto-completion-front-end 'company
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip nil
-                      auto-completion-use-company-posframe t
+                      ;; auto-completion-use-company-posframe t
                       ;; auto-completion-use-company-box t
                       ;; auto-completion-enable-sort-by-usage t
                       )
@@ -129,6 +129,7 @@ This function should only modify configuration layer settings."
           ;; trying multiple instances to see if improves performance
           ;; when not all of the projects are opened
           lsp-pyright-multi-root nil
+          lsp-enable-snippet nil ;; Disable snippets in LSP, as it becomes increasingly annoying!
           )
 
      ;; testing tree-sitter

@@ -9,4 +9,13 @@
 (defun kzk-lsp/post-init-lsp-mode ()
   (general-define-key :keymaps 'lsp-mode-map
                       "C-c C-h" 'lsp-ui-doc-glance
-                      "C-c h" 'kzk/lsp-help-at-point))
+                      "C-c h" 'kzk/lsp-help-at-point)
+
+  ;; (message "setting lsp-mode minor mode == from kzk-lsp")
+  ;; (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
+  ;;   "==" #'lsp-format-buffer)
+  ;; (define-key spacemacs-lsp-mode-map (kbd "==") 'lsp-format-buffer)
+  ;;(spacemacs/set-leader-keys-for-minor-mode 'lsp-mode "==" 'lsp-format-buffer)
+  (with-eval-after-load 'lsp-mode
+    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]worktrees\\'" t))
+  )
