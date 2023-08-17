@@ -880,8 +880,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                       :foreground "#b2b2b2")
            (default :foreground "#c1c1c1")
            (scrollbar :foreground "gray52")
-           (vterm-color-black :foreground "#708284" :background "#0a0814"))
+           (vterm-color-black :foreground "#454545" :background "#708284")
+           (vterm-color-blue  :foreground "#42A5F5" :background "#42A5F5")
+           (vterm-color-cyan  :foreground "#00ACC1" :background "#00ACC1")
+           (vterm-color-green :foreground "#C3D82C" :background "#C3D82C")
+           (vterm-color-white :foreground "#DEDDDA" :background "#DEDDDA"))
 
+          ;; --- END theming-modifications ---
           ))
 
 
