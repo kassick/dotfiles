@@ -821,7 +821,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    '(ediff-window-setup-function (quote ediff-setup-windows-plain))
 
    ;; emacs 29 prefers completing-read for answers, which does not feel so good with helm
-   '(use-short-answers t))
+   '(use-short-answers t)
+
+   ;; not using this causes vterm to use "wrong" colors -- most notably, the
+   ;; current path in frontcube's zsh theme. See
+   ;; https://github.com/akermu/emacs-libvterm/issues/549
+   '(vterm-set-bold-hightbright t)
+   )
 
   (setq theming-modifications
         `(
@@ -880,7 +886,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                       :foreground "#b2b2b2")
            (default :foreground "#c1c1c1")
            (scrollbar :foreground "gray52")
-           (vterm-color-black :foreground "#454545" :background "#708284")
+           (vterm-color-black :foreground "#304040" :background "#708284")
            (vterm-color-blue  :foreground "#42A5F5" :background "#42A5F5")
            (vterm-color-cyan  :foreground "#00ACC1" :background "#00ACC1")
            (vterm-color-green :foreground "#C3D82C" :background "#C3D82C")
