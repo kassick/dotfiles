@@ -2,6 +2,7 @@
   '(popwin
     es-windows
     window-purpose
+    posframe
     ))
 
 (defun kzk-window-management/post-init-popwin ()
@@ -62,3 +63,7 @@
   ;; Forcing prefer-other-frame to popup new frame
   (setcdr (assq 'prefer-other-frame purpose-action-sequences)
           '(purpose-display-maybe-pop-up-frame)))
+
+
+(defun kzk-window-management/post-init-posframe ()
+  (advice-add 'delete-frame :around #'kzk/handle-delete-frame-error))

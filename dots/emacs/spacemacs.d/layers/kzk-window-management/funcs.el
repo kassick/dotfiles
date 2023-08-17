@@ -98,3 +98,12 @@
     (add-to-list 'helm-ag--actions
                  '("Find match in in new splited window `C-c w'" . helm-esw/ag-find-file ) t)
     (define-key helm-ag-map (kbd "C-c w") 'helm-esw/run-ag-find-file)))
+
+(defun kzk/handle-delete-frame-error (orig-fun &rest args)
+  (message "Handling possible posframe issue on delete frame")
+  (condition-case err
+      (apply orig-fun args)
+    ((debug error)
+     (progn
+       (posframe-delete-all)
+       (apply orig-fun args)))))
