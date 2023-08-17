@@ -38,7 +38,10 @@
          (native-comp-available-p))
     (progn
       (message "Native compilation is available")
-      (setq comp-deferred-compilation t))
+      (setq
+       comp-deferred-compilation t
+       ;; Avoid compilation taking all computing resources in the computer
+       native-comp-async-jobs-number 2))
   (message "Native complation is *not* available"))
 
 (if (functionp 'json-serialize)
