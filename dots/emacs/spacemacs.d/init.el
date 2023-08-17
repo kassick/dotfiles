@@ -142,6 +142,7 @@ This function should only modify configuration layer settings."
 
      emacs-lisp
      shell-scripts
+     (ipython-notebook)
      (python :variables
              ;; lsp-pyright-log-level "trace"
              lsp-pyright-venv-path "/home/kassick/.pyenv/versions"
