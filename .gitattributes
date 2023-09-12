@@ -1,0 +1,2 @@
+dots/fonts/local/share/fonts/iosevka.ttc filter=lfs diff=lfs merge=lfs -text
+*.ttc filter=lfs diff=lfs merge=lfs -text
