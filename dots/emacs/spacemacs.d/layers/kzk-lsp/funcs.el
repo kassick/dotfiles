@@ -23,7 +23,7 @@ called with a prefix, kills the window"
            (not (display-graphic-p)))))
 
 (defun kzk/lsp-ui-peek--peek-display (fn src1 src2)
-  (if (kzk/childframe-workable-p)
+  (if (and kzk/peek-uses-posframe (kzk/childframe-workable-p))
       (-let* (
               (f-width (frame-width))
               (win-width (truncate (min
@@ -52,7 +52,7 @@ called with a prefix, kills the window"
     (funcall fn src1 src2)))
 
 (defun kzk/lsp-ui-peek--peek-destroy (fn)
-  (if (kzk/childframe-workable-p)
+  (if (and kzk/peek-uses-posframe (kzk/childframe-workable-p))
       (progn
         (when (bufferp lsp-ui-peek--buffer)
           (posframe-hide lsp-ui-peek--buffer))

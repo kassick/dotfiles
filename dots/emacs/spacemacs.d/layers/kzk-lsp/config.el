@@ -20,5 +20,6 @@
  '(lsp-ui-peek-always-show t)
  )
 
+(defcustom kzk/peek-uses-posframe t "If lsp-ui-peek should appear inside a posframe")
 (defcustom kzk/max-peek-width 150 "Max width of the peek window. When nil, no max width will be applied")
 (defcustom kzk/max-peek-width-proportional nil "Max percentage of the frame width that will be occupied by peek. When nil, do not use")
