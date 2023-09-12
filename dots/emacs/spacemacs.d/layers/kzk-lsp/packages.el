@@ -1,6 +1,7 @@
 (defconst kzk-lsp-packages
   '(general
-    lsp-mode))
+    lsp-mode
+    lsp-ui))
 
 
 (defun kzk-lsp/post-init-general ())
@@ -19,3 +20,7 @@
   (with-eval-after-load 'lsp-mode
     (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]worktrees\\'" t))
   )
+
+(defun kzk-lsp/post-init-lsp-ui ()
+  (advice-add #'lsp-ui-peek--peek-new :around #'kzk/lsp-ui-peek--peek-display)
+  (advice-add #'lsp-ui-peek--peek-hide :around #'kzk/lsp-ui-peek--peek-destroy))
