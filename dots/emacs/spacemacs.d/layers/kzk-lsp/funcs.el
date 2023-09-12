@@ -44,6 +44,8 @@ called with a prefix, kills the window"
                        :string (mapconcat 'identity string "")
                        :min-width win-width
                        :max-width win-width
+                       :min-height lsp-ui-peek-peek-height
+                       :max-height lsp-ui-peek-peek-height
                        :internal-border-color (face-foreground 'font-lock-comment-face nil t)
                        :internal-border-width 3
                        :poshandler #'posframe-poshandler-frame-center))
