@@ -34,7 +34,7 @@ called with a prefix, kills the window"
                                     ;; If set, a proportional max width
                                     (* (or kzk/max-peek-width-proportional 1) f-width)
                                     )))
-                       (lsp-ui-peek-list-width (/ win-width 2))
+                       ;; (lsp-ui-peek-list-width (/ win-width 2))
                        (string (-some--> (-zip-fill "" src1 src2)
                                  (--map (lsp-ui-peek--adjust win-width it) it)
                                  (-map-indexed 'lsp-ui-peek--make-line it)
