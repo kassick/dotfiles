@@ -11,4 +11,11 @@
  ;; docstring in the current buffer instead of the minibuffer
  '(lsp-signature-function 'lsp-signature-posframe)
  '(lsp-signature-auto-activate '(:on-server-request))
+
+ ;; slightly smaller doc posframe
+ '(lsp-ui-doc-max-height 10)
+
+ ;; Always show peek -- ,gd and ,gr already go to where I want, peek is
+ ;; supposed to show a UI
+ '(lsp-ui-peek-always-show t)
  )

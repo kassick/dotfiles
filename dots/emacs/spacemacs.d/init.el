@@ -123,7 +123,6 @@ This function should only modify configuration layer settings."
           ;; lsp-ui-doc-enable nil
           lsp-ui-doc-delay 1
           lsp-ui-doc-position 'at-point
-          lsp-ui-doc-max-height 15
           lsp-use-upstream-bindings nil
           ;; hint from https://github.com/emacs-lsp/lsp-pyright/issues/66
           ;; trying multiple instances to see if improves performance
