@@ -986,7 +986,14 @@ before packages are loaded."
   ;; can be used accidently too often. Also, no C-g on the confirmation prompt!?
   ;; what the hell?
   (global-unset-key (kbd "C-x C-c"))
+
+  ;; No surprise iconify
   (global-unset-key (kbd "C-x C-z"))
+
+  ;; I always press C-x s by accident. I NEVER intend to call
+  ;; save-some-buffers
+  (global-set-key (kbd "C-x s") 'save-buffer)
+  (global-set-key (kbd "C-x S") 'save-some-buffers)
 
   (setq evil-escape-delay 0.08)
 
