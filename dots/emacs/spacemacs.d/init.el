@@ -132,12 +132,12 @@ This function should only modify configuration layer settings."
           )
 
      ;; testing tree-sitter
-     (tree-sitter :variables
-                  ;; spacemacs-tree-sitter-hl-black-list '(js2-mode rjsx-mode)
-                  tree-sitter-syntax-highlight-enable t
-                  tree-sitter-fold-enable t
-                  tree-sitter-fold-indicators-enable nil
-                  )
+     ;; (tree-sitter :variables
+     ;;              spacemacs-tree-sitter-hl-black-list '(markdown-mode)
+     ;;              tree-sitter-syntax-highlight-enable t
+     ;;              tree-sitter-fold-enable t
+     ;;              tree-sitter-fold-indicators-enable nil
+     ;;              )
 
      emacs-lisp
      shell-scripts
