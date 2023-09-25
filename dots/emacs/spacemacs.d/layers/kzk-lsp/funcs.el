@@ -58,3 +58,14 @@ called with a prefix, kills the window"
           (posframe-hide lsp-ui-peek--buffer))
         (setq lsp-ui-peek--last-xref nil))
     (funcall fn)))
+
+(defun kzk/lsp-workspaces-gc()
+  "Delete all lsp tracked folders that no longer exists."
+  (interactive)
+  (let ((removed nil))
+    (--each (lsp-session-folders (lsp-session))
+      (unless (file-directory-p it)
+        (lsp-workspace-folders-remove it)
+        (setq removed t)
+        ))
+    (unless removed (message "No folder removed"))))
