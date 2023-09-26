@@ -25,7 +25,7 @@
    (general-define-key "L" '(evil-forward-arg :which-key "Arg Forward")
                        "H" '(evil-backward-arg :which-key "Arg Backward")
                        "K" '(evil-jump-out-args :which-key "Jump Out of Args")
-                       :states 'normal)))
+                       :states '(visual motion normal))))
 
 (defun kzk-code-tweaks/post-init-evil-easymotion ()
   ;; evilem on \
