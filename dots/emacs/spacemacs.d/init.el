@@ -2,6 +2,7 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(setenv "LSP_USE_PLISTS" "true")
 (setq kzk/hack-original-display (getenv "DISPLAY"))
 (defun kzk/hack-reset-original-display-env-var (&optional frame)
   ;;; the message will insist it's resetting from :0 to :0, but if this is not
@@ -121,6 +122,7 @@ This function should only modify configuration layer settings."
           lsp-keymap-prefix "C-c C-l"
           lsp-keep-workspace-alive nil
           ;; lsp-ui-doc-enable nil
+          lsp-idle-delay 1
           lsp-ui-doc-delay 1
           lsp-ui-doc-position 'at-point
           lsp-use-upstream-bindings nil
