@@ -18,11 +18,10 @@
   ;; (define-key spacemacs-lsp-mode-map (kbd "==") 'lsp-format-buffer)
   ;;(spacemacs/set-leader-keys-for-minor-mode 'lsp-mode "==" 'lsp-format-buffer)
   (with-eval-after-load 'lsp-mode
-    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]worktrees\\'" t))
+    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]worktrees\\'" t)
 
-  (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
-    "FC" 'kzk/lsp-workspaces-gc)
-  )
+    (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
+      "FC" 'kzk/lsp-workspaces-gc)))
 
 (defun kzk-lsp/post-init-lsp-ui ()
   (advice-add #'lsp-ui-peek--peek-new :around #'kzk/lsp-ui-peek--peek-display)
