@@ -32,7 +32,7 @@ called with a prefix, kills the window"
                                     ;; If an absolute max width set
                                     (or kzk/max-peek-width f-width)
                                     ;; If set, a proportional max width
-                                    (* (or kzk/max-peek-width-proportional 1) f-width)
+                                    (* (or (and (> f-width kzk/max-peek-width-proportional-min-width) kzk/max-peek-width-proportional) 1) f-width)
                                     )))
                        ;; (lsp-ui-peek-list-width (/ win-width 2))
                        (string (-some--> (-zip-fill "" src1 src2)

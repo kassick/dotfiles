@@ -18,8 +18,13 @@
  ;; Always show peek -- ,gd and ,gr already go to where I want, peek is
  ;; supposed to show a UI
  '(lsp-ui-peek-always-show t)
+
+ ;; Show LSP lenses above the line. I don't like it much, but stuff like
+ ;; go-generate commands makd it impossible to use the lenses
+ '(lsp-lens-place-position 'above-line)
  )
 
 (defcustom kzk/peek-uses-posframe t "If lsp-ui-peek should appear inside a posframe")
-(defcustom kzk/max-peek-width 150 "Max width of the peek window. When nil, no max width will be applied")
+(defcustom kzk/max-peek-width nil "Max width of the peek window. When nil, no max width will be applied")
 (defcustom kzk/max-peek-width-proportional nil "Max percentage of the frame width that will be occupied by peek. When nil, do not use")
+(defcustom kzk/max-peek-width-proportional-min-width 150 "Minimum width on which proportional applies")
