@@ -2,7 +2,10 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-(setenv "LSP_USE_PLISTS" "true")
+;; Using PLISTS is recommented for performance reasons, BUT
+;; code lens do not work when using plists ... (wat?!)
+;; (setenv "LSP_USE_PLISTS" "true")
+
 (setq kzk/hack-original-display (getenv "DISPLAY"))
 (defun kzk/hack-reset-original-display-env-var (&optional frame)
   ;;; the message will insist it's resetting from :0 to :0, but if this is not
