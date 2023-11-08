@@ -17,7 +17,7 @@
                 (list wnd))))))
     (-map (lambda (wnd) (when wnd (delete-window wnd)))
           windows-to-kill)
-    (message "Killes %S windows" (length windows-to-kill))))
+    (message "%s windows killed" (length windows-to-kill))))
 
 
 (defun kzk/delete-help-window (&optional prefix)
