@@ -67,6 +67,21 @@
    helm-recentf-fuzzy-match    t
    helm-ff-fuzzy-matching  t
 
+   ;; Commit https://github.com/emacs-helm/helm/commit/a4380caef3a9e4b1e8d11458852ab67ba9b4cf58
+   ;; changed the default value of this variable to 'left.
+   ;;
+   ;; For some reason, narrow helm windows fail to pop up the action window at
+   ;; any position with a "Cannot split side window or parent of side window"
+   ;; message and wide helm windows always replace the current helm results.
+   ;;
+   ;; This is spacemacs-specific, caused by spacemacs//display-helm-window
+   ;; settings to force the helm buffer to sit at the bottom of the current frame.
+   ;;
+   ;; Setting the variable back to nil until
+   ;; https://github.com/syl20bnr/spacemacs/issues/16184 is resolved
+   helm-always-two-windows nil
+   helm-show-action-window-other-window nil
+
    ;; Helm find files
    ;; helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
    ;; helm-ff-file-name-history-use-recentf t
