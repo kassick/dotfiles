@@ -1,0 +1,16 @@
+description: kzk us-intl layout
+long_description: |
+  Because of Lenovo's br+thinkpad abnt2 mapping of RCTL to slash/question_mark, switching from br+thinkpad to us+intl causes the RCTL to remain mapped to slash/question_mark (probably switching shoul cause a full clean up / reset somewhere).
+
+  The quick solution is to have the us+intl mapping define RCTL as Control_R.
+
+  Patching /usr/share/X11/xkb/symbols/us is annoying, as we need to remember, after each upgrade, do re-patch it. We usually only realise the issue when trying to use RCTL as Control_R and seeing slashes -- i.e. need to patch, logout & log in again :/
+
+  To workaround the issue, we provide a custom layout here.
+
+  It can be found in Gnome Settings under English (U.S.) / Intl (kzk)
+
+  See https://github.com/xkbcommon/libxkbcommon/blob/master/doc/user-configuration.md
+
+actions:
+  - link_recursively: config
