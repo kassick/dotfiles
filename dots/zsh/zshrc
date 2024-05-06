@@ -1,4 +1,12 @@
 # Path to your oh-my-zsh installation.
+# Unset direnv variables that may come from emacs
+unset DIRENV_DIR
+unset DIRENV_DIFF
+unset DIRENV_WATCHES
+unset DIRENV_FILE
+unset PYENV_VERSION
+unset PYENV_VIRTUALENV_INIT
+
 export ZSH=${HOME}/.oh-my-zsh
 
 # User machine local settings
