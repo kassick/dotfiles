@@ -1,6 +1,7 @@
 (defconst kzk-mc-packages
   '(evil
-    evil-mc))
+    evil-mc
+    iedit))
 
 (defun kzk-mc/post-init-evil-mc ()
   ;;; Include my custom movement to MC
@@ -55,3 +56,5 @@
    (define-key evil-ex-search-keymap
                (kbd "C-E") 'kzk/evil-iedit-from-current-ex-search)
    (spacemacs/set-leader-keys "s E" 'kzk/evil-iedit-from-last-ex-search)))
+
+(defun kzk-mc/post-init-iedit ())

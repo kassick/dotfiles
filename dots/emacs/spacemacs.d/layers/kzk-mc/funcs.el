@@ -8,6 +8,7 @@
     (when evil-ex-current-buffer
       (with-current-buffer evil-ex-current-buffer
         (with-selected-window (minibuffer-selected-window)
+          (require 'iedit)
           (spacemacs/evil-search-clear-highlight)
           (iedit-start regexp 0 (point-max))
           (evil-iedit-state))))
@@ -19,6 +20,7 @@
   (when evil-ex-search-pattern
     (let* ((iedit-case-sensitive (not (evil-ex-pattern-ignore-case evil-ex-search-pattern)))
            (regexp (evil-ex-pattern-regex evil-ex-search-pattern)))
+      (require 'iedit)
       (spacemacs/evil-search-clear-highlight)
       (iedit-start regexp 0 (point-max))
       (evil-iedit-state)
