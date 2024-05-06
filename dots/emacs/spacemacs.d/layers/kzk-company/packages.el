@@ -37,13 +37,13 @@
   :group 'kzk-company)
 
 
-(defun kzk-company/post-init-company-box ()
-  (setq company-frontends '(company-box-frontend
-                            company-preview-frontend
-                            company-echo-metadata-frontend
-          )
-        )
-)
+;; (defun kzk-company/post-init-company-box ()
+;;   (setq company-frontends '(company-box-frontend
+;;                             company-preview-frontend
+;;                             company-echo-metadata-frontend
+;;           )
+;;         )
+;; )
 
 (defun kzk-company/post-init-company-posframe ()
     ;;; this fixes an issue with a very slow posframe -- something in GNOME interferes with emacs frames causing delays
