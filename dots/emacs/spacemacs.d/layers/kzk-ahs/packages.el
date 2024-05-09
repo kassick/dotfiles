@@ -12,7 +12,9 @@
   ;;; Because reasons, push fails without the with-eval-after-load ...
   ;;; probably symbol is not autoloaded
   (with-eval-after-load 'auto-highlight-symbol
-    (push 'kzk/evil-is-in-visual-mode ahs-disabled-flags)))
+    (push 'kzk/evil-is-in-visual-mode ahs-disabled-flags)
+    (advice-add 'spacemacs//ahs-setup :before 'spacemacs/evil-search-clear-highlight)
+    (advice-add 'spacemacs//ahs-ts-on-exit :after 'spacemacs/evil-search-clear-highlight)))
 
 (defun kzk-ahs/post-init-evil ()
   (add-hook 'evil-visual-state-entry-hook
