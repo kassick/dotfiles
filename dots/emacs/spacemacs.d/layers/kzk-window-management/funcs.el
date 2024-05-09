@@ -1,3 +1,5 @@
+;;;  -*- lexical-binding: t -*-
+
 (defun kzk/--is-window-mode-a (wnd mode)
   (with-current-buffer (window-buffer wnd)
     (derived-mode-p mode)))
@@ -98,6 +100,105 @@
     (add-to-list 'helm-ag--actions
                  '("Find match in in new splited window `C-c w'" . helm-esw/ag-find-file ) t)
     (define-key helm-ag-map (kbd "C-c w") 'helm-esw/run-ag-find-file)))
+
+;;; Taken from https://karthinks.com/software/fifteen-ways-to-use-embark/
+;;; (and adapted for names)
+;;; {{{
+(eval-when-compile
+  (defmacro kzk/embark-ace-action (fn)
+    `(defun ,(intern (concat "kzk/embark-ace-" (symbol-name fn))) ()
+       (interactive)
+       (with-demoted-errors "Ace Embark: %s"
+         (require 'ace-window)
+         (let ((aw-dispatch-always t))
+           (aw-switch-to-window (aw-select nil))
+           (call-interactively (symbol-function ',fn)))))))
+;;; }}}
+
+(defun kzk/esw-ff (filename &rest args)
+  "Finds a file and open it in a ESW selected window"
+  (interactive
+   (find-file-read-args "Find file: "
+                        (confirm-nonexistent-file-or-buffer)))
+
+  ;; use ace-window, as it ends up forcing redisplays -- this works better
+  ;; when lsp or some other mode init function requires user input
+  (require 'ace-window)
+  (let* ((wnd (aw-switch-to-window (esw/select-window nil t t) ))
+         (value (find-file-noselect filename nil nil nil)))
+    (set-window-buffer wnd value)))
+
+(defun kzk/esw-buffer (buffer-or-name &rest args)
+  "Opens a buffer in a ESW selected window"
+  (interactive
+   (list (read-buffer-to-switch "Switch to buffer in other window: ")))
+
+  (require 'ace-window)
+  (let* ((wnd (aw-switch-to-window (esw/select-window nil t t) )))
+    (set-window-buffer wnd buffer-or-name)))
+
+(defun kzk/embark-grep-action-other-window (location)
+  "Finds the entry at other window.
+
+   This function is not interactive because location is a prop
+   text -- could not find an interactive parameter that could
+   keep the parameter and work correctly with embark.
+   "
+
+  (run-at-time 0 nil 'switch-to-buffer-other-window (current-buffer))
+  (run-at-time 0 nil 'embark-consult-goto-grep location)
+  )
+
+(defun kzk/embark-grep-action-esw (location)
+  "Opens a candidate in a ESW selected window"
+  ;; This is convoluted, but that's how I got it to work ...
+
+  ;; Save the current path (if we ESW-select a window visiting a file in
+  ;; other path, we may end up opening the file in the invalid path, as
+  ;; location is relative).
+  ;;
+  ;; The path will be updated by consult-grep to be wither the project root or
+  ;; whatever target directory is used
+  (let ((path default-directory))
+
+    ;; Then run the whole setup on a timer, otherwise focus does not work ...
+    (run-at-time 0 nil (lambda ()
+                         ;; Save the target window
+                         (let ((wnd (esw/select-window nil t t)))
+                           ;; ensure wnd is selected
+                           (require 'ace-window)
+                           (aw-select wnd)
+
+                           ;; and then call embark-consult-goto-grep with the
+                           ;; window selected
+                           (with-selected-window wnd
+                             ;; go to the base path
+                             (cd path)
+                             (embark-consult-goto-grep location))))))
+  ;; does not focus ...
+  ;; (let* ((buffer-at-point (save-excursion
+  ;;                           (save-window-excursion
+  ;;                             (embark-consult-goto-grep location)
+  ;;                             `(,(current-buffer) . ,(point)))))
+  ;;        (buf (car buffer-at-point))
+  ;;        (p (cdr buffer-at-point))
+  ;;        (wnd (esw/select-window nil t t)))
+  ;;   (require 'ace-window)
+  ;;   (aw-select wnd)
+  ;;   (set-window-buffer wnd buf)
+  ;;   (goto-char p)
+  ;;   (run-at-time 0 nil 'aw-select wnd)
+  ;;   )
+  )
+
+(defun kzk/embark-grep-action-other-frame (location)
+  "Finds the entry at other frame."
+  (save-window-excursion
+    (save-excursion
+      (embark-consult-goto-grep location)
+      (switch-to-buffer-other-frame (current-buffer))
+    ))
+  )
 
 (defun kzk/handle-delete-frame-error (orig-fun &rest args)
   (message "Handling possible posframe issue on delete frame")

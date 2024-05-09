@@ -148,9 +148,3 @@
     (message "new agenda list %S --- " new-agenda-list )
 
     (customize-save-variable 'org-agenda-files new-agenda-list)))
-
-(defun kzk/org-capture ()
-  "Capture a note in org-mode"
-  (interactive)
-  (require 'org-capture) ;; force load org-capture because helm-org-capture does not requires org-capture :/
-  (helm-org-capture-templates))

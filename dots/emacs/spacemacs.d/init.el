@@ -96,7 +96,7 @@ This function should only modify configuration layer settings."
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      nav-flash
      theming
-     helm
+     compleseus
      ;; syntax-checking
      (auto-completion :variables
                       auto-completion-front-end 'company
@@ -230,7 +230,7 @@ This function should only modify configuration layer settings."
      kzk-python
      kzk-ahs
      kzk-visual-editing ; fix adaptive wrap for org
-     kzk-helm
+     kzk-compleseus
      kzk-company
      kzk-persp
      spacemacs-editing
@@ -990,7 +990,7 @@ before packages are loaded."
   ;; (put 'upcase-region 'disabled nil)
   ;; (put 'downcase-region 'disabled nil)
 
-  (with-eval-after-load 'helm (helm-mode t))
+  ;; (with-eval-after-load 'helm (helm-mode t))
 
   ;; Don't be annoying, emacs. C-x C-c is to close to EVERY OTHER SHORTCUT and
   ;; can be used accidently too often. Also, no C-g on the confirmation prompt!?

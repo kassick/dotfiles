@@ -1,6 +1,5 @@
 (defconst kzk-python-packages
-  '(smartparens
-    helm-pydoc))
+  '(smartparens))
 
 (custom-set-variables
  '(importmagic-style-configuration-alist '((multiline . backslash) (max_columns . 1200))))
@@ -23,13 +22,3 @@
    ;; disable this annoying behaviour, since pressing colon does not jump over
    ;; the included colon
    '(sp-python-insert-colon-in-function-definitions nil)))
-
-(defun kzk-python/post-init-helm-pydoc ()
-  ;;; Rewrite helm-pydoc to support current region
-  (defun helm-pydoc (start end)
-    (interactive "r")
-    (let ((initial-input (when (region-active-p)
-                           (buffer-substring-no-properties start end))))
-      (helm :sources '(helm-pydoc--imported-source helm-pydoc--installed-source)
-            :buffer "*helm pydoc*" :history 'helm-pydoc--history
-            :input initial-input))))

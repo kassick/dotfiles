@@ -38,9 +38,7 @@
                         "C-c v" 'org-show-todo-tree
                         "C-c A c" '(kzk/add-current-file-to-org-capture :which-key: "adds current file to org-capture-templates")
                         "C-c A a" '(kzk/add-current-file-to-org-agenda :which-key: "adds current file to org-agenda-files")))
-  (kzk/after-init
-   (general-define-key :keymaps 'global
-                       "C-c C" 'kzk/org-capture)))
+  )
 
 
 ;; Spacemacs layer hooks run too late -- add this hook right after init
