@@ -10,6 +10,13 @@
 
     (message "Setting up vertico")
     (setq vertico-cycle t))
-
-
   )
+
+(kzk/after-init
+
+ ;; Sane defaults ...
+ (general-define-key :keymaps 'vertico-map
+                     "<next>" 'vertico-scroll-up
+                     "<prior>" 'vertico-scroll-down
+                     )
+ )
