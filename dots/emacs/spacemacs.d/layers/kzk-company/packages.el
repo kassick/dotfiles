@@ -15,7 +15,8 @@
 
 (defconst kzk-company-packages
   '(company
-    helm-company
+
+    consult-company
 
     ;;; company-box has some lag if we keep pressing next/previous key
     ;;; only AFTER pressing C-h to get company-box-doc
@@ -158,4 +159,9 @@
     (define-key company-active-map (kbd "C-:") 'helm-company))
   )
 
-;;; packages.el ends here
+(defun kzk-company/init-consult-company ()
+  (with-eval-after-load 'company
+    (define-key company-mode-map (kbd "C-:") 'consult-company)
+    (define-key company-active-map (kbd "C-:") 'consult-company)
+    )
+  )
