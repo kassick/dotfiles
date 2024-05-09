@@ -206,6 +206,9 @@ This function should only modify configuration layer settings."
      yaml
      (markdown :variables markdown-live-preview-engine 'vmd)
      (org :variables
+          ;; org-hide-emphasis-markers t
+          ;; org-enable-appear-support t
+          ;; org-appear-trigger 'always ;;manual
           org-enable-modern-support t
           org-enable-valign t)
      (latex :variables
