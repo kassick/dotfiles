@@ -91,8 +91,8 @@
                       "w |" 'evil-window-set-width)
 
   ;; help window hacks
-  (general-define-key :keymaps 'global
-                      "C-h D" '(kzk/delete-help-window :which-key "Delete help window"))
+  (general-define-key :keymaps 'help-map
+                      "D" '(kzk/delete-help-window :which-key "Delete help window"))
   (general-define-key :keymaps 'global
                       :prefix dotspacemacs-leader-key
                       :states '(normal motion visual)
