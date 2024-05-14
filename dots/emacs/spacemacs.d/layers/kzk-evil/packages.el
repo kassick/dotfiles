@@ -1,13 +1,11 @@
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+
 (defconst kzk-evil-packages
   '(general
     evil))
 
 (defun kzk-evil/post-init-general ())
 
-(defun kzk-evil/paste (&optional COUNT REGISTER)
-  (interactive "*P")
-  (spacemacs/evil-mc-paste-before COUNT REGISTER)
-  (right-char))
 
 (defun kzk-evil/post-init-evil ()
 
@@ -15,7 +13,28 @@
    (message "Unleashing universal evil")
    (general-define-key :keymaps '(evil-evilified-state-map-original evil-evilified-state-map)
                        "C-u" 'universal-argument)
-   (define-key evil-insert-state-map (kbd "C-v") 'kzk-evil/paste)
+
+   (spacemacs|define-transient-state insert-paste
+     :title "Pasting Transient State"
+     :doc "\n[%s(length kill-ring-yank-pointer)/%s(length kill-ring)] \
+ [_C-j_/_C-k_] cycles through yanked text, [_p_/_P_] pastes the \
+ same text above or below, [_C-v_] creates a visual selection \
+ from last paste and exits. Anything else exits."
+     :bindings
+     ("C-j" yank-pop)
+     ("C-k" (lambda () (interactive) (yank-pop -1)))
+     ("p" yank)
+     ("0" spacemacs//transient-state-0))
+
+   (define-key evil-insert-state-map (kbd "C-v")
+               (lambda (&optional arg)
+                 (interactive "*P")
+                 (setq this-command 'yank)
+                 (cond ((spacemacs//evil-mc-paste-transient-state-p)
+                        (spacemacs/insert-paste-transient-state/yank))
+                       (t (setq this-command 'yank)
+                          (yank arg)))))
+
    (evil-define-key 'insert vterm-mode-map
      (kbd "C-S-v") 'evil-collection-vterm-paste-after)
 

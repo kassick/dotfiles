@@ -5,6 +5,7 @@
 
 (defun kzk-mc/post-init-evil-mc ()
   ;;; Include my custom movement to MC
+  (require 'evil-mc)
   (setq evil-mc-custom-known-commands
         (if (boundp 'evil-mc-custom-known-commands)
             (append evil-mc-custom-known-commands kzk/evil-mc-custom-known-commands)
