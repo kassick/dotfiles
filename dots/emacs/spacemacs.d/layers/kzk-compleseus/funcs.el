@@ -120,3 +120,66 @@ This is used to reorder all sections as sources."
           )
     (command-execute (intern (car selected)))
     )  )
+
+(defun kzk/spacemacs/search-line (prefix)
+  "Search for a matching line in the buffer"
+  (interactive "P")
+  (let ((initial-input
+         (cond
+          ;; With region active, use region
+          ((region-active-p)
+           (buffer-substring-no-properties
+            (region-beginning) (region-end)))
+          ;; With nil prefix, use symbol at point if any
+          ((not prefix)
+           (thing-at-point 'symbol t))
+          ;; With any prefix, no input
+          (t nil))))
+    (consult-line initial-input)))
+
+(defun kzk/spacemacs/search-line-multi-project (prefix)
+  "Search in all project buffers"
+  (interactive "P")
+  (let ((initial-input
+         (cond
+          ;; With region active, use region
+          ((region-active-p)
+           (buffer-substring-no-properties
+            (region-beginning) (region-end)))
+          ;; With nil prefix, use symbol at point if any
+          ((not prefix)
+           (thing-at-point 'symbol t))
+          ;; With any prefix, no input
+          (t nil))))
+    (consult-line-multi nil initial-input)))
+
+(defun kzk/spacemacs/search-line-multi-all (prefix)
+  "Search in all buffers"
+  (interactive "P")
+  (let ((initial-input
+         (cond
+          ;; With region active, use region
+          ((region-active-p)
+           (buffer-substring-no-properties
+            (region-beginning) (region-end)))
+          ;; With nil prefix, use symbol at point if any
+          ((not prefix)
+           (thing-at-point 'symbol t))
+          ;; With any prefix, no input
+          (t nil))))
+    (consult-line-multi t initial-input)))
+
+(defun kzk/spacemacs/compleseus-search-auto (prefix)
+  "Choose folder to search."
+  (interactive "P")
+  (spacemacs/compleseus-search (not prefix) nil))
+
+(defun kzk/spacemacs/compleseus-search-dir (prefix)
+  "Search current folder."
+  (interactive "P")
+  (spacemacs/compleseus-search (not prefix) default-directory))
+
+(defun kzk/spacemacs/compleseus-search-projectile (prefix)
+  "Search in current project."
+  (interactive "P")
+  (spacemacs/compleseus-search (not prefix) (projectile-project-root)))

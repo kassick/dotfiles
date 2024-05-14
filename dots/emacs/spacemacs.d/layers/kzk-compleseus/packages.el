@@ -1,6 +1,7 @@
 (defconst kzk-compleseus-packages
   '(vertico
     embark
+    consult
     ))
 
 (defun kzk-compleseus/post-init-vertico ()
@@ -43,7 +44,21 @@
   (setq prefix-help-command #'which-key-C-h-dispatch
         which-key-use-C-h-commands t)
   (advice-add 'describe-bindings :override #'kzk/consult-descbinds)
-)
+  )
+
+(defun kzk-compleseus/post-init-consult ()
+  ;; Override some spacemacs functions to use prefix to avoid using the input
+
+  (spacemacs/set-leader-keys
+    "sS" #'kzk/spacemacs/search-line
+    "sB" #'kzk/spacemacs/search-line-multi-project
+    "s C-b" #'kzk/spacemacs/search-line-multi-all
+    "sf" #'kzk/spacemacs/compleseus-search-auto
+    "sd" #'kzk/spacemacs/compleseus-search-dir
+    "sp" #'kzk/spacemacs/compleseus-search-projectile
+    "*"  #'kzk/spacemacs/compleseus-search-projectile
+    )
+  )
 
 (kzk/after-init
 
@@ -61,5 +76,6 @@
                      "B" #'kzk/consult-descbinds
                      )
 
-    (spacemacs/set-leader-keys "?" #'kzk/consult-descbinds)
+ (spacemacs/set-leader-keys "?" #'kzk/consult-descbinds)
+
  )
