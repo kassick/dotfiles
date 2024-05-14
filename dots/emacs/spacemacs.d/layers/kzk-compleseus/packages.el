@@ -42,7 +42,6 @@
   ;; Instead, use a half-baked consult-descbinds (adapted from helm-descbinds)
   (setq prefix-help-command #'which-key-C-h-dispatch
         which-key-use-C-h-commands t)
-  (message "AAAAA %S" prefix-help-command)
   (advice-add 'describe-bindings :override #'kzk/consult-descbinds)
 )
 
@@ -61,4 +60,6 @@
 
     (spacemacs/set-leader-keys "?" #'kzk/consult-descbinds)
     (define-key (kbd "C-h B") #'kzk/consult-descbinds)
+
+
  )
