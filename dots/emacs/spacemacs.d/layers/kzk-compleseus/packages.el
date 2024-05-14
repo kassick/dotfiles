@@ -56,10 +56,10 @@
                      "RET" #'vertico-directory-enter
                      "DEL" #'vertico-directory-delete-char
                      "M-DEL" #'vertico-directory-delete-word
+
+                     :keymaps 'help-map
+                     "B" #'kzk/consult-descbinds
                      )
 
     (spacemacs/set-leader-keys "?" #'kzk/consult-descbinds)
-    (define-key (kbd "C-h B") #'kzk/consult-descbinds)
-
-
  )
