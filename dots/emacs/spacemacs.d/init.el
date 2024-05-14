@@ -282,6 +282,7 @@ This function should only modify configuration layer settings."
                                                  ;; without it
                                     mmm-mode     ;; mmm-mode causes strange behaviour with markdown. It's no longer necessary, apparently
                                     importmagic  ;; causes some lag; not used
+                                    flyspell-correct-popup
                                     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
