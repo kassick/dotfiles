@@ -47,7 +47,7 @@ Return a list of sections, each section beeing an alist composed of
                              binding-start
                              (line-end-position)))
               (unless (member binding '("self-insert-command"))
-                (push (cons key binding) section))))))
+                (push (cons (s-trim key) (s-trim binding)) section))))))
         (forward-line))
       (push (cons header (nreverse section)) sections)
       (nreverse sections))))
