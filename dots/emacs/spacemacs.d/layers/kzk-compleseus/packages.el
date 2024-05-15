@@ -106,11 +106,10 @@
                      "C-q" 'vertico-quick-exit
                      "RET" #'vertico-directory-enter
                      "DEL" #'vertico-directory-delete-char
-                     "M-DEL" #'vertico-directory-delete-word
+                     "M-DEL" #'vertico-directory-delete-word)
 
-                     :keymaps 'help-map
-                     "B" #'kzk/consult-descbinds
-                     )
+ (general-define-key :keymaps 'help-map
+                     "B" #'kzk/consult-descbinds)
 
  (spacemacs/set-leader-keys "?" #'kzk/consult-descbinds)
 
