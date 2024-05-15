@@ -183,3 +183,22 @@ This is used to reorder all sections as sources."
   "Search in current project."
   (interactive "P")
   (spacemacs/compleseus-search (not prefix) (projectile-project-root)))
+
+
+(defun kzk/compile-multi-parse-makefile-rules ()
+  "Return the target list for MAKEFILE by parsing it."
+
+  ;; Default method parsing the file
+  (let ((makefile (expand-file-name (concat
+                                     default-directory
+                                     "/Makefile" )))
+        targets)
+
+    (with-temp-buffer
+      (insert-file-contents makefile)
+      (goto-char (point-min))
+      (while (re-search-forward "^\\([^: \n]+\\) *:\\(?: \\|$\\)" nil t)
+        (let ((str (match-string 1)))
+          (unless (string-match "^\\." str)
+            (push `(,str . ,(concat "make " str)) targets)))))
+    (nreverse targets)))

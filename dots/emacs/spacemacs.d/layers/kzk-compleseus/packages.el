@@ -2,6 +2,9 @@
   '(vertico
     embark
     consult
+    compile-multi
+    consult-compile-multi
+    compile-multi-embark
     ))
 
 (defun kzk-compleseus/post-init-vertico ()
@@ -59,6 +62,39 @@
     "*"  #'kzk/spacemacs/compleseus-search-projectile
     )
   )
+
+(defun kzk-compleseus/init-compile-multi ()
+  (use-package compile-multi
+    :ensure t
+    :config
+    (setq compile-multi-default-directory #'projectile-project-root)
+
+    (push `((file-exists-p "Makefile")
+            ,#'kzk/compile-multi-parse-makefile-rules)
+          compile-multi-config)
+
+    :init
+
+    (spacemacs/set-leader-keys "cc" 'compile-multi)
+
+    )
+
+  )
+
+(defun kzk-compleseus/init-consult-compile-multi ()
+  (use-package consult-compile-multi
+    :ensure t
+    :after compile-multi
+    :demand t
+    :config (consult-compile-multi-mode)))
+
+(defun kzk-compleseus/init-compile-multi-embark ()
+  (use-package compile-multi-embark
+    :ensure t
+    :after embark
+    :after compile-multi
+    :demand t
+    :config (compile-multi-embark-mode +1)))
 
 (kzk/after-init
 
