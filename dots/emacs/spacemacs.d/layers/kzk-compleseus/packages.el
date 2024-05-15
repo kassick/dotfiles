@@ -74,6 +74,11 @@
             ,#'kzk/compile-multi-parse-makefile-rules)
           compile-multi-config)
 
+    (push `(emacs-lisp-mode
+            ("emacs:bytecompile" . ,(lambda ()
+                                      (byte-compile-file (buffer-file-name)))))
+          compile-multi-config)
+
     :init
 
     (spacemacs/set-leader-keys "cc" 'compile-multi)
