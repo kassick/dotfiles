@@ -1,3 +1,6 @@
+;; Descbinds with consult
+;; embark-descbinds does not work well sith spacemacs maps ...
+
 (defun kzk/consult-descbinds--all-sections (buffer &optional prefix menus)
   "Collect data from `describe-buffer-bindings' output.
 
@@ -105,6 +108,7 @@ This is used to reorder all sections as sources."
             sorted)))
 
 
+;;; Change default input for spacemacs consult
 
 (defun kzk/consult-descbinds (&optional prefix buffer)
   (interactive)
