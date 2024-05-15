@@ -204,5 +204,5 @@ This is used to reorder all sections as sources."
       (while (re-search-forward "^\\([^: \n]+\\) *:\\(?: \\|$\\)" nil t)
         (let ((str (match-string 1)))
           (unless (string-match "^\\." str)
-            (push `(,str . ,(concat "make " str)) targets)))))
+            (push `(,(concat "make:" str) . ,(concat "make " str)) targets)))))
     (nreverse targets)))
