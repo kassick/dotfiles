@@ -5,6 +5,7 @@
     compile-multi
     consult-compile-multi
     compile-multi-embark
+    compile-multi-all-the-icons
     ))
 
 (defun kzk-compleseus/post-init-vertico ()
@@ -96,6 +97,12 @@
     :demand t
     :config (compile-multi-embark-mode +1)))
 
+(defun kzk-compleseus/init-compile-multi-all-the-icons ()
+  (use-package compile-multi-all-the-icons
+    :ensure t
+    :after compile-multi
+    :demand t))
+
 (kzk/after-init
 
  ;; Sane defaults ...
@@ -112,5 +119,7 @@
                      "B" #'kzk/consult-descbinds)
 
  (spacemacs/set-leader-keys "?" #'kzk/consult-descbinds)
+
+ (all-the-icons-completion-mode +1)
 
  )
