@@ -904,7 +904,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
            (vterm-color-cyan  :foreground "#00ACC1" :background "#00ACC1")
            (vterm-color-green :foreground "#C3D82C" :background "#C3D82C")
            (vterm-color-white :foreground "#DEDDDA" :background "#DEDDDA")
-           (marginalia-documentation :foreground "#a3a3a3" :inherit (completions-annotations))
+           (completions-annotations :foreground "#a3a3a3" :inherit (italic shadow))
            )
 
           ;; --- END theming-modifications ---
