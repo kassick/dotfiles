@@ -283,6 +283,7 @@ This function should only modify configuration layer settings."
                                     mmm-mode     ;; mmm-mode causes strange behaviour with markdown. It's no longer necessary, apparently
                                     importmagic  ;; causes some lag; not used
                                     flyspell-correct-popup
+                                    evil-escape  ;; STOP THIS NONSENSE
                                     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
@@ -1010,8 +1011,6 @@ before packages are loaded."
   ;; save-some-buffers
   (global-set-key (kbd "C-x s") 'save-buffer)
   (global-set-key (kbd "C-x S") 'save-some-buffers)
-
-  (setq evil-escape-delay 0.08)
 
   ;; (message "setting gcmh mode")
   ;; (gcmh-mode t)
