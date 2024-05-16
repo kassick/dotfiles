@@ -188,6 +188,16 @@ This is used to reorder all sections as sources."
   (interactive "P")
   (spacemacs/compleseus-search (not prefix) (projectile-project-root)))
 
+(defun kzk/projectile-consult-fd-find  ()
+  "Search for files by name in the project root"
+  (interactive)
+  (consult-fd (projectile-project-root)))
+
+(defun kzk/consult-fd-find-here (prefix)
+  "Search for files by name. C-u to select starting directory"
+  (interactive "P")
+
+  (consult-fd (or prefix default-directory)))
 
 (defun kzk/compile-multi-parse-makefile-rules ()
   "Return the target list for MAKEFILE by parsing it."

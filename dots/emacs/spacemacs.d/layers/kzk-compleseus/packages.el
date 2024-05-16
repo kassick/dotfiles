@@ -125,6 +125,23 @@
 
  (spacemacs/set-leader-keys "?" #'kzk/consult-descbinds)
 
+ (spacemacs/set-leader-keys
+   "p/" #'kzk/projectile-consult-fd-find
+   "s/" #'kzk/consult-fd-find-here
+   )
+
+ (with-eval-after-load 'embark-consult
+   (general-define-key :keymaps 'embark-consult-search-map
+                       "/" #'consult-fd)
+
+   (setf (alist-get '(file . consult-fd) embark-default-action-overrides
+                    nil nil #'equal)
+         #'find-file)
+
+   (cl-pushnew #'consult-fd embark-multitarget-actions)
+   (cl-pushnew #'embark-consult--async-search-dwim
+               (alist-get #'consult-fd embark-around-action-hooks)))
+
  (all-the-icons-completion-mode +1)
 
  )
