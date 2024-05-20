@@ -1,7 +1,5 @@
 (defcustom kzk/tree-sitter-verboten-modes
-  '(
-    markdown-mode ;; see https://github.com/ikatyang/tree-sitter-markdown/issues/60
-    )
+  '()
   "List of modes that should not use tree-sitter.
 
    Adding a new entry to the list via customize will
