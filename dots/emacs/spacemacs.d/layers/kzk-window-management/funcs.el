@@ -167,7 +167,7 @@
                          (let ((wnd (esw/select-window nil t t)))
                            ;; ensure wnd is selected
                            (require 'ace-window)
-                           (aw-select wnd)
+                           (aw-switch-to-window wnd)
 
                            ;; and then call embark-consult-goto-grep with the
                            ;; window selected
