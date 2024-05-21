@@ -68,6 +68,13 @@
     "sP" #'kzk/search-in-project-with-input
     "*"  #'kzk/search-in-project-with-input
     "/"  #'kzk/search-in-project
+
+    ;; Add some consult commands in their proper places
+    "sgg" #'consult-grep
+    "srr" #'consult-ripgrep
+    "sa" nil  ;; ag is not used
+    "st" nil  ;; pt is not used
+    "sw" nil  ;; search the web is provided only by helm
     )
 
   ;; Customize symbol search
