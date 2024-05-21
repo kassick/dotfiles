@@ -145,9 +145,27 @@
    keep the parameter and work correctly with embark.
    "
 
-  (run-at-time 0 nil 'switch-to-buffer-other-window (current-buffer))
-  (run-at-time 0 nil 'embark-consult-goto-grep location)
+  (require 'ace-window)
+
+  (let ((window (progn
+                  (switch-to-buffer-other-window
+                   (save-window-excursion
+                     (save-excursion
+                       (embark-consult-goto-grep location)
+                       (current-buffer))))
+                  (selected-window))))
+        (run-at-time 0 nil (lambda ()
+                             (aw-switch-to-window window)))))
+
+(defun kzk/embark-grep-action-other-frame (location)
+  "Finds the entry at other frame."
+  (save-window-excursion
+    (save-excursion
+      (embark-consult-goto-grep location)
+      (switch-to-buffer-other-frame (current-buffer))
+    ))
   )
+
 
 (defun kzk/embark-grep-action-esw (location)
   "Opens a candidate in a ESW selected window"
@@ -189,15 +207,6 @@
   ;;   (goto-char p)
   ;;   (run-at-time 0 nil 'aw-select wnd)
   ;;   )
-  )
-
-(defun kzk/embark-grep-action-other-frame (location)
-  "Finds the entry at other frame."
-  (save-window-excursion
-    (save-excursion
-      (embark-consult-goto-grep location)
-      (switch-to-buffer-other-frame (current-buffer))
-    ))
   )
 
 (defun kzk/handle-delete-frame-error (orig-fun &rest args)
