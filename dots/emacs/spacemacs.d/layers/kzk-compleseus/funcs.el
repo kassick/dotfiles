@@ -125,68 +125,77 @@ This is used to reorder all sections as sources."
     (command-execute (intern (car selected)))
     )  )
 
-(defun kzk/spacemacs/search-line (prefix)
-  "Search for a matching line in the buffer"
-  (interactive "P")
-  (let ((initial-input
-         (cond
-          ;; With region active, use region
-          ((region-active-p)
-           (buffer-substring-no-properties
-            (region-beginning) (region-end)))
-          ;; With nil prefix, use symbol at point if any
-          ((not prefix)
-           (thing-at-point 'symbol t))
-          ;; With any prefix, no input
-          (t nil))))
-    (consult-line initial-input)))
+(defun kzk//search-initial-input-maybe ()
+  "When the region is active, returns the selected text"
+  (and (region-active-p) (buffer-substring-no-properties
+                          (region-beginning) (region-end))))
 
-(defun kzk/spacemacs/search-line-multi-project (prefix)
+(defun kzk//search-initial-input ()
+  "Returns either the current region, the current symbol or nil"
+  (-if-let (region (kzk//search-initial-input-maybe))
+      region
+    (thing-at-point 'symbol t)))
+
+
+(defun kzk/search-in-buffer ()
+  "Search in the current buffer"
+  (interactive)
+  (consult-line (kzk//search-initial-input-maybe)))
+
+(defun kzk/search-in-buffer-with-input ()
+  "Search for symbol or region in the current buffer"
+  (interactive)
+  (consult-line (kzk//search-initial-input)))
+
+(defun kzk/search-in-project-buffers ()
   "Search in all project buffers"
-  (interactive "P")
-  (let ((initial-input
-         (cond
-          ;; With region active, use region
-          ((region-active-p)
-           (buffer-substring-no-properties
-            (region-beginning) (region-end)))
-          ;; With nil prefix, use symbol at point if any
-          ((not prefix)
-           (thing-at-point 'symbol t))
-          ;; With any prefix, no input
-          (t nil))))
-    (consult-line-multi nil initial-input)))
+  (interactive)
+  (consult-line-multi nil (kzk//search-initial-input-maybe)))
 
-(defun kzk/spacemacs/search-line-multi-all (prefix)
+(defun kzk/search-in-project-buffers-with-input ()
+  "Search for symbol or region in all project buffers"
+  (interactive)
+  (consult-line-multi nil (kzk//search-initial-input)))
+
+(defun kzk/search-in-all-buffers ()
   "Search in all buffers"
-  (interactive "P")
-  (let ((initial-input
-         (cond
-          ;; With region active, use region
-          ((region-active-p)
-           (buffer-substring-no-properties
-            (region-beginning) (region-end)))
-          ;; With nil prefix, use symbol at point if any
-          ((not prefix)
-           (thing-at-point 'symbol t))
-          ;; With any prefix, no input
-          (t nil))))
-    (consult-line-multi t initial-input)))
+  (interactive)
+  (consult-line-multi t (kzk//search-initial-input-maybe)))
 
-(defun kzk/spacemacs/compleseus-search-auto (prefix)
+(defun kzk/search-in-all-buffers-with-input ()
+  "Search current symbol or region in all buffers"
+  (interactive)
+  (consult-line-multi t (kzk//search-initial-input)))
+
+(defun kzk/search-from-path ()
   "Choose folder to search."
-  (interactive "P")
-  (spacemacs/compleseus-search (not prefix) nil))
+  (interactive)
+  (spacemacs/compleseus-search (region-active-p) nil))
 
-(defun kzk/spacemacs/compleseus-search-dir (prefix)
+(defun kzk/search-from-path-with-input ()
+  "Choose folder to search for current symbol or region."
+  (interactive)
+  (spacemacs/compleseus-search t nil))
+
+(defun kzk/search-in-current-dir ()
   "Search current folder."
-  (interactive "P")
-  (spacemacs/compleseus-search (not prefix) default-directory))
+  (interactive)
+  (spacemacs/compleseus-search (region-active-p) default-directory))
 
-(defun kzk/spacemacs/compleseus-search-projectile (prefix)
-  "Search in current project."
-  (interactive "P")
-  (spacemacs/compleseus-search (not prefix) (projectile-project-root)))
+(defun kzk/search-in-current-dir-with-input ()
+  "Search symbol or region in current folder."
+  (interactive)
+  (spacemacs/compleseus-search t default-directory))
+
+(defun kzk/search-in-project ()
+  "Search cuin current project."
+  (interactive)
+  (spacemacs/compleseus-search (region-active-p) (projectile-project-root)))
+
+(defun kzk/search-in-project-with-input ()
+  "Search cuin current project."
+  (interactive)
+  (spacemacs/compleseus-search t (projectile-project-root)))
 
 (defun kzk/projectile-consult-fd-find  ()
   "Search for files by name in the project root"

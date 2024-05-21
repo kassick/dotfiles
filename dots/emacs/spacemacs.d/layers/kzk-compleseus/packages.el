@@ -54,14 +54,39 @@
   ;; Override some spacemacs functions to use prefix to avoid using the input
 
   (spacemacs/set-leader-keys
-    "sS" #'kzk/spacemacs/search-line
-    "sB" #'kzk/spacemacs/search-line-multi-project
-    "s C-b" #'kzk/spacemacs/search-line-multi-all
-    "sf" #'kzk/spacemacs/compleseus-search-auto
-    "sd" #'kzk/spacemacs/compleseus-search-dir
-    "sp" #'kzk/spacemacs/compleseus-search-projectile
-    "*"  #'kzk/spacemacs/compleseus-search-projectile
+    "ss" #'kzk/search-in-buffer
+    "sS" #'kzk/search-in-buffer-with-input
+    "sb" #'kzk/search-in-project-buffers
+    "sB" #'kzk/search-in-project-buffers-with-input
+    "s C-b" #'kzk/search-in-all-buffers
+    "s C-S-b" #'kzk/search-in-all-buffers-with-input
+    "sf" #'kzk/search-from-path
+    "sF" #'kzk/search-from-path-with-input
+    "sd" #'kzk/search-in-current-dir
+    "sD" #'kzk/search-in-current-dir-with-input
+    "sp" #'kzk/search-in-project
+    "sP" #'kzk/search-in-project-with-input
+    "*"  #'kzk/search-in-project-with-input
+    "/"  #'kzk/search-in-project
     )
+
+  ;; Customize symbol search
+  (spacemacs/transient-state-register-remove-bindings
+    'symbol-highlight
+    '("b" "/"))
+  (spacemacs/transient-state-register-add-bindings 'symbol-highlight
+    '(
+      ;; replace with my custom project search -- upstream
+      ;; uses a function that ignores the current symbol input,
+      ;; which looks like a bug
+      ("/" kzk/search-in-project-buffers-with-input :exit t)
+      ;; Search the current symbol on all the buffers
+      ("b" kzk/search-in-all-buffers-with-input :exit t)))
+    (setq spacemacs--symbol-highlight-transient-state-doc
+          (concat
+           spacemacs--symbol-highlight-transient-state-doc
+           ;; "[_/_] project" is already there, only need to append the buffers shortcut
+           "  [_b_] buffers"))
   )
 
 (defun kzk-compleseus/init-compile-multi ()
