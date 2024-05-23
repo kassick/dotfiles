@@ -1,0 +1,5 @@
+description: Direnv custom config
+actions:
+  - link_recursively:
+      - config
+      - local

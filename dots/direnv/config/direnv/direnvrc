@@ -1,0 +1,40 @@
+layout_poetry() {
+    PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
+    if [[ ! -f "$PYPROJECT_TOML" ]]; then
+        log_status "No pyproject.toml found. Not setting anything"
+        return
+    fi
+
+    VIRTUAL_ENV=$(poetry env info --path 2>/dev/null ; true)
+    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+        VIRTUAL_ENV="$PWD/.venv"
+    fi
+
+    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+        log_status "No virtual environment exists. Setting up a poetry env accordingly"
+
+        real_python_bin=`python -c 'import sys;print(sys.executable)'`
+        log_status "Target python version is `"$real_python_bin" --version`"
+
+        poetry env use "$real_python_bin"
+        if [[ $? != 0 ]]; then
+            log_status "Not setting anything"
+            return
+        fi
+
+        VIRTUAL_ENV=$(poetry env info --path 2>/dev/null ; true)
+    fi
+
+    if [[ "$VIRTUAL_ENV" =~ ^"$PWD" ]]; then
+        rel_path=${VIRTUAL_ENV#"$PWD"}
+        venv_name="`basename ${PWD}`$rel_path"
+    else
+        venv_name="`basename ${VIRTUAL_ENV}`"
+    fi
+
+    PATH_add "$VIRTUAL_ENV/bin"
+    export POETRY_ACTIVE=1  # or VENV_ACTIVE=1
+    export VIRTUAL_ENV
+
+    export ENVRC_ANNOT="(+poetry $venv_name)"
+}
