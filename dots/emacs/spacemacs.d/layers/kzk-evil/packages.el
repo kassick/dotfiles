@@ -26,14 +26,36 @@
      ("p" yank)
      ("0" spacemacs//transient-state-0))
 
-   (define-key evil-insert-state-map (kbd "C-v")
-               (lambda (&optional arg)
-                 (interactive "*P")
-                 (setq this-command 'yank)
-                 (cond ((spacemacs//evil-mc-paste-transient-state-p)
-                        (spacemacs/insert-paste-transient-state/yank))
-                       (t (setq this-command 'yank)
-                          (yank arg)))))
+   (defun kzk/yank (&optional arg)
+     (interactive "*P")
+     ;; (evil-set-marker ?\[ (point))
+     (setq this-command 'yank)
+     (cond (
+            ;; Do not use the insert transient state when
+            ;; using multiple cursors
+            (spacemacs//evil-mc-paste-transient-state-p)
+            (spacemacs/insert-paste-transient-state/yank))
+           (
+            ;; default behaviour: simply call yank
+            t (setq this-command 'yank)
+              (yank arg)))
+     ;; (evil-set-marker ?\] (1- (point)))
+     )
+   (define-key evil-insert-state-map (kbd "C-v") #'kzk/yank)
+   (define-key evil-insert-state-map [remap yank] #'kzk/yank)
+
+   (defun kzk/yank-sets-evil-marks-maybe (orig-fun &rest args)
+     (let ((result (apply orig-fun args)))
+       (evil-set-marker ?\[ (mark t))
+       (evil-set-marker ?\] (1- (point)))
+       result))
+
+   (advice-add 'yank :around #'kzk/yank-sets-evil-marks-maybe)
+   (advice-add 'yank-pop :around #'kzk/yank-sets-evil-marks-maybe)
+   (advice-add 'mouse-yank-primary :around #'kzk/yank-sets-evil-marks-maybe)
+   (advice-add 'mouse-yank-secondary :around #'kzk/yank-sets-evil-marks-maybe)
+
+
 
    (evil-define-key 'insert vterm-mode-map
      (kbd "C-S-v") 'evil-collection-vterm-paste-after)
