@@ -9,8 +9,8 @@
 
 (defun kzk-lsp/post-init-lsp-mode ()
   (general-define-key :keymaps 'lsp-mode-map
-                      "C-c C-h" 'lsp-ui-doc-glance
-                      "C-c h" 'kzk/lsp-help-at-point)
+                      "C-c C-h" '("Doc Glance" . lsp-ui-doc-glance)
+                      "C-c h" '("Help (no focus)" . kzk/lsp-help-at-point))
 
   ;; (message "setting lsp-mode minor mode == from kzk-lsp")
   ;; (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode

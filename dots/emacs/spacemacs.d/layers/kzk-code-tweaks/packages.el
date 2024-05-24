@@ -22,9 +22,9 @@
   (kzk/after-init
    (define-key evilem-map "L" (evilem-create #'evil-forward-arg))
    (define-key evilem-map "H" (evilem-create #'evil-backward-arg))
-   (general-define-key "L" '(evil-forward-arg :which-key "Arg Forward")
-                       "H" '(evil-backward-arg :which-key "Arg Backward")
-                       "K" '(evil-jump-out-args :which-key "Jump Out of Args")
+   (general-define-key "L" '("Arg Forward" . evil-forward-arg)
+                       "H" '("Arg Backward" . evil-backward-arg)
+                       "K" '("Jump Out of Args" . evil-jump-out-args)
                        :states '(visual motion normal))))
 
 (defun kzk-code-tweaks/post-init-evil-easymotion ()

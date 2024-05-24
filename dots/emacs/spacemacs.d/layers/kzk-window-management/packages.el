@@ -57,9 +57,7 @@
       "C-c w" #'kzk/embark-grep-action-esw
       )
 
-    (add-to-list 'embark-keymap-alist '(consult-grep . embark-grep-actions-map))
-    )
-  )
+    (add-to-list 'embark-keymap-alist '(consult-grep . embark-grep-actions-map))))
 
 
 
@@ -71,20 +69,19 @@
                         "C-x C-b"   'helm-mini))
 
    (general-define-key :keymaps    'global
-                      "<C-f10>"   'ibuffer
-                      "<C-S-f10>" 'ibuffer-other-window
-                      "C-x <up>"  'windmove-up
-                      "C-x <down>" 'windmove-down
-                      "C-x <left>" 'windmove-left
-                      "C-x <right>" 'windmove-right
-                      "C-x p" 'evil-window-mru
+                       "<C-f10>"   'ibuffer
+                       "<C-S-f10>" 'ibuffer-other-window
+                       "C-x <up>"  'windmove-up
+                       "C-x <down>" 'windmove-down
+                       "C-x <left>" 'windmove-left
+                       "C-x <right>" 'windmove-right
+                       "C-x p" '("Previous Window" . evil-window-mru)
 
-                      ;; resize
-                      "C-x C-<left>" 'shrink-window-horizontally
-                      "C-x C-<right>" 'enlarge-window-horizontally
-                      "C-x C-<down>" 'shrink-window
-                      "C-x C-<up>" 'enlarge-window
-                      )
+                       ;; resize
+                       "C-x C-<left>" 'shrink-window-horizontally
+                       "C-x C-<right>" 'enlarge-window-horizontally
+                       "C-x C-<down>" 'shrink-window
+                       "C-x C-<up>" 'enlarge-window)
 
   (general-define-key :keymaps 'spacemacs-cmds
                       "w _" 'evil-window-set-height
@@ -92,12 +89,12 @@
 
   ;; help window hacks
   (general-define-key :keymaps 'help-map
-                      "D" '(kzk/delete-help-window :which-key "Delete help window"))
+                      "D" '("Delete help window" . kzk/delete-help-window)
+                      "h" '( "Help for stuff at point" . spacemacs/evil-smart-doc-lookup))
+
   (general-define-key :keymaps 'global
                       :prefix dotspacemacs-leader-key
                       :states '(normal motion visual)
 
-                      "hD" '(kzk/delete-help-window :which-key "Delete help window")
-                      "cD" '(kzk/delete-compile-window :which-key "Deletes the compilation window")
-                      )
-  )
+                      "hD" '("Delete help window" . kzk/delete-help-window)
+                      "cD" '( "Deletes the compilation window" . kzk/delete-compile-window)))

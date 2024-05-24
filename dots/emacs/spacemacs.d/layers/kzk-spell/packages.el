@@ -5,9 +5,9 @@
 
   (kzk/after-init
     (general-define-key :keymaps 'flyspell-mode-map
-                        "C-M-;" '(flyspell-correct-wrapper :which-key "Correct Word"))
+                        "C-M-;" '("Correct Word" . flyspell-correct-wrapper))
 
     (general-define-key :keymaps 'flyspell-mode-map
                         :prefix dotspacemacs-leader-key
                         :states '(normal motion visual)
-                        "S ;" '(flyspell-correct-wrapper :which-key "Correct Word"))))
+                        "S ;" '("Correct Word" . flyspell-correct-wrapper))))
