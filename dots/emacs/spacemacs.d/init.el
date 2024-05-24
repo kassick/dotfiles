@@ -222,6 +222,7 @@ This function should only modify configuration layer settings."
      kzk-evil
      kzk-window-management
      kzk-projectile
+     kzk-spell
      kzk-code-tweaks
      kzk-mc
      kzk-embrace

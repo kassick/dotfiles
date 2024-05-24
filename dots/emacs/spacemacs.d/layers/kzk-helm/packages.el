@@ -31,7 +31,6 @@
 
 (defconst kzk-helm-packages
   '(helm
-    flyspell-correct-helm
     helm-swoop))
 
 (defun kzk-helm/post-init-helm ()
@@ -101,18 +100,6 @@
   ;; Force helm mode
   (helm-mode t))
 
-(defun kzk-helm/post-init-flyspell-correct-helm ()
-  ;; Helm flyspell
-
-  (kzk/after-init
-    (message "Settings keys for flyspell-mode-map")
-    (general-define-key :keymaps 'flyspell-mode-map
-                        "C-M-;" 'flyspell-correct-wrapper)
-
-    (general-define-key :keymaps 'flyspell-mode-map
-                        :prefix dotspacemacs-leader-key
-                        :states '(normal motion visual)
-                        "S ;" 'flyspell-correct-wrapper)))
 
 (defun kzk-helm/post-init-helm-swoop ()
   (kzk/after-init
