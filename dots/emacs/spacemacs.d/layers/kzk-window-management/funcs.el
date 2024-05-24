@@ -147,23 +147,36 @@
 
   (require 'ace-window)
 
-  (let ((window (progn
-                  (switch-to-buffer-other-window
-                   (save-window-excursion
-                     (save-excursion
-                       (embark-consult-goto-grep location)
-                       (current-buffer))))
-                  (selected-window))))
-        (run-at-time 0 nil (lambda ()
-                             (aw-switch-to-window window)))))
+  (pop-to-buffer (current-buffer) t nil)
+  (embark-consult-goto-grep location)
+  (let ((window (selected-window)))
+    ;; Something is restoring window focus after the command finishes
+    ;; Maybe because this function is not interactive...
+    (run-at-time 0 nil (lambda () (aw-switch-to-window window)))))
 
 (defun kzk/embark-grep-action-other-frame (location)
   "Finds the entry at other frame."
-  (save-window-excursion
-    (save-excursion
-      (embark-consult-goto-grep location)
-      (switch-to-buffer-other-frame (current-buffer))
-    ))
+  ;; simple, apparently works
+  (switch-to-buffer-other-frame (current-buffer))
+  (embark-consult-goto-grep location)
+  ;; do we need to enfore selected window?
+
+  ;;; more explicit ...
+  ;; (let* ((cur-buf (current-buffer))
+  ;;        (target-window (with-selected-frame (make-frame)
+  ;;                         (switch-to-buffer cur-buf)
+  ;;                         (embark-consult-goto-grep location)
+  ;;                         (selected-window))))
+  ;;   (require 'ace-window)
+  ;;   (aw-switch-to-window target-window)
+  ;;   )
+  ;;
+  ;; weird but also works
+  ;; (save-window-excursion
+  ;;   (save-excursion
+  ;;     (embark-consult-goto-grep location)
+  ;;     (switch-to-buffer-other-frame (current-buffer))
+  ;;   ))
   )
 
 
