@@ -145,39 +145,19 @@
    keep the parameter and work correctly with embark.
    "
 
-  (require 'ace-window)
-
   (pop-to-buffer (current-buffer) t nil)
   (embark-consult-goto-grep location)
-  (let ((window (selected-window)))
-    ;; Something is restoring window focus after the command finishes
-    ;; Maybe because this function is not interactive...
-    (run-at-time 0 nil (lambda () (aw-switch-to-window window)))))
+
+  ;; Something is restoring window focus after the command finishes
+  ;; Maybe because this function is not interactive...
+  (require 'ace-window)
+  (run-at-time 0 nil #'aw-switch-to-window (selected-window)))
 
 (defun kzk/embark-grep-action-other-frame (location)
   "Finds the entry at other frame."
-  ;; simple, apparently works
-  (switch-to-buffer-other-frame (current-buffer))
-  (embark-consult-goto-grep location)
-  ;; do we need to enfore selected window?
 
-  ;;; more explicit ...
-  ;; (let* ((cur-buf (current-buffer))
-  ;;        (target-window (with-selected-frame (make-frame)
-  ;;                         (switch-to-buffer cur-buf)
-  ;;                         (embark-consult-goto-grep location)
-  ;;                         (selected-window))))
-  ;;   (require 'ace-window)
-  ;;   (aw-switch-to-window target-window)
-  ;;   )
-  ;;
-  ;; weird but also works
-  ;; (save-window-excursion
-  ;;   (save-excursion
-  ;;     (embark-consult-goto-grep location)
-  ;;     (switch-to-buffer-other-frame (current-buffer))
-  ;;   ))
-  )
+  (switch-to-buffer-other-frame (current-buffer))
+  (embark-consult-goto-grep location))
 
 
 (defun kzk/embark-grep-action-esw (location)
@@ -188,39 +168,17 @@
   ;; other path, we may end up opening the file in the invalid path, as
   ;; location is relative).
   ;;
-  ;; The path will be updated by consult-grep to be wither the project root or
+  ;; The path will be updated by consult-grep to be within the project root or
   ;; whatever target directory is used
+
   (let ((path default-directory))
+    (esw/select-window nil t t)
+    (cd path)
+    (embark-consult-goto-grep location)
 
-    ;; Then run the whole setup on a timer, otherwise focus does not work ...
-    (run-at-time 0 nil (lambda ()
-                         ;; Save the target window
-                         (let ((wnd (esw/select-window nil t t)))
-                           ;; ensure wnd is selected
-                           (require 'ace-window)
-                           (aw-switch-to-window wnd)
-
-                           ;; and then call embark-consult-goto-grep with the
-                           ;; window selected
-                           (with-selected-window wnd
-                             ;; go to the base path
-                             (cd path)
-                             (embark-consult-goto-grep location))))))
-  ;; does not focus ...
-  ;; (let* ((buffer-at-point (save-excursion
-  ;;                           (save-window-excursion
-  ;;                             (embark-consult-goto-grep location)
-  ;;                             `(,(current-buffer) . ,(point)))))
-  ;;        (buf (car buffer-at-point))
-  ;;        (p (cdr buffer-at-point))
-  ;;        (wnd (esw/select-window nil t t)))
-  ;;   (require 'ace-window)
-  ;;   (aw-select wnd)
-  ;;   (set-window-buffer wnd buf)
-  ;;   (goto-char p)
-  ;;   (run-at-time 0 nil 'aw-select wnd)
-  ;;   )
-  )
+    ;;; Ensure the window is selected after the interactive command is completed
+    (require 'ace-window)
+    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
 
 (defun kzk/handle-delete-frame-error (orig-fun &rest args)
   (message "Handling possible posframe issue on delete frame")
