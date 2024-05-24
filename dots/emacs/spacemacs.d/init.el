@@ -227,6 +227,7 @@ This function should only modify configuration layer settings."
      kzk-embrace
      kzk-magit
      kzk-org
+     kzk-markdown
      kzk-lsp
      kzk-makefile
      kzk-python
