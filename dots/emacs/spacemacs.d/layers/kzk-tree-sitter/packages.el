@@ -1,5 +1,7 @@
 (defconst kzk-tree-sitter-packages
-  '(tree-sitter-langs))
+  '(tree-sitter-langs
+    (ts-fold :tree-sitter-fold-enable)
+    ))
 
 (defun kzk-tree-sitter/post-init-tree-sitter-langs ()
   ;; Force call here to make sure this happens in the startup process. If left
@@ -8,3 +10,6 @@
   ;; has been set up and loaded for the buffer... i.e. too late :/
   (kzk/tree-sitter-remove-verboten-languages)
   )
+
+(defun kzk-tree-sitter/post-init-ts-fold ()
+  (spacemacs/set-leader-keys "T C-f" '("Toggle Fold Indicators" . ts-fold-indicators-mode )))
