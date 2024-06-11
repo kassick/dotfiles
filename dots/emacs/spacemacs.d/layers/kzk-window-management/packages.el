@@ -90,7 +90,7 @@
   ;; help window hacks
   (general-define-key :keymaps 'help-map
                       "D" '("Delete help window" . kzk/delete-help-window)
-                      "h" '( "Help for stuff at point" . spacemacs/evil-smart-doc-lookup))
+                      "h" '( "Help for stuff at point" . kzk/evil-smart-doc-lookup))
 
   (general-define-key :keymaps 'global
                       :prefix dotspacemacs-leader-key

@@ -188,3 +188,22 @@
      (progn
        (posframe-delete-all)
        (apply orig-fun args)))))
+
+(defun kzk/evil-smart-doc-lookup (prefix)
+  "Looks up help for thing at point using the current mode help function, if any.
+
+Call with single prefix will not focus the help window.
+
+Calling with multiple prefix will forward de prefix/4 to the actual help function. The help window will be focused."
+
+  (interactive "p")
+  (let ((cur-window (selected-window))
+        (current-prefix-arg (when (> prefix 4)
+                              ;; Shift-right prefix
+                              `(,(/ prefix 4)))))
+    (evil-save-state
+      (evil-normal-state)
+      (spacemacs/evil-smart-doc-lookup))
+    (when (= 4 prefix)
+      ;; Calling with sing
+      (select-window cur-window))))
