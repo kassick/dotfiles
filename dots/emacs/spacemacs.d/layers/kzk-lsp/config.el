@@ -22,6 +22,15 @@
  ;; Show LSP lenses above the line. I don't like it much, but stuff like
  ;; go-generate commands makd it impossible to use the lenses
  '(lsp-lens-place-position 'above-line)
+
+ ;; Prefer system-wide ruff -- repositories frequently will have stale
+ ;; installations used in the CI and during make lint. I prefer using the
+ ;; newest versions and update the repo as-needed
+ '(lsp-ruff-lsp-server-command `(,(expand-file-name "~/.local/bin/ruff-lsp")))
+
+ '(lsp-ruff-lsp-ruff-path `[,(expand-file-name "~/.local/bin/ruff") "ruff"])
+
+ '(lsp-response-time 20) ;; increase timeout because of glab
  )
 
 (defcustom kzk/peek-uses-posframe t "If lsp-ui-peek should appear inside a posframe")
