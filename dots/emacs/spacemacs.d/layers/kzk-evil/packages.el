@@ -17,9 +17,9 @@
    (spacemacs|define-transient-state insert-paste
      :title "Pasting Transient State"
      :doc "\n[%s(length kill-ring-yank-pointer)/%s(length kill-ring)] \
- [_C-j_/_C-k_] cycles through yanked text, [_p_/_P_] pastes the \
- same text above or below, [_C-v_] creates a visual selection \
- from last paste and exits. Anything else exits."
+ [_C-j_/_C-k_] cycles through yanked text, \
+ [_p_] pastes the same text above or below from last paste and exits.\
+ Anything else exits."
      :bindings
      ("C-j" yank-pop)
      ("C-k" (lambda () (interactive) (yank-pop -1)))
