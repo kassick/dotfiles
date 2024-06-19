@@ -4,3 +4,4 @@
 /.python-version
 *.elc
 *.eln
+bundle_dirs
