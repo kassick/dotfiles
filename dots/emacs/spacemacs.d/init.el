@@ -18,6 +18,8 @@
 
 (add-hook 'after-make-frame-functions #'kzk/hack-reset-original-display-env-var)
 
+(setq package-install-upgrade-built-in t)
+
 ;; (message "early display is %S in process %S" (getenv "DISPLAY") (emacs-pid))
 ;; keep around for debug, may be necessary
 ;; (defun handle-set-env (VARIABLE &optional VALUE SUBSTITUTE-ENV-VARS)
@@ -934,6 +936,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
       (write-region "" nil cf))
     (setq custom-file cf))
   (load-file custom-file)
+
+  (add-to-list 'package-pinned-packages '(transient . "melpa") t)
 
   )
 
