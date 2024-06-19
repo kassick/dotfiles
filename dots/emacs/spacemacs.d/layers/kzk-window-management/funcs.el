@@ -207,3 +207,10 @@ Calling with multiple prefix will forward de prefix/4 to the actual help functio
     (when (= 4 prefix)
       ;; Calling with sing
       (select-window cur-window))))
+
+(defun kzk/patch-display-buffer-override-next-command-action-list (&rest args)
+  "Ensures that display-buffer-overriding-action is a list, as it is
+expected by display-buffer-override-next-command"
+
+  (unless (listp (car display-buffer-overriding-action))
+    (setcar display-buffer-overriding-action (list (car display-buffer-overriding-action)))))

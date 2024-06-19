@@ -97,4 +97,8 @@
                       :states '(normal motion visual)
 
                       "hD" '("Delete help window" . kzk/delete-help-window)
-                      "cD" '( "Deletes the compilation window" . kzk/delete-compile-window)))
+                      "cD" '( "Deletes the compilation window" . kzk/delete-compile-window))
+
+
+  (require 'window)
+  (advice-add 'display-buffer-override-next-command :before #'kzk/patch-display-buffer-override-next-command-action-list))
