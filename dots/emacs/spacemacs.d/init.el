@@ -6,6 +6,8 @@
 ;; code lens do not work when using plists ... (wat?!)
 ;; (setenv "LSP_USE_PLISTS" "true")
 
+(defvar kzk/debug-use-local-gitlab-lsp t)
+
 (setq kzk/hack-original-display (getenv "DISPLAY"))
 (defun kzk/hack-reset-original-display-env-var (&optional frame)
   ;;; the message will insist it's resetting from :0 to :0, but if this is not
@@ -254,7 +256,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(
+   dotspacemacs-additional-packages `(
                                       ;; memory-usage
                                       ;; gcmh
                                       diminish
@@ -262,7 +264,14 @@ This function should only modify configuration layer settings."
                                       yasnippet-snippets
                                       edit-indirect ;; required by markdown
                                       envrc
-                                      )
+                                      transient ;; do not use bundled transient ... ?
+                                      (gitlab-lsp :location
+                                                  ,(if kzk/debug-use-local-gitlab-lsp
+                                                      (expand-file-name "~/Sources/user/emacs-gitlab-lsp")
+                                                    '(recipe
+                                                     :fetcher github
+                                                     :repo "kassick/gitlab-lsp.el"
+                                                     :files ("*.el")))))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -1021,6 +1030,19 @@ before packages are loaded."
   ;; (message "setting gcmh mode")
   ;; (gcmh-mode t)
 
+  (require 'gitlab-lsp)
+  ;; speed up completions
+  (setq gitlab-lsp-show-completions-with-other-clients nil)
+  (add-hook 'gitlab-lsp-complete-before-complete-hook
+            (lambda ()
+              ;; scroll to top so preview can show the snippet
+              (recenter-top-bottom 4)
+
+              ;; Show something, since we can not spin ...
+              (message "Asking for suggestions ...")))
+
+  (define-key global-map
+              (kbd "C-*") '("Complete with Gitlab Duo" . gitlab-lsp-complete))
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   )
