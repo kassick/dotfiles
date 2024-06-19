@@ -277,6 +277,7 @@ This function should only modify configuration layer settings."
                                     ;;; and screwing with the experience
                                     ;;; https://github.com/syl20bnr/spacemacs/issues/15089
                                     helm-ls-git
+                                    helm-make
                                     term-cursor  ;; the termcursor hook is
                                                  ;; misbehaving. I mostly use
                                                  ;; the GUI and I can live
