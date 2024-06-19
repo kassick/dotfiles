@@ -1043,6 +1043,10 @@ before packages are loaded."
 
   (define-key global-map
               (kbd "C-*") '("Complete with Gitlab Duo" . gitlab-lsp-complete))
+
+  (custom-set-variables
+   '(js-indent-level 4))
+
   ;; dotspacemacs/user-config ends here
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   )
