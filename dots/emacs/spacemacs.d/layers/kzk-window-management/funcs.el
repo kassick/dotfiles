@@ -110,9 +110,8 @@
        (interactive)
        (with-demoted-errors "Ace Embark: %s"
          (require 'ace-window)
-         (let ((aw-dispatch-always t))
-           (aw-switch-to-window (aw-select nil))
-           (call-interactively (symbol-function ',fn)))))))
+         (aw-switch-to-window (ace-select-window))
+         (call-interactively (symbol-function ',fn))))))
 ;;; }}}
 
 (defun kzk/esw-ff (filename &rest args)
