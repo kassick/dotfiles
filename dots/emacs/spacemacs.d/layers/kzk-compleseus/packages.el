@@ -75,6 +75,9 @@
     "sa" nil  ;; ag is not used
     "st" nil  ;; pt is not used
     "sw" nil  ;; search the web is provided only by helm
+
+    ;; Consult Project Buffers is more powerful than projectile-buffers
+    "pb" '("Project Buffers" . consult-project-buffer)
     )
 
   ;; Customize symbol search
