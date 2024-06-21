@@ -1,12 +1,12 @@
 (defconst kzk-compleseus-packages
-  '(vertico
+  `(vertico
     embark
     consult
     compile-multi
     consult-compile-multi
     compile-multi-embark
     compile-multi-all-the-icons
-    ))
+    window-purpose))
 
 (defun kzk-compleseus/post-init-vertico ()
   (with-eval-after-load 'vertico
@@ -139,6 +139,10 @@
     :ensure t
     :after compile-multi
     :demand t))
+
+(defun kzk-compleseus/post-init-window-purpose ()
+
+  (spacemacs/set-leader-keys "rb" '("Switch to Buffer with Same Purpose" . kzk/consult-buffer-with-purpose)))
 
 (kzk/after-init
 

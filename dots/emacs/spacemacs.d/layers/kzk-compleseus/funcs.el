@@ -225,3 +225,9 @@ This is used to reorder all sections as sources."
           (unless (string-match "^\\." str)
             (push `(,(concat "make:" str) . ,(concat "make " str)) targets)))))
     (nreverse targets)))
+
+(defun kzk/consult-buffer-with-purpose ()
+  "Switchs to a buffer with the same purpose as the current one"
+  (interactive)
+
+  (consult-buffer '(consult--source-same-purpose)))
