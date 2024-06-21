@@ -36,13 +36,13 @@
 (defun kzk-window-management/post-init-embark ()
   (with-eval-after-load 'embark
     ;; Ace -- easy and done
-    (define-key embark-file-map     (kbd "C-c W") (kzk/embark-ace-action find-file))
-    (define-key embark-buffer-map   (kbd "C-c W") (kzk/embark-ace-action switch-to-buffer))
-    (define-key embark-bookmark-map (kbd "C-c W") (kzk/embark-ace-action bookmark-jump))
+    (define-key embark-file-map     (kbd "M-W") (kzk/embark-ace-action find-file))
+    (define-key embark-buffer-map   (kbd "M-W") (kzk/embark-ace-action switch-to-buffer))
+    (define-key embark-bookmark-map (kbd "M-W") (kzk/embark-ace-action bookmark-jump))
 
     ;; esw
-    (define-key embark-file-map     (kbd "C-c w") 'kzk/esw-ff)
-    (define-key embark-buffer-map   (kbd "C-c w") 'kzk/esw-buffer)
+    (define-key embark-file-map     (kbd "M-w") 'kzk/esw-ff)
+    (define-key embark-buffer-map   (kbd "M-w") 'kzk/esw-buffer)
 
     ;; other frame
     (define-key embark-file-map (kbd "C-o") 'find-file-other-frame)
@@ -54,8 +54,8 @@
       :parent embark-general-map
       "o" #'kzk/embark-grep-action-other-window
       "C-o" #'kzk/embark-grep-action-other-frame
-      "C-c w" #'kzk/embark-grep-action-esw
       )
+      "M-w" #'kzk/embark-grep-action-esw
 
     (add-to-list 'embark-keymap-alist '(consult-grep . embark-grep-actions-map))))
 
