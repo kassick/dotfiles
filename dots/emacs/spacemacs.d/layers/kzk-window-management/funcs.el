@@ -129,7 +129,7 @@
     (set-window-buffer wnd value)))
 
 (defun kzk/esw-buffer (buffer-or-name &rest args)
-  "Opens a buffer in a ESW selected window"
+  "Select window (es-windows) and switch to buffer"
   (interactive
    (list (read-buffer-to-switch "Switch to buffer in other window: ")))
 
@@ -138,12 +138,12 @@
     (set-window-buffer wnd buffer-or-name)))
 
 (defun kzk/embark-grep-action-other-window (location)
-  "Finds the entry at other window.
+  "Select window (es-windows) where to find match"
 
-   This function is not interactive because location is a prop
-   text -- could not find an interactive parameter that could
-   keep the parameter and work correctly with embark.
-   "
+  ;; This function is not interactive because location is a prop, and embark
+  ;; loses the properties when calling interactive functions (it explicitly
+  ;; inserts the text in the minibuffer, as if the function had been called by
+  ;; the user).
 
   (pop-to-buffer (current-buffer) t nil)
   (embark-consult-goto-grep location)
@@ -154,14 +154,14 @@
   (run-at-time 0 nil #'aw-switch-to-window (selected-window)))
 
 (defun kzk/embark-grep-action-other-frame (location)
-  "Finds the entry at other frame."
+  "Finds match at other frame"
 
   (switch-to-buffer-other-frame (current-buffer))
   (embark-consult-goto-grep location))
 
 
 (defun kzk/embark-grep-action-esw (location)
-  "Opens a candidate in a ESW selected window"
+  "Select window (es-windows) where to find match"
   ;; This is convoluted, but that's how I got it to work ...
 
   ;; Save the current path (if we ESW-select a window visiting a file in

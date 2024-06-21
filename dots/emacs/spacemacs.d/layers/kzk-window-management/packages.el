@@ -50,7 +50,7 @@
 
     ;; consult-grep has no embark actions and no map, defining one here
     (defvar-keymap embark-grep-actions-map
-      :doc "Keymap for actions for tab-bar tabs (when mentioned by name)."
+      :doc "Keymap for actions for grep actions"
       :parent embark-general-map
       "o" #'kzk/embark-grep-action-other-window
       "C-o" #'kzk/embark-grep-action-other-frame
