@@ -54,11 +54,22 @@
       :parent embark-general-map
       "o" #'kzk/embark-grep-action-other-window
       "C-o" #'kzk/embark-grep-action-other-frame
-      )
       "M-w" #'kzk/embark-grep-action-esw
+      "M-W" #'kzk/embark-grep-action-ace)
 
-    (add-to-list 'embark-keymap-alist '(consult-grep . embark-grep-actions-map))))
+    (add-to-list 'embark-keymap-alist '(consult-grep . embark-grep-actions-map))
 
+    ;; For consult line and consult-line-multi, we must provide a new keymap
+    ;; for the consult-location type
+    (defvar-keymap embark-location-actions-map
+      :doc "Keymap for actions for location"
+      :parent embark-general-map
+      "o" #'kzk/embark-consult-location-other-window
+      "C-o" #'kzk/embark-consult-location-other-frame
+      "M-w" #'kzk/embark-consult-location-esw
+      "M-W" #'kzk/embark-consult-location-ace)
+
+    (add-to-list 'embark-keymap-alist '(consult-location . embark-location-actions-map))))
 
 
 ;;; Several post-init keybindings

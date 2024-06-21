@@ -158,7 +158,6 @@
   (switch-to-buffer-other-frame (current-buffer))
   (embark-consult-goto-grep location))
 
-
 (defun kzk/embark-grep-action-esw (location)
   "Select window (es-windows) where to find match"
   ;; This is convoluted, but that's how I got it to work ...
@@ -179,8 +178,69 @@
     (require 'ace-window)
     (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
 
+
+(defun kzk/embark-grep-action-ace (location)
+  "Select window (ace) where to find match"
+  ;; This is convoluted, but that's how I got it to work ...
+
+  ;; Save the current path (if we ESW-select a window visiting a file in
+  ;; other path, we may end up opening the file in the invalid path, as
+  ;; location is relative).
+  ;;
+  ;; The path will be updated by consult-grep to be within the project root or
+  ;; whatever target directory is used
+
+  (require 'ace-window)
+  (let ((path default-directory)
+        ;; (aw-dispatch-always t)
+        )
+
+    (ace-select-window)
+    (cd path)
+    (embark-consult-goto-grep location)
+
+    ;;; Ensure the window is selected after the interactive command is completed
+    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+
+(defun kzk/embark-consult-location-esw (location)
+  "Select window (es-windows) where to find location"
+  (let ((location-mark (car (get-text-property 0 'consult-location location) )))
+    (esw/select-window nil t t)
+    (switch-to-buffer (marker-buffer location-mark))
+    (goto-char location-mark)
+
+    (require 'ace-window)
+    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+
+(defun kzk/embark-consult-location-ace (location)
+  "Select window (ace) where to find location"
+
+  (require 'ace-window)
+  (let ((location-mark (car (get-text-property 0 'consult-location location) )))
+    (ace-select-window)
+    (switch-to-buffer (marker-buffer location-mark))
+    (goto-char location-mark)
+
+    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+
+
+(defun kzk/embark-consult-location-other-window (location)
+  "Finds location on other window"
+  (let ((location-mark (car (get-text-property 0 'consult-location location) )))
+    (pop-to-buffer (marker-buffer location-mark) t nil)
+    (goto-char location-mark)
+
+    (require 'ace-window)
+    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+
+(defun kzk/embark-consult-location-other-frame (location)
+  "Finds location on other frame"
+  (let ((location-mark (car (get-text-property 0 'consult-location location) )))
+    (switch-to-buffer-other-frame (marker-buffer location-mark))
+    (goto-char location-mark)))
+
+
 (defun kzk/handle-delete-frame-error (orig-fun &rest args)
-  (message "Handling possible posframe issue on delete frame")
   (condition-case err
       (apply orig-fun args)
     ((debug error)
