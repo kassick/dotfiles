@@ -190,8 +190,8 @@ This function should only modify configuration layer settings."
            )
      javascript
      (typescript ;; :variables
-                 ;; typescript-linter 'eslint ; let lsp to the linting
-                 )
+      ;; typescript-linter 'eslint ; let lsp to the linting
+      )
      tide
      (groovy :variables
              groovy-lsp-jar-path "/home/kassick/Sources/user/groovy-language-server/build/libs/groovy-language-server-all.jar")
@@ -267,11 +267,11 @@ This function should only modify configuration layer settings."
                                       transient ;; do not use bundled transient ... ?
                                       (gitlab-lsp :location
                                                   ,(if kzk/debug-use-local-gitlab-lsp
-                                                      (expand-file-name "~/Sources/user/emacs-gitlab-lsp")
-                                                    '(recipe
-                                                     :fetcher github
-                                                     :repo "kassick/gitlab-lsp.el"
-                                                     :files ("*.el")))))
+                                                       (expand-file-name "~/Sources/user/emacs-gitlab-lsp")
+                                                     '(recipe
+                                                       :fetcher github
+                                                       :repo "kassick/gitlab-lsp.el"
+                                                       :files ("*.el")))))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -290,9 +290,9 @@ This function should only modify configuration layer settings."
                                     helm-ls-git
                                     helm-make
                                     term-cursor  ;; the termcursor hook is
-                                                 ;; misbehaving. I mostly use
-                                                 ;; the GUI and I can live
-                                                 ;; without it
+                                    ;; misbehaving. I mostly use
+                                    ;; the GUI and I can live
+                                    ;; without it
                                     mmm-mode     ;; mmm-mode causes strange behaviour with markdown. It's no longer necessary, apparently
                                     importmagic  ;; causes some lag; not used
                                     flyspell-correct-popup
@@ -540,7 +540,7 @@ It should only modify the values of Spacemacs settings."
    ;; and TAB or `C-m' and `RET'.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
 
    ;; If non nil `Y' is remapped to `y$' in Evil states. (default nil)
    vim-style-remap-Y-to-y$ nil
@@ -701,10 +701,10 @@ It should only modify the values of Spacemacs settings."
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
    dotspacemacs-line-numbers '(:relative nil
-                               :visual nil
-                               :disabled-for-modes dired-mode
-                                                   doc-view-mode
-                                                   pdf-view-mode)
+                                         :visual nil
+                                         :disabled-for-modes dired-mode
+                                         doc-view-mode
+                                         pdf-view-mode)
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
@@ -817,7 +817,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then byte-compile some of Spacemacs files.
    dotspacemacs-byte-compile nil
-  )
+   )
 
   ;; General settings
   ;; (custom-set-variables
@@ -935,9 +935,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Extra code and customizations
   ;;(custom-set-faces '(default ((t (:slant normal :weight normal :height 130 :width normal :foundry "ADBO" :family "Meslo LG S for Powerline")))))
-  ;                  '(region ((t (:background "gray31"))))
-  ;                  '(helm-ff-dotted-directory ((t (:foreground "#6aaf50" :weight bold))))
-  ;                  '(helm-ff-dotted-symlink-directory ((t (:foreground "DarkOrange" :weight bold)))))
+                                        ;                  '(region ((t (:background "gray31"))))
+                                        ;                  '(helm-ff-dotted-directory ((t (:foreground "#6aaf50" :weight bold))))
+                                        ;                  '(helm-ff-dotted-symlink-directory ((t (:foreground "DarkOrange" :weight bold)))))
 
   ;; Leave customizations out of the git tree. Make sure the file exists
   (let ((cf  (expand-file-name "~/.spacemacs.d/customize.el") ))
@@ -964,7 +964,6 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-
   (message "Running user config")
 
 
@@ -990,7 +989,7 @@ before packages are loaded."
   ;; Stop littering everywhere with backups and locks!
   (setq backup-directory-alist '(("." . "~/tmp")))
 
-  ; Visual settings
+                                        ; Visual settings
   (setq-default line-spacing 0        ; Increase line-spacing (default 0)
                 fill-column 78        ; reasonable fill column
                 indent-tabs-mode nil  ; tabs off by default
@@ -1059,10 +1058,10 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil))
-)
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(evil-want-Y-yank-to-eol nil))
+  )

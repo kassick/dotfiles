@@ -47,18 +47,18 @@
 ;; )
 
 (defun kzk-company/post-init-company-posframe ()
-    ;;; this fixes an issue with a very slow posframe -- something in GNOME interferes with emacs frames causing delays
-    ;;; https://github.com/tumashu/company-posframe/issues/2#issuecomment-609945180
-    ;;; This is a workaround to have posframe working without 2sec lag under gnome
-    ;;; see documentation for possible values. 'hide may introduce flickr, but I haven't noticed it with pgtk builds
     (setq x-gtk-resize-child-frames 'hide)
     (setq company-tooltip-minimum-width 40)
+  ;; this fixes an issue with a very slow posframe -- something in GNOME interferes with emacs frames causing delays
+  ;; https://github.com/tumashu/company-posframe/issues/2#issuecomment-609945180
+  ;; This is a workaround to have posframe working without 2sec lag under gnome
+  ;; see documentation for possible values. 'hide may introduce flickr, but I haven't noticed it with pgtk builds
 
-    ;; (company-posframe-mode)
+  ;; (company-posframe-mode)
 
-    (setq company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
-                              company-preview-frontend
-                              company-echo-metadata-frontend)))
+  (setq company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
+                            company-preview-frontend
+                            company-echo-metadata-frontend)))
 
 
 (defun kzk-company/post-init-company ()
@@ -147,11 +147,11 @@
 
     ;;; NO LINGERING COMPANY POPUP AFTER ESCAPING TO NORMAL
     ;;; This is very annoying
-    (with-eval-after-load 'evil
-      (add-hook 'evil-insert-state-exit-hook 'company-abort))
+  (with-eval-after-load 'evil
+    (add-hook 'evil-insert-state-exit-hook 'company-abort))
 
     ;;; end of kzk-company/post-init-company
-    )
+  )
 
 (defun kzk-company/post-init-helm-company ()
   (with-eval-after-load 'company
