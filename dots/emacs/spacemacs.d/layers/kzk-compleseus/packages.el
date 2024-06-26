@@ -53,6 +53,13 @@
 (defun kzk-compleseus/post-init-consult ()
   ;; Override some spacemacs functions to use prefix to avoid using the input
 
+  ;; First punch some holes in the keymap to get rid of which key replacements ...
+  (spacemacs/set-leader-keys
+    "sa" nil  ;; ag is not used
+    "st" nil  ;; pt is not used
+    "sw" nil  ;; search the web is provided only by helm
+    )
+
   (spacemacs/set-leader-keys
     "ss" #'kzk/search-in-buffer
     "sS" #'kzk/search-in-buffer-with-input
@@ -66,19 +73,19 @@
     "sD" #'kzk/search-in-current-dir-with-input
     "sp" #'kzk/search-in-project
     "sP" #'kzk/search-in-project-with-input
+    "st" '("Search project TODOs" . kzk/consult-project-todos)
     "*"  #'kzk/search-in-project-with-input
     "/"  #'kzk/search-in-project
 
     ;; Add some consult commands in their proper places
     "sgg" #'consult-grep
     "srr" #'consult-ripgrep
-    "sa" nil  ;; ag is not used
-    "st" nil  ;; pt is not used
-    "sw" nil  ;; search the web is provided only by helm
 
     ;; Consult Project Buffers is more powerful than projectile-buffers
     "pb" '("Project Buffers" . consult-project-buffer)
     )
+
+
 
   ;; Customize symbol search
   (spacemacs/transient-state-register-remove-bindings
@@ -92,11 +99,11 @@
       ("/" kzk/search-in-project-buffers-with-input :exit t)
       ;; Search the current symbol on all the buffers
       ("b" kzk/search-in-all-buffers-with-input :exit t)))
-    (setq spacemacs--symbol-highlight-transient-state-doc
-          (concat
-           spacemacs--symbol-highlight-transient-state-doc
-           ;; "[_/_] project" is already there, only need to append the buffers shortcut
-           "  [_b_] buffers"))
+  (setq spacemacs--symbol-highlight-transient-state-doc
+        (concat
+         spacemacs--symbol-highlight-transient-state-doc
+         ;; "[_/_] project" is already there, only need to append the buffers shortcut
+         "  [_b_] buffers"))
   )
 
 (defun kzk-compleseus/init-compile-multi ()

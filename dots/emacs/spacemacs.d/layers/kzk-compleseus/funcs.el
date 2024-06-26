@@ -74,7 +74,7 @@ This is used to reorder all sections as sources."
 
 (defun kzk/consult-descbinds--format-candidates (candidates)
   (let* ((key-width (cl-loop for (key . _def) in candidates
-                         maximize (length key))))
+                             maximize (length key))))
     (cl-loop for (key . def) in candidates
              for key-rep = (concat (propertize key 'face 'embark-keybinding))
              for formatted = (propertize (concat key-rep
@@ -117,11 +117,11 @@ This is used to reorder all sections as sources."
   (require 'embark)
   (require 'marginalia)
   (let* ((selected (consult--multi (kzk/consult-descbinds--sources (or buffer (current-buffer)) prefix)
-                                  :require-match t
-                                  :category 'embark-keybinding
-                                  :prompt "Bindings: "
-                                  :sort nil)  )
-          )
+                                   :require-match t
+                                   :category 'embark-keybinding
+                                   :prompt "Bindings: "
+                                   :sort nil)  )
+         )
     (command-execute (intern (car selected)))
     )  )
 
@@ -231,3 +231,7 @@ This is used to reorder all sections as sources."
   (interactive)
 
   (consult-buffer '(consult--source-same-purpose)))
+
+(defun kzk/consult-project-todos ()
+  (interactive)
+  (consult-ripgrep (projectile-project-root) "\\bTODO:.*$ -- -o #"))
