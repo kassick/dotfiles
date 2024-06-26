@@ -546,7 +546,7 @@ It should only modify the values of Spacemacs settings."
    vim-style-remap-Y-to-y$ nil
    ;; If non-nil, the shift mappings `<' and `>' retain visual state if used
    ;; there. (default t)
-   vim-style-retain-visual-state-on-shift t
+   vim-style-retain-visual-state-on-shift nil  ;; some update in evil broke this feature... patching it in kzk-evil
    ;; If non-nil, J and K move lines up and down when in visual mode.
    ;; (default nil)
    vim-style-visual-line-move-text nil

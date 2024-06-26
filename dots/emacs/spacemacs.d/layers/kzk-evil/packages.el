@@ -38,7 +38,7 @@
            (
             ;; default behaviour: simply call yank
             t (setq this-command 'yank)
-              (yank arg)))
+            (yank arg)))
      ;; (evil-set-marker ?\] (1- (point)))
      )
    (define-key evil-insert-state-map (kbd "C-v") #'kzk/yank)
@@ -67,4 +67,20 @@
    (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
    (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
    (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-   (define-key evil-motion-state-map (kbd "<C-escape>") 'evil-execute-in-emacs-state)))
+   (define-key evil-motion-state-map (kbd "<C-escape>") 'evil-execute-in-emacs-state)
+
+   ;; Some change upstream broke vim-style-retain-visual-state-on-shift. To
+   ;; add insult over injury, evil-map macro is kinda limited -- no suport for
+   ;; special keys such as <escape>, recursion avoidance is limited to the
+   ;; first key, etc. Even if we fixed the macro do correctly handle these
+   ;; cases, there would still be the issue of the prefix: calling the
+   ;; sequence (kbd "<escape>gv<gv") should apply the prefix to what
+   ;; operation? evil-exit-visual-state, evil-restore-visual-state,
+   ;; evil-shift-left, ...?
+   ;; These new operators handle these cases in a more robust way...
+   (define-key evil-visual-state-map
+               (kbd "<") #'kzk/evil-visual-shift-left)
+   (define-key evil-visual-state-map
+               (kbd ">") #'kzk/evil-visual-shift-right)
+
+   ))
