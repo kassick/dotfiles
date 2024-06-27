@@ -1,6 +1,8 @@
+;;; funcs.el --- compleseus Layer functions File for kzk spacemacs -*- lexical-binding: t; -*-
+
+
 ;; Descbinds with consult
 ;; embark-descbinds does not work well sith spacemacs maps ...
-
 (defun kzk/consult-descbinds--all-sections (buffer &optional prefix menus)
   "Collect data from `describe-buffer-bindings' output.
 
@@ -230,7 +232,28 @@ This is used to reorder all sections as sources."
   "Switchs to a buffer with the same purpose as the current one"
   (interactive)
 
-  (consult-buffer '(consult--source-same-purpose)))
+  (let* ((purpose (purpose-buffer-purpose (current-buffer)))
+         (predicate (lambda (buf)
+                      (and (not (minibufferp buf))
+                           (eql purpose (purpose-buffer-purpose buf)))))
+         (history-symb (intern (format "buffer-history-for-purpose-%S" purpose)))
+         (source `(
+                   :name ,(format "Purpose: %S" purpose)
+                   :category buffer
+                   :face: consult-buffer
+                   :history ,history-symb
+                   :state ,#'consult--buffer-state
+                   :detault t
+                   :items ,(lambda ()
+                             (consult--buffer-query
+                              :sort 'visibility
+                              :predicate predicate
+                              :as #'buffer-name)
+                             ))))
+    (when (not (bound-and-true-p history-symb))
+      (set history-symb nil))
+    (consult-buffer (list source))))
+
 
 (defun kzk/consult-project-todos ()
   (interactive)
