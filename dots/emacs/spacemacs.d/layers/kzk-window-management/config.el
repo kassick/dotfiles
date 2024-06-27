@@ -1,3 +1,6 @@
+(defvar kzk/pupo-managed-buffers nil "buffers that have been managed by pupo/popwin")
+
+
 (custom-set-variables
 
  ;;; enable horizontal scrolling

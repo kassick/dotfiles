@@ -12,7 +12,39 @@
          popwin:special-display-config)
    (push '("^\\*Flycheck.+\\*$" :regexp t
            :dedicated t :position bottom :stick t :noselect t)
-         popwin:special-display-config)))
+         popwin:special-display-config)
+
+   ;; Fix popwin/pupo weird behaviours:
+
+   ;; Make help windows not dedicated and make them pop to the right. Let lsp,
+   ;; emacs, whatever help use the same popup window.
+   ;;
+   ;; This improves situations where several popup windows start ocuping the
+   ;; bottom of the frame.
+   (assoc-delete-all "*Help*" popwin:special-display-config #'string-equal)
+   (assoc-delete-all "*lsp-help*" popwin:special-display-config #'string-equal)
+   (push '("^\\*\\(.+-\\)?[hH]elp\\*$"
+           :dedicated nil :position right :width 0.3 :stick t :noselect t :regexp t)
+         popwin:special-display-config)
+   (pupo/update-purpose-config) ;; needed, since our config changed ...
+
+   ;; Useful stuff! pop last buffer and switch to some popup
+   (spacemacs/set-leader-keys
+     "wpl" #'kzk/popup-last-no-select
+     "wpL" #'kzk/popup-last
+     "wpb" #'kzk/consult-switch-to-popup-buffer
+     )
+
+   (advice-add 'pupo/display-function
+               :around (lambda (f buf alist)
+                         (let ((window (apply f (list buf alist))))
+                           (when window
+                             ;; push the buffer to the beginning of the list
+                             ;; but ensure it is no longer present there
+                             (setq kzk/pupo-managed-buffers
+                                   (append (list buf)
+                                           (kzk/clean-up-pupo-managed-buffers (list buf)))))
+                           window)))))
 
 (defun kzk-window-management/init-es-windows ()
   (kzk/after-init
@@ -76,40 +108,40 @@
 (kzk/after-init
  (when (configuration-layer/layer-used-p 'helm)
    (general-define-key :keymaps    'global
-                        "C-x b"     'helm-mini
-                        "C-x C-b"   'helm-mini))
+                       "C-x b"     'helm-mini
+                       "C-x C-b"   'helm-mini))
 
-   (general-define-key :keymaps    'global
-                       "<C-f10>"   'ibuffer
-                       "<C-S-f10>" 'ibuffer-other-window
-                       "C-x <up>"  'windmove-up
-                       "C-x <down>" 'windmove-down
-                       "C-x <left>" 'windmove-left
-                       "C-x <right>" 'windmove-right
-                       "C-x p" '("Previous Window" . evil-window-mru)
+ (general-define-key :keymaps    'global
+                     "<C-f10>"   'ibuffer
+                     "<C-S-f10>" 'ibuffer-other-window
+                     "C-x <up>"  'windmove-up
+                     "C-x <down>" 'windmove-down
+                     "C-x <left>" 'windmove-left
+                     "C-x <right>" 'windmove-right
+                     "C-x p" '("Previous Window" . evil-window-mru)
 
-                       ;; resize
-                       "C-x C-<left>" 'shrink-window-horizontally
-                       "C-x C-<right>" 'enlarge-window-horizontally
-                       "C-x C-<down>" 'shrink-window
-                       "C-x C-<up>" 'enlarge-window)
+                     ;; resize
+                     "C-x C-<left>" 'shrink-window-horizontally
+                     "C-x C-<right>" 'enlarge-window-horizontally
+                     "C-x C-<down>" 'shrink-window
+                     "C-x C-<up>" 'enlarge-window)
 
-  (general-define-key :keymaps 'spacemacs-cmds
-                      "w _" 'evil-window-set-height
-                      "w |" 'evil-window-set-width)
+ (general-define-key :keymaps 'spacemacs-cmds
+                     "w _" 'evil-window-set-height
+                     "w |" 'evil-window-set-width)
 
-  ;; help window hacks
-  (general-define-key :keymaps 'help-map
-                      "D" '("Delete help window" . kzk/delete-help-window)
-                      "h" '( "Help for stuff at point" . kzk/evil-smart-doc-lookup))
+ ;; help window hacks
+ (general-define-key :keymaps 'help-map
+                     "D" '("Delete help window" . kzk/delete-help-window)
+                     "h" '( "Help for stuff at point" . kzk/evil-smart-doc-lookup))
 
-  (general-define-key :keymaps 'global
-                      :prefix dotspacemacs-leader-key
-                      :states '(normal motion visual)
+ (general-define-key :keymaps 'global
+                     :prefix dotspacemacs-leader-key
+                     :states '(normal motion visual)
 
-                      "hD" '("Delete help window" . kzk/delete-help-window)
-                      "cD" '( "Deletes the compilation window" . kzk/delete-compile-window))
+                     "hD" '("Delete help window" . kzk/delete-help-window)
+                     "cD" '( "Deletes the compilation window" . kzk/delete-compile-window))
 
 
-  (require 'window)
-  (advice-add 'display-buffer-override-next-command :before #'kzk/patch-display-buffer-override-next-command-action-list))
+ (require 'window)
+ (advice-add 'display-buffer-override-next-command :before #'kzk/patch-display-buffer-override-next-command-action-list))

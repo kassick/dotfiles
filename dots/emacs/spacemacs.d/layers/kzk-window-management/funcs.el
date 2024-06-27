@@ -59,7 +59,7 @@
   "Show the selected match in the selected window"
   (interactive)
   (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-esw/ag-find-file)))
+   (helm-exit-and-execute-action 'helm-esw/ag-find-file)))
 
 (defun helm-esw/find-file (candidate)
   (set-window-buffer (esw/select-window nil t t) (find-file-noselect candidate)))
@@ -68,13 +68,13 @@
   "Show the selected buffer in the selected window."
   (interactive)
   (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-esw/show-buffer)))
+   (helm-exit-and-execute-action 'helm-esw/show-buffer)))
 
 (defun helm-esw/run-find-file ()
   "Show the selected buffer in the selected window."
   (interactive)
   (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-esw/find-file)))
+   (helm-exit-and-execute-action 'helm-esw/find-file)))
 
 (defun kzk/setup-helm-esw ()
   ;; find file
@@ -273,3 +273,49 @@ expected by display-buffer-override-next-command"
 
   (unless (listp (car display-buffer-overriding-action))
     (setcar display-buffer-overriding-action (list (car display-buffer-overriding-action)))))
+
+(defun kzk/clean-up-pupo-managed-buffers(&optional remove-buffers)
+  "Removes non-live buffers and any byffer in REMOVER-BUFFERS"
+  (setq kzk/pupo-managed-buffers
+        (--filter (and
+                   ;; remove buffers from list from list
+                   (not (member it remove-buffers))
+                   ;; filter dead buffers
+                   (buffer-live-p it))
+                  kzk/pupo-managed-buffers)))
+
+(defun kzk/popup-last-no-select (prefix)
+  "Pops up the last popup window.
+
+With prefix, selects the window"
+  (interactive "P")
+
+  (-when-let* ((buf (car kzk/pupo-managed-buffers))
+               (wnd (display-buffer buf)))
+    (when prefix
+      (select-window wnd))))
+
+(defun kzk/popup-last ()
+  (interactive)
+  (kzk/popup-last-no-select t))
+
+
+(defun kzk/consult-switch-to-popup-buffer ()
+  "Switchs a buffer managed in a popup window"
+  (interactive)
+
+  (let* ((source `(
+                   :name "Popups"
+                   :category buffer
+                   :face: consult-buffer
+                   :history consult--buffer-history
+                   :state ,#'consult--buffer-state
+                   :detault t
+                   :items ,(lambda ()
+                             (consult--buffer-query
+                              :sort 'visibility
+                              :predicate #'(lambda (buf)
+                                             (member buf (kzk/clean-up-pupo-managed-buffers)))
+                              :as #'buffer-name)
+                             ))))
+    (consult-buffer (list source))))
