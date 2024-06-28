@@ -41,7 +41,7 @@
      "wpl" '("Pop last opened popup without selecting the window" . kzk/popup-last-no-select)
      "wpL" '("Pop last opened popup and select window" . kzk/popup-last)
      "wps" '("Select a popup buffer" . kzk/consult-switch-to-popup-buffer)
-     "wph" '("Select a popup buffer here" . kzk/consult-buffer-with-purpose)
+     "wph" '("Select a popup buffer here" . kzk/consult-switch-to-popup-buffer-same-purpose)
      "wpm" '("Pop messages buffer" . (lambda () (interactive) (display-buffer "*Messages*"))))
 
    (advice-add 'pupo/display-function
