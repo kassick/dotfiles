@@ -115,11 +115,25 @@
 
 ;;; Several post-init keybindings
 (kzk/after-init
+
+ ;; Scroll last active window / esw select target window
+ (setq other-window-scroll-default #'kzk/other-window-default-cb)
+ (add-hook 'window-configuration-change-hook #'kzk/maybe-reset-other-window-parameter)
+
+ (general-define-key :keymaps 'evil-window-map
+                     "C-o" '("Set other window for this window" . kzk/esw-set-other-window)
+                     "C-M-o" '("Reset other window". kzk/reset-other-window))
+ (spacemacs/set-leader-keys
+   "w C-o" '("Set other window for this window" . kzk/esw-set-other-window)
+   "w C-M-o" '("Reset other window" . kzk/reset-other-window))
+
+ ;; maybe helm?
  (when (configuration-layer/layer-used-p 'helm)
    (general-define-key :keymaps    'global
                        "C-x b"     'helm-mini
                        "C-x C-b"   'helm-mini))
 
+ ;; Some basic window movements
  (general-define-key :keymaps    'global
                      "<C-f10>"   'ibuffer
                      "<C-S-f10>" 'ibuffer-other-window

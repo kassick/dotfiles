@@ -365,3 +365,34 @@ With a prefix, includes buffers shown in all frames. "
       (minibuffer-quit-recursive-edit))))
 
 
+(defun kzk/other-window-default-cb ()
+  (or (when-let* ((win (window-parameter (selected-window) 'kzk/other-window))
+                  (live (window-live-p win))
+                  (buf (window-buffer win)))
+        win)
+      (get-mru-window nil nil 'not-this-one-dummy)
+      (next-window)               ;fall back to next window
+      (next-window nil nil 'visible)))
+
+(defun kzk/esw-set-other-window ()
+  "Select a window with ace-window and set it as the \"other
+window\" for the current one."
+  (interactive)
+  (when-let* ((win (save-window-excursion
+                     (esw/select-window "Set other window" nil nil)))
+              (buf (window-buffer win)))
+    (set-window-parameter (selected-window) 'kzk/other-window win)
+    (message "Other window is now %S" win)))
+
+(defun kzk/reset-other-window ()
+  "Resets the other window -- use default rules"
+  (interactive)
+  (set-window-parameter (selected-window) 'kzk/other-window nil)
+  (message "Using default other-window behaviour"))
+
+(defun kzk/maybe-reset-other-window-parameter ()
+  "Avoids keeping references to too many dead windows ..."
+  (dolist (win (window-list))
+    (when-let (other (window-parameter win 'kzk/other-window))
+      (unless (window-live-p other)
+        (set-window-parameter win 'kzk/other-window nil)))))
