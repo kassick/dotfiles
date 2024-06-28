@@ -300,24 +300,31 @@ With prefix, selects the window"
   (kzk/popup-last-no-select t))
 
 
-(defun kzk/consult-switch-to-popup-buffer ()
-  "Switchs a buffer managed in a popup window"
-  (interactive)
+(defun kzk/consult-switch-to-popup-buffer (prefix)
+  "Switchs a buffer managed in a popup window.
 
-  (let* ((source `(
+With a prefix, includes buffers shown in all frames. "
+  (interactive "P")
+
+  ;; We want MRU here, but current buffers should be at the end
+  ;; consult--buffer-query does not help much in this aspect, as its sort
+  ;; function brings hidden buffers first ...
+  (let* ((mru (buffer-list (when (not prefix) (selected-frame))))
+         (popup-buffers (kzk/clean-up-pupo-managed-buffers))
+         (filtered (--filter (member it popup-buffers)
+                             mru))
+         (targets (nconc (delq (current-buffer) filtered)
+                         (cons (current-buffer) nil)
+                         ))
+         (buffer-names (--map (buffer-name it) targets))
+         (source `(
                    :name "Popups"
                    :category buffer
                    :face: consult-buffer
                    :history consult--buffer-history
                    :state ,#'consult--buffer-state
                    :detault t
-                   :items ,(lambda ()
-                             (consult--buffer-query
-                              :sort 'visibility
-                              :predicate #'(lambda (buf)
-                                             (member buf (kzk/clean-up-pupo-managed-buffers)))
-                              :as #'buffer-name)
-                             ))))
+                   :items ,buffer-names)))
     (consult-buffer (list source))))
 
 
