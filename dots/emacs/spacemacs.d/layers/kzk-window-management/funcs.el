@@ -348,3 +348,13 @@ With prefix, selects the window"
                                 :as #'buffer-name)
                                ))))
       (consult-buffer (list source)))))
+
+(defun kzk/quit-active-minibuffer ()
+  "Quits the active minibuffer"
+
+  (interactive)
+  (-when-let (w (active-minibuffer-window))
+    (with-selected-window w
+      (minibuffer-quit-recursive-edit))))
+
+

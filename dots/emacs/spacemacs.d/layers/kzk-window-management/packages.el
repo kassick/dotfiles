@@ -151,6 +151,10 @@
                      "hD" '("Delete help window" . kzk/delete-help-window)
                      "cD" '( "Deletes the compilation window" . kzk/delete-compile-window))
 
+ ;; Minibuffer interaction hacks
+ (spacemacs/set-leader-keys
+   "wB" '("Quits the active minibuffer". kzk/quit-active-minibuffer))
+
 
  (require 'window)
  (advice-add 'display-buffer-override-next-command :before #'kzk/patch-display-buffer-override-next-command-action-list))
