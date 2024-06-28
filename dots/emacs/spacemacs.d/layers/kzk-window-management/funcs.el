@@ -313,9 +313,10 @@ With a prefix, includes buffers shown in all frames. "
          (popup-buffers (kzk/clean-up-pupo-managed-buffers))
          (filtered (--filter (member it popup-buffers)
                              mru))
-         (targets (nconc (delq (current-buffer) filtered)
-                         (cons (current-buffer) nil)
-                         ))
+         (targets (if (member (current-buffer) filtered)
+                      (nconc (delq (current-buffer) filtered)
+                             (cons (current-buffer) nil))
+                    filtered))
          (buffer-names (--map (buffer-name it) targets))
          (source `(
                    :name "Popups"
