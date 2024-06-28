@@ -8,13 +8,15 @@
 
 (defun kzk-window-management/post-init-popwin ()
   (kzk/after-init
+   ;; Customize popwin/pupo
+
+   ;; Company documentation -- ensure it is shown at bottom
    (push '("\\*company-documentation\\*" :height 10 :position bottom :noselect t)
          popwin:special-display-config)
-   (push '("^\\*Flycheck.+\\*$" :regexp t
-           :dedicated t :position bottom :stick t :noselect t)
-         popwin:special-display-config)
 
-   ;; Fix popwin/pupo weird behaviours:
+   ;; Embark collect should show at bottom
+   (push '(embark-collect-mode :dedicated nil :position bottom :height 0.3 :noselect nil)
+         popwin:special-display-config)
 
    ;; Make help windows not dedicated and make them pop to the right. Let lsp,
    ;; emacs, whatever help use the same popup window.
@@ -26,7 +28,13 @@
    (push '("^\\*\\(.+-\\)?[hH]elp\\*$"
            :dedicated nil :position right :width 0.3 :stick t :noselect t :regexp t)
          popwin:special-display-config)
-   (pupo/update-purpose-config) ;; needed, since our config changed ...
+
+
+   (push '(messages-buffer-mode :dedicated nil :position bottom :height 0.4 :stick nil)
+         popwin:special-display-config)
+
+   ;; needed, since our config changed ...
+   (pupo/update-purpose-config)
 
    ;; Useful stuff! pop last buffer and switch to some popup
    (spacemacs/set-leader-keys
@@ -34,7 +42,7 @@
      "wpL" '("Pop last opened popup and select window" . kzk/popup-last)
      "wps" '("Select a popup buffer" . kzk/consult-switch-to-popup-buffer)
      "wph" '("Select a popup buffer here" . kzk/consult-buffer-with-purpose)
-     )
+     "wpm" '("Pop messages buffer" . (lambda () (interactive) (display-buffer "*Messages*"))))
 
    (advice-add 'pupo/display-function
                :around (lambda (f buf alist)
