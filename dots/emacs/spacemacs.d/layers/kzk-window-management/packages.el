@@ -30,9 +30,10 @@
 
    ;; Useful stuff! pop last buffer and switch to some popup
    (spacemacs/set-leader-keys
-     "wpl" #'kzk/popup-last-no-select
-     "wpL" #'kzk/popup-last
-     "wpb" #'kzk/consult-switch-to-popup-buffer
+     "wpl" '("Pop last opened popup without selecting the window" . kzk/popup-last-no-select)
+     "wpL" '("Pop last opened popup and select window" . kzk/popup-last)
+     "wps" '("Select a popup buffer" . kzk/consult-switch-to-popup-buffer)
+     "wph" '("Select a popup buffer here" . kzk/consult-buffer-with-purpose)
      )
 
    (advice-add 'pupo/display-function

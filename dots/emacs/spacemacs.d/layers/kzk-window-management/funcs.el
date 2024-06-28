@@ -319,3 +319,32 @@ With prefix, selects the window"
                               :as #'buffer-name)
                              ))))
     (consult-buffer (list source))))
+
+
+(defun kzk/consult-switch-to-popup-buffer-same-purpose ()
+  "Switchs a buffer managed in a popup window"
+  (interactive)
+
+  (let ((popup-buffers (kzk/clean-up-pupo-managed-buffers)))
+    (unless (member (current-buffer) popup-buffers)
+      (error "Current buffer is not a popup"))
+
+    (let* ((purpose (purpose-buffer-purpose (current-buffer)))
+           (buffers (--filter (eq purpose
+                                  (purpose-buffer-purpose it))
+                              popup-buffers))
+           (source `(
+                     :name ,(format "Popups for purpose %s" purpose)
+                     :category buffer
+                     :face: consult-buffer
+                     :history consult--buffer-history
+                     :state ,#'consult--buffer-state
+                     :detault t
+                     :items ,(lambda ()
+                               (consult--buffer-query
+                                :sort 'visibility
+                                :predicate #'(lambda (buf)
+                                               (member buf buffers))
+                                :as #'buffer-name)
+                               ))))
+      (consult-buffer (list source)))))
