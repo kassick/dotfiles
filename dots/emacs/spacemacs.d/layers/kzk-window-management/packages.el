@@ -1,59 +1,76 @@
 (defconst kzk-window-management-packages
-  '(popwin
+  `(spacemacs-purpose-popwin
     es-windows
     window-purpose
     posframe
     embark
     ))
 
-(defun kzk-window-management/post-init-popwin ()
-  (kzk/after-init
-   ;; Customize popwin/pupo
+(defun kzk-window-management/post-init-spacemacs-purpose-popwin ()
+  (with-eval-after-load 'spacemacs-purpose-popwin
+    ;; Customize popwin/pupo
 
-   ;; Company documentation -- ensure it is shown at bottom
-   (push '("\\*company-documentation\\*" :height 10 :position bottom :noselect t)
-         popwin:special-display-config)
+    ;; Make help windows not dedicated and make them pop to the right. Let lsp,
+    ;; emacs, whatever help use the same popup window.
+    ;;
+    ;; This improves situations where several popup windows start ocuping the
+    ;; bottom of the frame.
+    (assoc-delete-all "*Help*" popwin:special-display-config #'string-equal)
+    (assoc-delete-all "*lsp-help*" popwin:special-display-config #'string-equal)
+    (push '("^\\*\\(.+-\\)?[hH]elp\\*$"
+            :dedicated nil :position right :width 0.3 :stick t :noselect t :regexp t)
+          popwin:special-display-config)
 
-   ;; Embark collect should show at bottom
-   (push '(embark-collect-mode :dedicated nil :position bottom :height 0.3 :noselect nil)
-         popwin:special-display-config)
+    ;; Info modes are help ---
+    (dolist (m '(info-mode Info-mode))
+      (push `(,m
+              :dedicated nil :position right :width 0.3 :stick t :noselect t :regexp t)
+            popwin:special-display-config))
 
-   ;; Make help windows not dedicated and make them pop to the right. Let lsp,
-   ;; emacs, whatever help use the same popup window.
-   ;;
-   ;; This improves situations where several popup windows start ocuping the
-   ;; bottom of the frame.
-   (assoc-delete-all "*Help*" popwin:special-display-config #'string-equal)
-   (assoc-delete-all "*lsp-help*" popwin:special-display-config #'string-equal)
-   (push '("^\\*\\(.+-\\)?[hH]elp\\*$"
-           :dedicated nil :position right :width 0.3 :stick t :noselect t :regexp t)
-         popwin:special-display-config)
+    ;; Company documentation -- ensure it is shown at bottom
+    (push '("*company-documentation*" :height 10 :position bottom :noselect t)
+          popwin:special-display-config)
 
+    ;; Embark collect should show at bottom
+    (push '(embark-collect-mode :stick t :dedicated t :position bottom :height 0.3 :noselect nil)
+          popwin:special-display-config)
 
-   (push '(messages-buffer-mode :dedicated nil :position bottom :height 0.4 :stick nil)
-         popwin:special-display-config)
+    (push '(messages-buffer-mode :dedicated t :position bottom :height 0.4 :stick t)
+          popwin:special-display-config)
 
-   ;; needed, since our config changed ...
-   (pupo/update-purpose-config)
+    (push '("*Warnings*" :noselect t :dedicated t :position bottom :height 0.3 :stick nil)
+          popwin:special-display-config)
 
-   ;; Useful stuff! pop last buffer and switch to some popup
-   (spacemacs/set-leader-keys
-     "wpl" '("Pop last opened popup without selecting the window" . kzk/popup-last-no-select)
-     "wpL" '("Pop last opened popup and select window" . kzk/popup-last)
-     "wps" '("Select a popup buffer" . kzk/consult-switch-to-popup-buffer)
-     "wph" '("Select a popup buffer here" . kzk/consult-switch-to-popup-buffer-same-purpose)
-     "wpm" '("Pop messages buffer" . (lambda () (interactive) (display-buffer "*Messages*"))))
+    (push '(comint-mode :noselect t :dedicated nil :position bottom :height 0.3 :stick nil)
+          popwin:special-display-config)
 
-   (advice-add 'pupo/display-function
-               :around (lambda (f buf alist)
-                         (let ((window (apply f (list buf alist))))
-                           (when window
-                             ;; push the buffer to the beginning of the list
-                             ;; but ensure it is no longer present there
-                             (setq kzk/pupo-managed-buffers
-                                   (append (list buf)
-                                           (kzk/clean-up-pupo-managed-buffers (list buf)))))
-                           window)))))
+    (push '(xref--xref-buffer-mode :dedicated nil :position bottom :height 0.3 :stick nil)
+          popwin:special-display-config)
+
+    ;; needed, since our config changed ...
+    (pupo/update-purpose-config)
+
+    ;; Useful stuff! pop last buffer and switch to some popup
+    (spacemacs/set-leader-keys
+      "wpo" '("Other popup window" . kzk/other-popup)
+      "wpO" `("Other popup window, backwards" . ,(lambda (count) (interactive "p")
+                                                   (kzk/other-popup (* -1 count))))
+      "wpl" '("Pop last opened popup without selecting the window" . kzk/popup-last-no-select)
+      "wpL" '("Pop last opened popup and select window" . kzk/popup-last)
+      "wps" '("Select a popup buffer" . kzk/consult-switch-to-popup-buffer)
+      "wph" '("Select a popup buffer here" . kzk/consult-switch-to-popup-buffer-same-purpose)
+      "wpm" '("Pop messages buffer" . (lambda () (interactive) (display-buffer "*Messages*"))))
+
+    (advice-add 'pupo/display-function
+                :around (lambda (f buf alist)
+                          (let ((window (apply f (list buf alist))))
+                            (when window
+                              ;; push the buffer to the beginning of the list
+                              ;; but ensure it is no longer present there
+                              (setq kzk/pupo-managed-buffers
+                                    (append (list buf)
+                                            (kzk/clean-up-pupo-managed-buffers (list buf)))))
+                            window)))))
 
 (defun kzk-window-management/init-es-windows ()
   (kzk/after-init
@@ -66,10 +83,12 @@
                        "C-x 7 0" 'esw/delete-window)))
 
 
+
 (defun kzk-window-management/post-init-window-purpose ()
   ;; Forcing prefer-other-frame to popup new frame
-  (setcdr (assq 'prefer-other-frame purpose-action-sequences)
-          '(purpose-display-maybe-pop-up-frame)))
+  (with-eval-after-load 'window-purpose
+    (setcdr (assq 'prefer-other-frame purpose-action-sequences)
+            '(purpose-display-maybe-pop-up-frame))))
 
 (defun kzk-window-management/post-init-posframe ()
   (advice-add 'delete-frame :around #'kzk/handle-delete-frame-error))
@@ -155,8 +174,9 @@
 
  ;; help window hacks
  (general-define-key :keymaps 'help-map
-                     "D" '("Delete help window" . kzk/delete-help-window)
-                     "h" '( "Help for stuff at point" . kzk/evil-smart-doc-lookup))
+                     "D" '("Delete help window" . kzk/delete-help-window))
+ (general-define-key :keymaps 'global
+                     "C-S-H" '( "Help for stuff at point" . kzk/evil-smart-doc-lookup) )
 
  (general-define-key :keymaps 'global
                      :prefix dotspacemacs-leader-key
