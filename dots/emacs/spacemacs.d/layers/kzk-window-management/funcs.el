@@ -259,10 +259,13 @@ Calling with multiple prefix will forward de prefix/4 to the actual help functio
   (let ((cur-window (selected-window))
         (current-prefix-arg (when (> prefix 4)
                               ;; Shift-right prefix
-                              `(,(/ prefix 4)))))
+                              `(,(/ prefix 4))))
+        (p (point)))
     (evil-save-state
       (evil-normal-state)
       (spacemacs/evil-smart-doc-lookup))
+    (goto-char p)
+
     (when (= 4 prefix)
       ;; Calling with sing
       (select-window cur-window))))
