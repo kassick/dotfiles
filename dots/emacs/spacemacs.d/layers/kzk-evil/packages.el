@@ -2,7 +2,8 @@
 
 (defconst kzk-evil-packages
   '(general
-    evil))
+    evil
+    evil-collection))
 
 (defun kzk-evil/post-init-general ())
 
@@ -84,3 +85,13 @@
                (kbd ">") #'kzk/evil-visual-shift-right)
 
    ))
+
+(defun kzk-evil/pre-init-evil-collection ()
+  ;; Why aren't these using evil-collection?
+  (setq spacemacs-evil-collection-allowed-list
+        (append spacemacs-evil-collection-allowed-list '(info-mode Info-mode info))
+        )
+  (add-to-list 'spacemacs-evil-collection-allowed-list 'info-mode)
+  (add-to-list 'spacemacs-evil-collection-allowed-list 'Info-mode)
+  (add-to-list 'spacemacs-evil-collection-allowed-list 'info)
+  )
