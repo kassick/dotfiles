@@ -149,7 +149,6 @@ This function should only modify configuration layer settings."
                   tree-sitter-fold-indicators-enable nil
                   )
      kzk-tree-sitter
-
      emacs-lisp
      shell-scripts
      (ipython-notebook)
@@ -244,7 +243,6 @@ This function should only modify configuration layer settings."
      kzk-company
      kzk-persp
      spacemacs-editing
-     spacemacs-visual
      spacemacs-editing-visual
      ;; tabs
      )
@@ -309,7 +307,7 @@ This function should only modify configuration layer settings."
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
    ;; dotspacemacs-install-packages 'used-but-keep-unused
-   dotspacemacs-install-packages 'used-only
+   dotspacemacs-install-packages 'used-but-keep-unused
    ))
 
 (defun dotspacemacs/init ()
@@ -443,7 +441,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil, show file icons for entries and headings on Spacemacs home buffer.
    ;; This has no effect in terminal or if "all-the-icons" package or the font
    ;; is not installed. (default nil)
-   dotspacemacs-startup-buffer-show-icons nil
+   dotspacemacs-startup-buffer-show-icons t
 
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
@@ -967,7 +965,6 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (message "Running user config")
-
 
   ;; Default modes
   (ido-mode -1)          ; no ido
