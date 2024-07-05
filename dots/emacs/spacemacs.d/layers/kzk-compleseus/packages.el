@@ -51,6 +51,10 @@
   )
 
 (defun kzk-compleseus/post-init-consult ()
+
+  ;; This was missing from upstream...
+  (setq xref-show-definitions-function 'consult-xref)
+
   ;; Override some spacemacs functions to use prefix to avoid using the input
 
   ;; First punch some holes in the keymap to get rid of which key replacements ...
