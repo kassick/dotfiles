@@ -293,10 +293,12 @@ expected by display-buffer-override-next-command"
 With prefix, selects the window"
   (interactive "P")
 
-  (-when-let* ((buf (car kzk/pupo-managed-buffers))
-               (wnd (display-buffer buf)))
-    (when prefix
-      (select-window wnd))))
+  (-when-let* ((prev-wnd (selected-window))
+               (buf (car (kzk/clean-up-pupo-managed-buffers)))
+               (popup-wnd (display-buffer buf))
+               (target-wnd (if prefix popup-wnd prev-wnd)))
+    ;; Force select window, since popup rules may cause either
+    (select-window target-wnd)))
 
 (defun kzk/popup-last ()
   (interactive)
