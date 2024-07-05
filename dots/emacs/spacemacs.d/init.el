@@ -144,7 +144,9 @@ This function should only modify configuration layer settings."
      (tree-sitter :variables
                   tree-sitter-syntax-highlight-enable t
                   tree-sitter-fold-enable t
-                  tree-sitter-fold-indicators-enable t
+                  ;; keep it disabled by default -- this has some weird
+                  ;; performance issues:
+                  tree-sitter-fold-indicators-enable nil
                   )
      kzk-tree-sitter
 
