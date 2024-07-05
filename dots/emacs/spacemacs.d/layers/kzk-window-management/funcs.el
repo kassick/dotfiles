@@ -304,6 +304,47 @@ With prefix, selects the window"
   (interactive)
   (kzk/popup-last-no-select t))
 
+(defun kzk/other-popup (count)
+  (interactive "p")
+
+  (-when-let* (
+               ;; NO-OP when count=0
+               (guard (/= 0 count))
+               ;; Find popup buffers and their associated windows
+               (popup-buffers (kzk/clean-up-pupo-managed-buffers))
+               (popup-windows (--filter (member (window-buffer it) popup-buffers)
+                                        (window-list (selected-frame) 'no-minibuf nil)))
+
+               ;; Push the current window to the list if we are not in a popup
+               ;; window. This ensure we end up with a sane list in which
+               ;; count=1 means go to the next window in the list
+               ;; (lst (if (member (window-buffer) popup-buffers)
+               ;;          popup-windows
+               ;;        (cons (selected-window) popup-windows)))
+               ;; (mult (if (< count 0) -1 1))
+               ;; (count-modulo (* mult (% count (length popup-windows)))
+               ;; (pos (if (< count 0)
+               ;;          (- (length lst) count-modulo)
+               ;;        count-modulo))
+               ;; (window (nth pos lst))))
+               )
+    ;; Push the current window to the list if we are not in a popup
+    ;; window. This ensure we end up with a sane list in which
+    ;; count=1 means go to the next window in the list
+    (unless (member (window-buffer) popup-buffers)
+      (push (selected-window) popup-windows))
+
+    ;; Count modulo the number of windows to find the right position in the
+    ;; list
+    (setq count (% count (length popup-windows)))
+
+    ;; Negative count -- start from the end
+    (when (< count 0)
+      (setq count (+ (length popup-windows) count)))
+
+    (-when-let (window (nth count popup-windows))
+      (select-window window))))
+
 
 (defun kzk/consult-switch-to-popup-buffer (prefix)
   "Switchs a buffer managed in a popup window.
