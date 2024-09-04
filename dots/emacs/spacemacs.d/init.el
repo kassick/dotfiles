@@ -6,7 +6,10 @@
 ;; code lens do not work when using plists ... (wat?!)
 ;; (setenv "LSP_USE_PLISTS" "true")
 
+
 (defvar kzk/debug-use-local-gitlab-lsp t)
+(defvar kzk/experimental-popup-as-side-window (or nil
+                                                  (getenv "EXPERIMENTAL_POPUPS")))
 
 (setq kzk/hack-original-display (getenv "DISPLAY"))
 (defun kzk/hack-reset-original-display-env-var (&optional frame)

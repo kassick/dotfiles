@@ -443,3 +443,55 @@ window\" for the current one."
     (when-let (other (window-parameter win 'kzk/other-window))
       (unless (window-live-p other)
         (set-window-parameter win 'kzk/other-window nil)))))
+
+(defun kzk/sync-popper-popups ()
+  (setq popper-reference-buffers
+        (cl-loop for config-entry in popwin:special-display-config
+                 for (pattern . settings) = (popwin:listify config-entry)
+                 collect
+                 (cond
+                  ;; Symbols for major-mode
+                  ((symbolp pattern) pattern)
+                  ;; A predicate expeting the buffer -- though this is not
+                  ;; supported by purpose, therefore not supported by pupo and
+                  ;; not used in spacemacs ...
+                  ((functionp pattern) pattern)
+                  ;; Strings can either be regexp or raw strings
+                  ((stringp pattern)
+                   (if (plist-get settings :regexp)
+                       pattern
+                     (regexp-quote pattern)))
+                  ;; There should be nothing else , but
+                  (t (warn "Invalid type found in popwin:special-display-config: %S" pattern))))))
+
+(defvar kzk/last-frame-size nil)
+(defun kzk/resize-popups-on-frame-change-hook (frame)
+  "Adjust the popup buffers size in case they are too big after a frame resize
+
+The more common use-case is on maximize/unmaximize. Usually
+opening a fixed width popup (such as help, fix fixed 75 columns)
+results in a big window inside the unmaximized frame. After we
+maximize the frame, we do not want that window to occupy all the screen!
+"
+  (let* ((new-size (cons (frame-width frame) (frame-height frame)))
+         (last-size (or kzk/last-frame-size new-size)))
+    (setq kzk/last-frame-size new-size)
+    (when (not (equal new-size last-size))
+      (dolist (w (window-list frame 'not-minibuffer))
+        (-when-let* ((buf (window-buffer w))
+                     (purpose (purpose-buffer-purpose buf))
+                     ((purpose-side . pupo-purpose) (rassoc purpose pupo--direction-to-purpose))
+                     (cfg (cdr (popwin:match-config buf))
+                          )
+                     (width (window-width w))
+                     (height (window-height w)))
+          (pcase pupo-purpose
+            ((or 'popr 'popl)
+             (let ((target-width (purpose--normalize-width (plist-get cfg :width))))
+               (when (> width target-width)
+                 (window-resize w (- target-width width) t))))
+            ((or 'popb 'popt)
+             (let ((target-height (purpose--normalize-height (plist-get cfg :height))))
+               (when (> height target-height)
+                 (window-resize w (- target-height height)))))
+            (_ nil)))))))

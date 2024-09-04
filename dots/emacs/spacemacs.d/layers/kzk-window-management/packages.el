@@ -4,73 +4,82 @@
     window-purpose
     posframe
     embark
+    ;; ,@(when kzk/experimental-popup-as-side-window
+    ;;     '(popper)
+    ;;     )
     ))
 
 (defun kzk-window-management/post-init-spacemacs-purpose-popwin ()
-  (with-eval-after-load 'spacemacs-purpose-popwin
-    ;; Customize popwin/pupo
+  (kzk/after-init
+   (require 'spacemacs-purpose-popwin)
+   (require 'popwin)
+   (require 'window-purpose)
+   ;; Customize popwin/pupo
 
-    ;; Make help windows not dedicated and make them pop to the right. Let lsp,
-    ;; emacs, whatever help use the same popup window.
-    ;;
-    ;; This improves situations where several popup windows start ocuping the
-    ;; bottom of the frame.
-    (assoc-delete-all "*Help*" popwin:special-display-config #'string-equal)
-    (assoc-delete-all "*lsp-help*" popwin:special-display-config #'string-equal)
-    (push '("^\\*\\(.+-\\)?[hH]elp\\*$"
-            :dedicated nil :position right :width 0.3 :stick t :noselect t :regexp t)
-          popwin:special-display-config)
+   ;; Make help windows not dedicated and make them pop to the right. Let lsp,
+   ;; emacs, whatever help use the same popup window.
+   ;;
+   ;; This improves situations where several popup windows start ocuping the
+   ;; bottom of the frame.
+   (assoc-delete-all "*Help*" popwin:special-display-config #'string-equal)
+   (assoc-delete-all "*lsp-help*" popwin:special-display-config #'string-equal)
+   (push '("^\\*\\(.+-\\)?[hH]elp\\*$"
+           :dedicated nil :position right :width 78 :stick t :noselect t :regexp t)
+         popwin:special-display-config)
 
-    ;; Info modes are help ---
-    (dolist (m '(info-mode Info-mode))
-      (push `(,m
-              :dedicated nil :position right :width 0.3 :stick t :noselect t :regexp t)
-            popwin:special-display-config))
+   ;; Info modes are help ---
+   (dolist (m '(info-mode Info-mode shortdoc-mode))
+     (push `(,m
+             :dedicated nil :position right :width 78 :stick t :noselect t)
+           popwin:special-display-config))
 
-    ;; Company documentation -- ensure it is shown at bottom
-    (push '("*company-documentation*" :height 10 :position bottom :noselect t)
-          popwin:special-display-config)
+   ;; Company documentation -- ensure it is shown at bottom
+   (push '("*company-documentation*" :height 10 :position bottom :noselect t)
+         popwin:special-display-config)
 
-    ;; Embark collect should show at bottom
-    (push '(embark-collect-mode :stick t :dedicated t :position bottom :height 0.3 :noselect nil)
-          popwin:special-display-config)
+   ;; Embark collect should show at bottom
+   (push '(embark-collect-mode :stick t :dedicated t :position bottom :height 0.3 :noselect nil)
+         popwin:special-display-config)
 
-    (push '(messages-buffer-mode :dedicated t :position bottom :height 0.4 :stick t)
-          popwin:special-display-config)
+   (push '(messages-buffer-mode :dedicated t :position bottom :height 0.4 :stick t :noselect t)
+         popwin:special-display-config)
 
-    (push '("*Warnings*" :noselect t :dedicated t :position bottom :height 0.3 :stick nil)
-          popwin:special-display-config)
+   (push '("*Warnings*" :noselect t :dedicated t :position bottom :height 0.3 :stick nil)
+         popwin:special-display-config)
 
-    (push '(comint-mode :noselect t :dedicated nil :position bottom :height 0.3 :stick nil)
-          popwin:special-display-config)
+   (push '(comint-mode :noselect t :dedicated nil :position bottom :height 0.3 :stick nil)
+         popwin:special-display-config)
 
-    (push '(xref--xref-buffer-mode :dedicated nil :position bottom :height 0.3 :stick nil)
-          popwin:special-display-config)
+   (push '(xref--xref-buffer-mode :dedicated nil :position bottom :height 0.3 :stick nil)
+         popwin:special-display-config)
 
-    ;; needed, since our config changed ...
-    (pupo/update-purpose-config)
+   ;; needed, since our config changed ...
+   (pupo/update-purpose-config)
 
-    ;; Useful stuff! pop last buffer and switch to some popup
-    (spacemacs/set-leader-keys
-      "wpo" '("Other popup window" . kzk/other-popup)
-      "wpO" `("Other popup window, backwards" . ,(lambda (count) (interactive "p")
-                                                   (kzk/other-popup (* -1 count))))
-      "wpl" '("Pop last opened popup without selecting the window" . kzk/popup-last-no-select)
-      "wpL" '("Pop last opened popup and select window" . kzk/popup-last)
-      "wps" '("Select a popup buffer" . kzk/consult-switch-to-popup-buffer)
-      "wph" '("Select a popup buffer here" . kzk/consult-switch-to-popup-buffer-same-purpose)
-      "wpm" '("Pop messages buffer" . (lambda () (interactive) (display-buffer "*Messages*"))))
+   ;; Useful stuff! pop last buffer and switch to some popup
+   (spacemacs/set-leader-keys
+     "wpo" '("Other popup window" . kzk/other-popup)
+     "wpO" `("Other popup window, backwards" . ,(lambda (count) (interactive "p")
+                                                  (kzk/other-popup (* -1 count))))
+     "wpl" '("Pop last opened popup without selecting the window" . kzk/popup-last-no-select)
+     "wpL" '("Pop last opened popup and select window" . kzk/popup-last)
+     "wps" '("Select a popup buffer" . kzk/consult-switch-to-popup-buffer)
+     "wph" '("Select a popup buffer here" . kzk/consult-switch-to-popup-buffer-same-purpose)
+     "wpm" '("Pop messages buffer" . (lambda () (interactive) (display-buffer "*Messages*"))))
 
-    (advice-add 'pupo/display-function
-                :around (lambda (f buf alist)
-                          (let ((window (apply f (list buf alist))))
-                            (when window
-                              ;; push the buffer to the beginning of the list
-                              ;; but ensure it is no longer present there
-                              (setq kzk/pupo-managed-buffers
-                                    (append (list buf)
-                                            (kzk/clean-up-pupo-managed-buffers (list buf)))))
-                            window)))))
+   (add-hook 'window-size-change-functions #'kzk/resize-popups-on-frame-change-hook)
+
+   (advice-add 'pupo/display-function
+               :around (lambda (f buf alist)
+                         (let ((window (apply f (list buf alist))))
+                           (when window
+                             ;; push the buffer to the beginning of the list
+                             ;; but ensure it is no longer present there
+                             (purpose-set-window-purpose-dedicated-p window t)
+                             (setq kzk/pupo-managed-buffers
+                                   (append (list buf)
+                                           (kzk/clean-up-pupo-managed-buffers (list buf)))))
+                           window)))))
 
 (defun kzk-window-management/init-es-windows ()
   (kzk/after-init
@@ -192,3 +201,144 @@
 
  (require 'window)
  (advice-add 'display-buffer-override-next-command :before #'kzk/patch-display-buffer-override-next-command-action-list))
+
+
+
+;; (kzk/after-init
+;;  (when kzk/experimental-popup-as-side-window
+;;    (setq which-key-side-window-slot -9999)
+;;    ;; We could use display-buffer-alist instead of purpose mapped to popb/popr
+;;    ;; etc -- not sure purpose is doing anything much interesting
+;;    (setq display-buffer-alist nil)
+;;    (push '((derived-mode . compilation-mode)
+;;            (display-buffer-reuse-window
+;;             display-buffer-reuse-mode-window
+;;             display-buffer-in-side-window)
+;;            (window-height . 0.25)
+;;            (side . bottom)
+;;            (slot . 0)
+;;            (window-parameters . ((no-delete-other-windows . t))))
+;;          display-buffer-alist)
+
+;;    (push `((derived-mode . help-mode)
+;;            (display-buffer-reuse-window
+;;             display-buffer-reuse-mode-window
+;;             display-buffer-in-side-window)
+;;            (window-width . 0.25)
+;;            (side . right)
+;;            (slot . 0)
+;;            (window-parameters . ((no-delete-other-windows . t))))
+;;          display-buffer-alist)
+
+;;    (push '((major-mode . embark-collect-mode)
+;;            (display-buffer-reuse-window
+;;             display-buffer-reuse-mode-window
+;;             display-buffer-in-side-window)
+;;            (window-height . 0.25)
+;;            (side . bottom)
+;;            (slot . -1)
+;;            (window-parameters . ((no-delete-other-windows . t))))
+;;          display-buffer-alist)
+;;    (push '((major-mode . messages-buffer-mode)
+;;            (display-buffer-reuse-window
+;;             display-buffer-reuse-mode-window
+;;             display-buffer-in-side-window)
+;;            (window-height . 0.25)
+;;            (side . bottom)
+;;            (slot . -1)
+;;            (window-parameters . ((no-delete-other-windows . t))))
+;;          display-buffer-alist)
+
+;;    ;; (push '("^ \\*undo-tree\\*$"
+;;    ;;         (display-buffer-reuse-window
+;;    ;;          display-buffer-reuse-mode-window
+;;    ;;          display-buffer-in-side-window)
+;;    ;;         (window-width . 0.25)
+;;    ;;         (side . right)
+;;    ;;         (slot . -2)
+;;    ;;         (window-parameters . ((no-delete-other-windows . t))))
+;;    ;;       display-buffer-alist)
+;;    ;; (push '(("^\\*undo-tree Diff\\*$")
+;;    ;;         (display-buffer-at-bottom)
+;;    ;;         (window-width . 0.25)
+;;    ;;         (window-height . 10)
+;;    ;;         ;; (side . right)
+;;    ;;         ;; (slot . -1)
+;;    ;;         ;; (select . nil)
+;;    ;;         (window-parameters . ((no-delete-other-windows . t))))
+;;    ;;       display-buffer-alist)
+
+;;    ;; (with-eval-after-load 'undo-tree
+;;    ;;   (advice-add #'undo-tree-visualizer-show-diff
+;;    ;;               :around (lambda (fn &rest args)
+;;    ;;                         ;; Override split-window! we want it do simply display the buffer
+;;    ;;                         (cl-letf (((symbol-function #'split-window)
+;;    ;;                                    (lambda (&rest args)
+;;    ;;                                      (let ((buff (get-buffer-create undo-tree-diff-buffer-name))
+;;    ;;                                            (curr-window (selected-window)))
+;;    ;;                                        (display-buffer buff)))))
+;;    ;;                           (apply fn args)))))
+;;    )
+;;  )
+
+;; (defun kzk-window-management/init-popper ()
+;;   (message "Popper!!!!!")
+;;   (kzk/after-init
+;;    (require 'projectile)
+;;    (setq popper-display-control nil)
+;;    (kzk/sync-popper-popups)
+;;    ;; (setq popper-group-function #'popper-group-by-projectile)
+;;    ;; (setq popper-reference-buffers
+;;    ;;       '("\\*Messages\\*"
+;;    ;;         "Output\\*$"
+;;    ;;         "\\*Async Shell Command\\*"
+;;    ;;         ;; "^\\*lsp-log\\*$"
+;;    ;;         ;; "^\\*[a-zA-Z0-9_-]+-lsp\\(::std*\\)?\\*$"
+;;    ;;         help-mode
+;;    ;;         compilation-mode
+;;    ;;         "^\\*ert\\*$"
+;;    ;;         quickrun-mode
+;;    ;;         dap-server-log-mode
+;;    ;;         embark-collect-mode
+;;    ;;         grep-mode
+;;    ;;         man-mode
+;;    ;;         woman-mode
+;;    ;;         ;; "^\\*undo-tree Diff\\*$"
+;;    ;;         "^\\*eshell.*\\*$" eshell-mode ;eshell as a popup
+;;    ;;         "^\\*shell.*\\*$"  shell-mode  ;shell as a popup
+;;    ;;         "^\\*term.*\\*$"   term-mode   ;term as a popup
+;;    ;;         "^\\*vterm.*\\*$"  vterm-mode  ;vterm as a popup
+;;    ;;         ;; (lambda (buf) (with-current-buffer buf
+;;    ;;         ;;                 (and (derived-mode-p 'fundamental-mode)
+;;    ;;         ;;                      (not (string-match-p "^\\*Echo Area .*\\*$") (buffer-name buf))
+;;    ;;         ;;                      (< (count-lines (point-min) (point-max))
+;;    ;;         ;;                         10))))
+;;    ;;         ))
+;;    (popper-mode +1)
+;;    (popper-echo-mode +1)
+;;    ;; (push '("*quickrun*"             :dedicated t :position bottom :stick t :noselect t   :height 0.3) popwin:special-display-config)
+;;    ;;   (push '("*Help*"                 :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+;;    ;;   (push '("*Process List*"         :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+;;    ;;   (push '(compilation-mode         :dedicated nil :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+;;    ;;   (push '(dap-server-log-mode      :dedicated nil :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+;;    ;;   (push '("*Shell Command Output*" :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;;    ;;   (push '("*undo-tree*"            :dedicated t :position right  :stick t :noselect nil :width   60) popwin:special-display-config)
+;;    ;;   (push '("*undo-tree Diff*"       :dedicated t :position bottom :stick t :noselect nil :height 0.3) popwin:special-display-config)
+;;    ;;   (push '("*ert*"                  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;;    ;;   (push '("*grep*"                 :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;;    ;;   (push '("*nosetests*"            :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;;    ;;   (push '("^\*WoMan.+\*$" :regexp t             :position bottom                                   ) popwin:special-display-config)
+;;    ;;   (push '("*Google Translate*"     :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+;;    ;;   (push '("*Async Shell Command*"  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+
+;;    (spacemacs/set-leader-keys
+;;      "wp <tab>" '("Cycle popups" . popper-cycle)
+;;      "wp S-<tab>" '("Cycle popups" . popper-cycle-backwards)
+;;      "wpt" '("Toggle last popup" . popper-toggle)
+;;      "wpT" '("Toggle all popups" . (lambda () (interactive) (popper-toggle 16)))
+;;      "wpl" '("Pop last opened popup without selecting the window" . kzk/popup-last-no-select)
+;;      "wpL" '("Pop last opened popup and select window" . kzk/popup-last)
+;;      "wps" '("Select a popup buffer" . kzk/consult-switch-to-popup-buffer)
+;;      "wph" '("Select a popup buffer here" . kzk/consult-switch-to-popup-buffer-same-purpose)
+;;      "wpm" '("Pop messages buffer" . (lambda () (interactive) (display-buffer "*Messages*"))))
+;;    ))
