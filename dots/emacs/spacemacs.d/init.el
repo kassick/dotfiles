@@ -149,7 +149,8 @@ This function should only modify configuration layer settings."
                   tree-sitter-fold-indicators-enable nil
                   )
      kzk-tree-sitter
-     emacs-lisp
+     (emacs-lisp :variables
+                 emacs-lisp-format-on-save nil)
      shell-scripts
      (ipython-notebook)
      (python :variables
