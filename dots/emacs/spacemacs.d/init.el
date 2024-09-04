@@ -271,19 +271,36 @@ This function should only modify configuration layer settings."
                                       edit-indirect ;; required by markdown
                                       envrc
                                       transient ;; do not use bundled transient ... ?
-                                      (gitlab-lsp :location
-                                                  ,(if kzk/debug-use-local-gitlab-lsp
-                                                       (expand-file-name "~/Sources/user/emacs-gitlab-lsp")
-                                                     '(recipe
-                                                       :fetcher github
-                                                       :repo "kassick/gitlab-lsp.el"
-                                                       :files ("*.el")))))
+                                      ;; (gitlab-lsp :location
+                                      ;;             ,(if kzk/debug-use-local-gitlab-lsp
+                                      ;;                  (expand-file-name "~/Sources/user/emacs-gitlab-lsp")
+                                      ;;                '(recipe
+                                      ;;                  :fetcher github
+                                      ;;                  :repo "kassick/gitlab-lsp.el"
+                                      ;;                  :files ("*.el"))))
+                                      ;; (copilot-lsp :location
+                                      ;;              ,(if kzk/debug-use-local-gitlab-lsp
+                                      ;;                   (expand-file-name "~/Sources/user/emacs-copilot-lsp")
+                                      ;;                 '(recipe
+                                      ;;                   :fetcher github
+                                      ;;                   :repo "kassick/copilot-lsp.el"
+                                      ;;                   :files ("*.el"))))
+                                      ;; (lsp-inline-completions :location
+                                      ;;                         ,(if kzk/debug-use-local-gitlab-lsp
+                                      ;;                              (expand-file-name "~/Sources/user/emacs-lsp-inline-completions")
+                                      ;;                            '(recipe
+                                      ;;                              :fetcher github
+                                      ;;                              :repo "kassick/lsp-inline-completions"
+                                      ;;                              :files ("*.el"))))
+                                      ;; (lsp-mode :location ,(expand-file-name "~/Sources/user/lsp-mode"))
+                                      ;; (lsp-mode :location (recipe :fetcher github :repo "kassick/lsp-mode") :min-version "1")
+                                      )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(
+   dotspacemacs-excluded-packages `(
                                     ;; ido and ido-vertical and what-more bind some keys that should belong to helm
                                     ido
                                     ido-vertical
@@ -1037,19 +1054,38 @@ before packages are loaded."
   ;; (message "setting gcmh mode")
   ;; (gcmh-mode t)
 
-  (require 'gitlab-lsp)
-  ;; speed up completions
-  (setq gitlab-lsp-show-completions-with-other-clients nil)
-  (add-hook 'gitlab-lsp-complete-before-complete-hook
-            (lambda ()
-              ;; scroll to top so preview can show the snippet
-              (recenter-top-bottom 4)
+  ;; (require 'gitlab-lsp)
+  ;; ;; speed up completions
+  ;; (setq gitlab-lsp-show-completions-with-other-clients nil)
+  ;; (add-hook 'gitlab-lsp-complete-before-complete-hook
+  ;;           (lambda ()
+  ;;             ;; scroll to top so preview can show the snippet
+  ;;             (recenter-top-bottom 4)
 
-              ;; Show something, since we can not spin ...
-              (message "Asking for suggestions ...")))
+  ;;             ;; Show something, since we can not spin ...
+  ;;             (message "Asking for suggestions ...")))
 
-  (define-key global-map
-              (kbd "C-*") '("Complete with Gitlab Duo" . gitlab-lsp-complete))
+  ;; (define-key global-map
+  ;;             (kbd "C-&") '("Complete with Gitlab Duo" . gitlab-lsp-complete))
+
+  ;; (require 'copilot-lsp)
+
+  ;; (require 'lsp-inline-completions)
+  ;; (setq lsp-before-inline-completion-hook nil)
+  ;; (setq lsp-after-initialize-hook nil)
+  ;; (add-hook 'lsp-before-inline-completion-hook
+  ;;           (lambda ()
+  ;;             ;; scroll to top so preview can show the snippet
+  ;;             (recenter-top-bottom 4)
+
+  ;;             (require 'spinner)
+  ;;             (spinner-start 'triangle 10)
+  ;;             ;; Show something, since we can not spin ...
+  ;;             (message "Asking for suggestions ...")))
+
+  ;; (add-hook 'lsp-after-inline-completion-hook #'spinner-stop)
+  ;; (define-key global-map
+  ;;             (kbd "C-*") '("Inline Completions" . lsp-inline-completion))
 
   (custom-set-variables
    '(js-indent-level 4))
