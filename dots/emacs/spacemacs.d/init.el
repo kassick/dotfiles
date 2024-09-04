@@ -925,7 +925,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
            (vterm-color-green :foreground "#C3D82C" :background "#C3D82C")
            (vterm-color-white :foreground "#DEDDDA" :background "#DEDDDA")
            (completions-annotations :foreground "#a3a3a3" :inherit (italic shadow))
-           )
+           (persp-face-lighter-buffer-not-in-persp :foreground "#F00" :background nil :weight bold)
+           (persp-face-lighter-default :foreground "SteelBlue3" :background nil :weight bold)
+           (persp-face-lighter-nil-persp :inherit 'bold-italic :foreground "LightBlue3"))
 
           ;; --- END theming-modifications ---
           ))

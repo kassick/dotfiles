@@ -8,4 +8,6 @@
 
  ;;; keep consistent with the rest of the system
  '(mouse-wheel-flip-direction t)
+
+ '(winum-scope 'frame-local)
  )
