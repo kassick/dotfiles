@@ -247,6 +247,7 @@ This function should only modify configuration layer settings."
      kzk-compleseus
      kzk-company
      kzk-persp
+     kzk-copilot
      spacemacs-editing
      spacemacs-editing-visual
      ;; tabs
