@@ -102,7 +102,7 @@
 
    (setq kzk-copilot-chat-map (make-sparse-keymap))
    (define-key kzk-copilot-chat-map
-               (kbd "c") '("Copilot Chat" . copilot-chat-display))
+               (kbd "c") '("Copilot Chat" . kzk/copilot-chat-display))
    (define-key kzk-copilot-chat-map
                (kbd "a") '("Copilot Ask and Insert" . copilot-chat-ask-and-insert))
    (define-key kzk-copilot-chat-map

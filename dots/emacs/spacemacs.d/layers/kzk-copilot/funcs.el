@@ -1,3 +1,17 @@
+(defun kzk/copilot-chat-display (prefix)
+  (interactive "P")
+
+  (let ((buf (current-buffer)))
+    (copilot-chat-display)
+    (when prefix
+      ;; clear buffers
+      (copilot-chat-prompt-split-and-list)
+      (copilot-chat--clear-buffers)
+      (bury-buffer)
+      (delete-window))
+
+    (copilot-chat--add-buffer buf)))
+
 (defun kzk/copilot-chat-add-buffer (buffer)
   "Adds buffer to the copilot chat context"
   (interactive "b")
