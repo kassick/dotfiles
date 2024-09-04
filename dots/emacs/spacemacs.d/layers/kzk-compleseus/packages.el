@@ -32,7 +32,9 @@
     )
 
   ;; (with-eval-after-load 'orderless
-  ;;   (setq orderless-matching-styles '(orderless-regexp orderless-literal orderless-prefixes)))
+  ;;   (setq orderless-component-separator "[ &-]")
+  ;;   (setq orderless-matching-styles '(orderless-regexp orderless-literal orderless-prefixes))
+  ;;   )
 
   )
 
@@ -51,6 +53,22 @@
   )
 
 (defun kzk-compleseus/post-init-consult ()
+  ;; Remove debounce -- preview can be really annoying!
+  ;; See spacemacs compleseus/packages.el for the original values
+  (consult-customize
+   consult-theme
+   spacemacs/theme-loader
+   :preview-key '("M-." "C-SPC")
+
+   ;; slightly delayed preview upon candidate selection
+   ;; one usually wants quick feedback
+   consult-buffer
+   consult-ripgrep
+   consult-git-grep
+   consult-grep
+   consult-bookmark
+   consult-yank-pop
+   :preview-key '("M-." "C-SPC"))
 
   ;; This was missing from upstream...
   (setq xref-show-definitions-function 'consult-xref)
