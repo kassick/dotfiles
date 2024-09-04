@@ -320,6 +320,15 @@ This function should only modify configuration layer settings."
                                     importmagic  ;; causes some lag; not used
                                     flyspell-correct-popup
                                     evil-escape  ;; STOP THIS NONSENSE
+                                    ,@(when kzk/experimental-popup-as-side-window
+                                        '(
+                                          popwin ;;consider popper?
+                                          purpose ;;
+                                          window-purpose
+                                          spacemacs-purpose-popwin
+                                          ;; eyebrowse
+                                          )
+                                        )
                                     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
