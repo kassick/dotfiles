@@ -224,6 +224,7 @@ This function should only modify configuration layer settings."
             shell-default-height 30
             shell-default-position 'bottom)
 
+     ;; kzk-diminish
      kzk-general
      kzk-evil
      kzk-window-management
@@ -478,8 +479,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
    ;; dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
 
+   ;; dotspacemacs-mode-line-theme '(vanilla)
+   ;; dotspacemacs-mode-line-theme '(all-the-icons :separator arrow )
    dotspacemacs-mode-line-theme '(doom)
-   ;; dotspacemacs-mode-line-theme '(spacemacs :separator-scale 1.2)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)

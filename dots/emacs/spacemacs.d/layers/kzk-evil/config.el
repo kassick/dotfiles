@@ -10,4 +10,6 @@
  ;; allow horizontal movements to cross to previous/next lines
  '( evil-cross-lines t)
 
+ '(evil-ex-hl-update-delay 0.09)
+
  )
