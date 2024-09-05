@@ -84,6 +84,7 @@
   (dolist (window (window-list))
     (when (string-match-p "^\*Copilot-chat.*\*$"
                           (buffer-name (window-buffer window)))
+      (bury-buffer (window-buffer window))
       (delete-window window))))
 
 (defun kzk/copilot-pop-to-chat-buffer ()
