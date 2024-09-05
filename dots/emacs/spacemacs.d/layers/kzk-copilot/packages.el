@@ -73,8 +73,7 @@
       (kbd "<ret>") 'copilot-chat-list-add-or-remove-buffer
       (kbd "C-SPC") 'copilot-chat-list-add-or-remove-buffer
       (kbd "g") 'copilot-chat-list-refresh
-      (kbd "C") 'copilot-chat-list-clear-buffers
-      (kbd "q") 'delete-window)
+      (kbd "C") 'copilot-chat-list-clear-buffers)
 
     ;; Chat Results map
     ;; - Switch to prompt on usual change keys
