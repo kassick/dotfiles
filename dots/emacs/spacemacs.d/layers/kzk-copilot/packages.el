@@ -13,6 +13,9 @@
   (use-package copilot
     :defer t
     :hook ((prog-mode . copilot-mode))
+    :custom
+    (copilot-max-char 1000000) ;; increase a bit max char, some files are quite big ...
+    (copilot-indent-offset-warning-disable t) ;; don't be annoying ...
     :config
      (message "Copilot init")
      (define-key copilot-mode-map
@@ -30,7 +33,15 @@
                        ("C-<return>" . copilot-accept-completion-by-word)
                        ("C-S-l" . copilot-accept-completion-by-word))))
        (dolist (binding bindings)
-         (define-key copilot-completion-map (kbd (car binding)) (cdr binding))))))
+         (define-key copilot-completion-map (kbd (car binding)) (cdr binding))))
+
+     (advice-add 'copilot--get-source :around (lambda (fn &rest args)
+                                                ;; Silence warnings, since
+                                                ;; copilot has no flag to
+                                                ;; avoid displaying the max
+                                                ;; chat exceeded issue
+                                                (let ((warning-minimum-level :error))
+                                                  (apply fn args))))))
 
 
 (defun kzk-copilot/init-shell-maker ()
