@@ -57,7 +57,7 @@
     ;;(message "copilot chat config")
 
     ;; Prompt window:
-    (evil-define-key 'normal copilot-chat-prompt-mode-map
+    (evil-define-key '(normal motion) copilot-chat-prompt-mode-map
       (kbd "k") 'copilot-chat-prompt-split-and-list
       (kbd "j") 'copilot-chat-prompt-history-next
       (kbd "k") 'copilot-chat-prompt-history-previous
