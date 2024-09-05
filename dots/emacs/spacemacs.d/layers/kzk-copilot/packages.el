@@ -20,15 +20,17 @@
      (define-key copilot-mode-map
                  (kbd "C-S-*") '("Panel Completions with Copilot" . copilot-panel-complete))
 
-     (define-key copilot-completion-map (kbd "<return>") 'copilot-accept-completion)
-     (define-key copilot-completion-map (kbd "C-l") 'copilot-accept-completion)
-     (define-key copilot-completion-map (kbd "<tab>") 'copilot-next-completion)
-     (define-key copilot-completion-map (kbd "C-n") 'copilot-next-completion)
-     (define-key copilot-completion-map (kbd "C-j") 'copilot-next-completion)
-     (define-key copilot-completion-map (kbd "C-p") 'copilot-previous-completion)
-     (define-key copilot-completion-map (kbd "C-k") 'copilot-previous-completion)
-     (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion-by-word)
-     (define-key copilot-completion-map (kbd "C-S-l") 'copilot-accept-completion-by-word)))
+     (let ((bindings '(("<return>" . copilot-accept-completion)
+                       ("C-l" . copilot-accept-completion)
+                       ("<tab>" . copilot-next-completion)
+                       ("C-n" . copilot-next-completion)
+                       ("C-j" . copilot-next-completion)
+                       ("C-p" . copilot-previous-completion)
+                       ("C-k" . copilot-previous-completion)
+                       ("C-<return>" . copilot-accept-completion-by-word)
+                       ("C-S-l" . copilot-accept-completion-by-word))))
+       (dolist (binding bindings)
+         (define-key copilot-completion-map (kbd (car binding)) (cdr binding))))))
 
 
 (defun kzk-copilot/init-shell-maker ()
@@ -101,31 +103,21 @@
    (advice-add 'copilot-chat-display :before #'kzk/copilot-chat-delete-windows)
 
    (setq kzk-copilot-chat-map (make-sparse-keymap))
-   (define-key kzk-copilot-chat-map
-               (kbd "c") '("Copilot Chat" . kzk/copilot-chat-display))
-   (define-key kzk-copilot-chat-map
-               (kbd "a") '("Copilot Ask and Insert" . copilot-chat-ask-and-insert))
-   (define-key kzk-copilot-chat-map
-               (kbd "+") `("Copilot Add Current Buffer" . ,(lambda ()
-                                                                 (interactive)
-                                                                 (require 'copilot-chat)
-                                                                 (copilot-chat-add-current-buffer))))
 
-   ;; These are region only, should probably migrate to general or evil define key
-   (define-key kzk-copilot-chat-map
-               (kbd "e") '("Copilot Explain" . copilot-chat-explain))
-   (define-key kzk-copilot-chat-map
-               (kbd "r") '("Copilot Review" . copilot-chat-review))
-   (define-key kzk-copilot-chat-map
-               (kbd "h") '("Copilot Write Documentation" . copilot-chat-doc))
-   (define-key kzk-copilot-chat-map
-               (kbd "f") '("Copilot Fix" . copilot-chat-fix))
-   (define-key kzk-copilot-chat-map
-               (kbd "o") '("Copilot Optimize" . copilot-chat-optimize))
-   (define-key kzk-copilot-chat-map
-               (kbd "t") '("Copilot Tests" . copilot-chat-test))
-   (define-key kzk-copilot-chat-map
-               (kbd "k") '("Delete Copilot Chat Windows" . kzk/copilot-chat-delete-windows))
+   (let ((keys `(("c" kzk/copilot-chat-display "Copilot Chat")))))
+
+   (let ((bindings '(("c" . ("Copilot Chat" . kzk/copilot-chat-display))
+                     ("a" . ("Copilot Ask and Insert" . copilot-chat-ask-and-insert))
+                     ("+" . ("Copilot Add Current Buffer" . kzk/copilot-add-current-buffer))
+                     ("e" . ("Copilot Explain" . copilot-chat-explain))
+                     ("r" . ("Copilot Review" . copilot-chat-review))
+                     ("h" . ("Copilot Write Documentation" . copilot-chat-doc))
+                     ("f" . ("Copilot Fix" . copilot-chat-fix))
+                     ("o" . ("Copilot Optimize" . copilot-chat-optimize))
+                     ("t" . ("Copilot Tests" . copilot-chat-test))
+                     ("k" . ("Delete Copilot Chat Windows" . kzk/copilot-chat-delete-windows)))))
+     (dolist (binding bindings)
+       (define-key kzk-copilot-chat-map (kbd (car binding)) (cdr binding))))
 
    (define-key global-map (kbd "C-&") kzk-copilot-chat-map)
    (spacemacs/set-leader-keys "&" `("Copilot Chat" . ,kzk-copilot-chat-map))
