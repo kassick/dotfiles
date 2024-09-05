@@ -140,7 +140,4 @@
 
   (with-eval-after-load 'embark
     (define-key embark-buffer-map
-                "&" #'kzk/copilot-chat-add-buffer)
-    )
-
-  )
+                "&" #'kzk/copilot-chat-add-buffer)))

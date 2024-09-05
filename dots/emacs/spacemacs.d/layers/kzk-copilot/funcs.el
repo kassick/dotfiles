@@ -45,16 +45,16 @@
                                             (window-list nil 'no-minibuf)))))
 
 (defun kzk/copilot-chat-display (prefix)
+  "Opens the Copilot chat window, adding the current buffer to the context.
+
+Called with a prefix, resets the context buffer list before opening"
   (interactive "P")
 
   (let ((buf (current-buffer)))
     (copilot-chat-display)
     (when prefix
       ;; clear buffers
-      (copilot-chat-prompt-split-and-list)
-      (copilot-chat--clear-buffers)
-      (bury-buffer)
-      (delete-window))
+      (copilot-chat--clear-buffers))
 
     (copilot-chat--add-buffer buf)))
 
