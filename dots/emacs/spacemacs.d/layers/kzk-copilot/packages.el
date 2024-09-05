@@ -133,9 +133,9 @@
    ;; Chat window placement
    ;; (push '("^\\*copilot-chat-shell\\*" :regexp t :dedicated nil :position right :width 78 :stick nil :noselect nil)
    ;;        popwin:special-display-config)
-   (push '(copilot-chat-prompt-mode :position right :width 78 :dedicated nil :stick nil) popwin:special-display-config)
-   (push '(copilot-chat-mode :position right :width 78 :dedicated nil :stick nil) popwin:special-display-config)
-   (push '(copilot-chat-list-mode :position right :width 20 :dedicated nil :stick nil) popwin:special-display-config)
+   (push '(copilot-chat-prompt-mode :position left :width 78 :dedicated nil :stick t) popwin:special-display-config)
+   (push '(copilot-chat-mode :position left :width 78 :dedicated nil :stick t) popwin:special-display-config)
+   (push '(copilot-chat-list-mode :position left :width 20 :dedicated nil :stick nil) popwin:special-display-config)
    (pupo/update-purpose-config)
    )
 
