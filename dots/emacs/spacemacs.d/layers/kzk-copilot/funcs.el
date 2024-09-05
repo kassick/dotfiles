@@ -1,3 +1,49 @@
+(defun kzk/copilot-add-current-buffer ()
+  "Adds the current buffer to copilot chat context"
+  (interactive)
+  (require 'copilot-chat)
+  (copilot-chat-add-current-buffer))
+
+(defun kzk//copilot-add-buffers (clear buffers)
+  (require 'copilot-chat)
+  (when clear
+    (copilot-chat--clear-buffers))
+  (let ((n 0))
+    (dolist (buf buffers)
+      (unless (or (string-match-p "^\*.*\*$" (buffer-name buf))
+                  (string-prefix-p " " (buffer-name buf)))
+        (copilot-chat--add-buffer buf)
+        (setq n (1+ n))))
+    n))
+
+(defun kzk/copilot-add-projectile-buffers (prefix)
+  "Adds the project buffers to the chat context"
+  (interactive "P")
+
+  (message "Added %d buffers of project %s"
+           (kzk//copilot-add-buffers prefix (projectile-project-buffers))
+           (projectile-project-name)))
+
+
+(defun kzk/copilot-add-layout-buffers (prefix)
+  "Adds the layout buffers to the chat context"
+
+  (interactive "P")
+
+  (message "Added %d buffers present in current layout"
+           (kzk//copilot-add-buffers prefix (persp-buffer-list))))
+
+
+(defun kzk/copilot-add-frame-buffers (prefix)
+  "Adds the buffers currently visible in the frame to the chat context"
+
+  (interactive "P")
+
+  (message "Added %d buffers displayed in current frame"
+           (kzk//copilot-add-buffers prefix
+                                     (--map (window-buffer it)
+                                            (window-list nil 'no-minibuf)))))
+
 (defun kzk/copilot-chat-display (prefix)
   (interactive "P")
 
