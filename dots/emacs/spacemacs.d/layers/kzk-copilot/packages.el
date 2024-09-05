@@ -64,6 +64,8 @@
       (kbd "q") 'kzk/copilot-chat-delete-windows)
     (define-key copilot-chat-prompt-mode-map
                 (kbd "C-c q") 'kzk/copilot-chat-delete-windows)
+    (define-key copilot-chat-prompt-mode-map
+                (kbd "<return>") 'copilot-chat-prompt-send)
     (evil-set-initial-state 'copilot-chat-prompt-mode 'insert)
 
     ;; chat buffer list window:
