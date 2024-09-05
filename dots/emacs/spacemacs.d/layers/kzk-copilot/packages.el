@@ -46,22 +46,15 @@
 
 (defun kzk-copilot/init-shell-maker ()
   (use-package shell-maker
-    :defer t
-    :init
-    (message "shell-maker init")
-    :config
-    (message "shell-maker config")
-    )
-  )
+    :defer t))
 
 (defun kzk-copilot/init-copilot-chat ()
   (use-package copilot-chat
     :defer t
-    :init
-    (message "copilot chat init")
+    ;; :init (message "copilot chat init")
     ;; :custom (copilot-chat-frontend 'shell-maker)
     :config
-    (message "copilot chat config")
+    ;;(message "copilot chat config")
 
     ;; Prompt window:
     (evil-define-key 'normal copilot-chat-prompt-mode-map
