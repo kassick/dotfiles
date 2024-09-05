@@ -86,18 +86,35 @@
     (define-key copilot-chat-mode-map
                 (kbd "C-c q") 'kzk/copilot-chat-delete-windows)
 
-    ;; Shell-maker as frontend -- I've found some issues, as I can't pin the
-    ;; shell window to the side -- it appears that, upon scrolling, polymode
-    ;; is kicking in and displaying the buffer in a window other than the one
-    ;; shell-maker is currently opened. I've tried displaying it in another
-    ;; frame, but it only creates the frame if the shell buffer does not
-    ;; exist, so I'd have to work around it ....
+    ;; Shell-maker as frontend -- I've found some issues...
+    ;;
+    ;; - By using purpose and special-action-sequences, I've fixed the positioning issue
+    ;;
+    ;; - Current Issue: Shell-maker calls copilot-chat-reset in
+    ;;   copilot-chat-shell-maker-display when not ready-p. But after closing
+    ;;   the shell-maker window once, for some reason, the instance is no
+    ;;   longer ready and reset is called. But shellmaker overrides
+    ;;   copilot-chat-reset to a function that resets the advices ... this is
+    ;;   probably wrong, but I do not have time to fix it now. Must figure out
+    ;;   a) why is it becoming non-ready? and b) is resetting the advices expected?
+
 
     ;; (require 'shell-maker)
-    ;; (require 'copilot-chat-shell-maker) (push '(shell-maker .
-    ;; copilot-chat-shell-maker-init) copilot-chat-frontend-list)
-    ;; (copilot-chat-shell-maker-init) (setq shell-maker-display-function
-    ;; #'kzk/shell-maker-display-buffer)
+    ;; (require 'copilot-chat-shell-maker)
+    ;; (push '(shell-maker . copilot-chat-shell-maker-init) copilot-chat-frontend-list)
+    ;; (copilot-chat-shell-maker-init)
+
+    ;; (purpose-set-extension-configuration
+    ;;  :kzk-copilot-layer
+    ;;  (purpose-conf :regexp-purposes '(("^\\*copilot-chat-" . coding-assistant))))
+
+
+    ;; (push `(coding-assistant
+    ;;         purpose-display-reuse-window-buffer
+    ;;         purpose-display-reuse-window-purpose
+    ;;         ,(pupo//position-to-display-function 'right 78 nil))
+    ;;  purpose-special-action-sequences)
+
     )
 
 
