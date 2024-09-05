@@ -50,13 +50,11 @@
 Called with a prefix, resets the context buffer list before opening"
   (interactive "P")
 
+  (require 'copilot-chat)
   (let ((buf (current-buffer)))
-    (copilot-chat-display)
-    (when prefix
-      ;; clear buffers
-      (copilot-chat--clear-buffers))
-
-    (copilot-chat--add-buffer buf)))
+    (when prefix (copilot-chat--clear-buffers))
+    (copilot-chat--add-buffer buf)
+    (copilot-chat-display)))
 
 (defun kzk/copilot-chat-add-buffer (buffer)
   "Adds buffer to the copilot chat context"
