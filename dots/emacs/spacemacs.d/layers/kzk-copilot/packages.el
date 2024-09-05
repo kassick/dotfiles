@@ -109,12 +109,13 @@
 
    (let ((keys `(("c" kzk/copilot-chat-display "Copilot Chat")))))
 
-   (let ((bindings '(("c" . ("Copilot Chat" . kzk/copilot-chat-display))
+   (let ((bindings `(("c" . ("Copilot Chat (current buffer in the context)" . kzk/copilot-chat-display))
+                     ("C" . ("Copilot Chat" . copilot-chat-display))
                      ("a" . ("Copilot Ask and Insert" . copilot-chat-ask-and-insert))
                      ("+" . ("Copilot Add Current Buffer" . kzk/copilot-add-current-buffer))
-                     ("p +" . ("Copilot Add Project Buffers" . kzk/copilot-add-projectile-buffers))
-                     ("l +" . ("Copilot Add Layout Buffers" . kzk/copilot-add-layout-buffers))
-                     ("F +" . ("Copilot Add Frame Buffers" . kzk/copilot-add-frame-buffers))
+                     ("p" . ,(kzk//make-context-map "Project" 'kzk/copilot-add-projectile-buffers))
+                     ("l" . ,(kzk//make-context-map "Layout" 'kzk/copilot-add-layout-buffers))
+                     ("F" . ,(kzk//make-context-map "Frame" 'kzk/copilot-add-frame-buffers))
                      ("e" . ("Copilot Explain" . copilot-chat-explain))
                      ("r" . ("Copilot Review" . copilot-chat-review))
                      ("h" . ("Copilot Write Documentation" . copilot-chat-doc))

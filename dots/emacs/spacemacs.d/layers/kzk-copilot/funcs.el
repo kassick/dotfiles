@@ -92,3 +92,41 @@ Called with a prefix, resets the context buffer list before opening"
       (copilot-chat-display))
 
     (switch-to-buffer prompt-buffer)))
+
+
+(defmacro kzk//copilot-chat-call-with-add-buffer-fn (context-name add-buffers-fn target-fn)
+  `(defun ,(intern (concat "kzk/" context-name "-" (symbol-name target-fn)) ) (prefix)
+     ,(format "Calls %s in the context of the current %s buffers"
+              (symbol-name target-fn)
+              context-name)
+     (interactive "P")
+
+
+     (require 'copilot-chat)
+     (when prefix (copilot-chat--clear-buffers))
+
+     (apply (symbol-function ',add-buffers-fn) (list prefix))
+     (call-interactively (symbol-function ',target-fn))))
+
+(defun kzk//make-context-map (name add-buffers-fn)
+  (let ((map (make-sparse-keymap))
+        (bindings `(("c" "Copilot Chat" copilot-chat-display)
+                    ("a" "Copilot Ask and Insert" copilot-chat-ask-and-insert)
+                    ("e" "Copilot Explain"  copilot-chat-explain)
+                    ("r" "Copilot Review"  copilot-chat-review)
+                    ("h" "Copilot Write Documentation"  copilot-chat-doc)
+                    ("f" "Copilot Fix"  copilot-chat-fix)
+                    ("o" "Copilot Optimize"  copilot-chat-optimize)
+                    ("t" "Copilot Tests"  copilot-chat-test)))
+        )
+    (dolist (binding bindings)
+      (-let* (((key doc fn) binding)
+              ;; Workaround bizarre macro expansion issue -- expecing sequencep because of concatenating name
+              ;; see https://emacs.stackexchange.com/questions/60848/how-to-properly-generate-a-concatd-function-name-with-defmacro
+              (target-fn (eval `(kzk//copilot-chat-call-with-add-buffer-fn ,name ,add-buffers-fn ,fn))))
+        (define-key map (kbd key) (cons doc target-fn))))
+    (define-key map
+                (kbd "+")
+                `(,(format "Add %s buffers to Copilot Chat context" name) . ,add-buffers-fn))
+
+    map))
