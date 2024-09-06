@@ -52,7 +52,14 @@ Called with a prefix, resets the context buffer list before opening"
 
   (require 'copilot-chat)
   (let ((buf (current-buffer)))
+
+    ;; Explicit reset before doing anything, avoid it resetting later on
+    ;; target-fn and ignoring the added buffers
+    (unless (copilot-chat--ready-p)
+      (copilot-chat-reset))
+
     (when prefix (copilot-chat--clear-buffers))
+
     (copilot-chat--add-buffer buf)
     (copilot-chat-display)))
 
@@ -103,6 +110,12 @@ Called with a prefix, resets the context buffer list before opening"
 
 
      (require 'copilot-chat)
+
+     ;; Explicit reset before doing anything, avoid it resetting later on
+     ;; target-fn and ignoring the added buffers
+     (unless (copilot-chat--ready-p)
+       (copilot-chat-reset))
+
      (when prefix (copilot-chat--clear-buffers))
 
      (apply (symbol-function ',add-buffers-fn) (list prefix))
