@@ -45,19 +45,12 @@
 ;; (advice-add 'setenv :before 'handle-set-env)
 ;; (advice-add 'setenv-internal :before 'handle-set-env-internal)
 
-(if (and (fboundp 'native-comp-available-p)
+(when (and (fboundp 'native-comp-available-p)
          (native-comp-available-p))
-    (progn
-      (message "Native compilation is available")
-      (setq
-       comp-deferred-compilation t
-       ;; Avoid compilation taking all computing resources in the computer
-       native-comp-async-jobs-number 2))
-  (message "Native complation is *not* available"))
-
-(if (functionp 'json-serialize)
-    (message "Native JSON is available")
-  (message "Native JSON is *not* available"))
+  (setq
+   comp-deferred-compilation t
+   ;; Avoid compilation taking all computing resources in the computer
+   native-comp-async-jobs-number 2))
 
 (add-to-list 'load-path (expand-file-name "~/.spacemacs.d/lisp"))
 (require 'kzk-utils)
@@ -952,8 +945,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
            (vterm-color-green :foreground "#C3D82C" :background "#C3D82C")
            (vterm-color-white :foreground "#DEDDDA" :background "#DEDDDA")
            (completions-annotations :foreground "#a3a3a3" :inherit (italic shadow))
-           (persp-face-lighter-buffer-not-in-persp :foreground "#F00" :background nil :weight bold)
-           (persp-face-lighter-default :foreground "SteelBlue3" :background nil :weight bold)
+           (persp-face-lighter-buffer-not-in-persp :foreground "#F00" :background unspecified :weight bold)
+           (persp-face-lighter-default :foreground "SteelBlue3" :background unspecified :weight bold)
            (persp-face-lighter-nil-persp :inherit 'bold-italic :foreground "LightBlue3"))
 
           ;; --- END theming-modifications ---
@@ -999,7 +992,6 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (message "Running user config")
 
   ;; Default modes
   (ido-mode -1)          ; no ido

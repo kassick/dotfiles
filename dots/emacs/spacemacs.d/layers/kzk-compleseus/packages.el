@@ -10,8 +10,6 @@
 
 (defun kzk-compleseus/post-init-vertico ()
   (with-eval-after-load 'vertico
-    (message "Setting up vertico")
-
     ;; compleseus setq this in compleseus/init-vertico, so we can not simply
     ;; setq or set default values in config.el -- must do it manually here :/
     (setq vertico-cycle t)

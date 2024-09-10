@@ -5,7 +5,6 @@
 
 
   (kzk/after-init
-   (message "Defining keys for flyspell-mode")
    (define-key global-map
                (kbd "C-M-;") '("Correct Word" . flyspell-correct-wrapper))
    (spacemacs/set-leader-keys

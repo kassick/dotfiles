@@ -1,6 +1,5 @@
 ;; {{{
 ;; keep these around untill https://github.com/PythonNut/evil-easymotion/pull/71 is merged
-(message "tweaking evilem")
 
 (defun evilem--collect (func &optional
                             scope

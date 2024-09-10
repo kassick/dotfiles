@@ -11,7 +11,6 @@
 (defun kzk-evil/post-init-evil ()
 
   (kzk/after-init
-   (message "Unleashing universal evil")
    (general-define-key :keymaps '(evil-evilified-state-map-original evil-evilified-state-map)
                        "C-u" 'universal-argument)
 
