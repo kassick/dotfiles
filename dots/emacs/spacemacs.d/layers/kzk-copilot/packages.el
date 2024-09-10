@@ -141,7 +141,7 @@
                      ("f" . ("Copilot Fix" . copilot-chat-fix))
                      ("o" . ("Copilot Optimize" . copilot-chat-optimize))
                      ("t" . ("Copilot Tests" . copilot-chat-test))
-                     ("k" . ("Delete Copilot Chat Windows" . kzk/copilot-chat-delete-windows)))))
+                     ("0" . ("Delete Copilot Chat Windows" . kzk/copilot-chat-delete-windows)))))
      (dolist (binding bindings)
        (define-key kzk-copilot-chat-map (kbd (car binding)) (cdr binding))))
 

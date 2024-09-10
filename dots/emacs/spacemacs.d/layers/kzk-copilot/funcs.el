@@ -87,7 +87,7 @@ Called with a prefix, resets the context buffer list before opening"
   (interactive)
 
   (dolist (window (window-list))
-    (when (string-match-p "^\*Copilot-chat.*\*$"
+    (when (string-match-p "^\*[Cc]opilot-chat.*\*$"
                           (buffer-name (window-buffer window)))
       (bury-buffer (window-buffer window))
       (delete-window window))))
