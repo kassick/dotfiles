@@ -1118,3 +1118,127 @@ This function is called at the very end of Spacemacs initialization."
    ;; If there is more than one, they won't work right.
    '(evil-want-Y-yank-to-eol nil))
   )
+
+;; THIS MAKE 29 SLOW AS HELL!!! This is emacs-30 version of
+;; pcase--make-docstring. It ends up iterating over all of emacs package
+;; search paths via help-fns-short-filename, which iterates over load-path,
+;; calling file-relative-name, which also iterates ... the combination is not
+;; very performant ...
+;;
+;; (with-eval-after-load 'pcase
+;;   (defun pcase--make-docstring ()
+;;     (let* ((main (documentation (symbol-function 'pcase) 'raw))
+;;            (ud (help-split-fundoc main 'pcase)))
+;;       (require 'help-fns)
+;;       (declare-function help-fns-short-filename "help-fns" (filename))
+;;       (declare-function help-fns--signature "help-fns"
+;;                         (function doc real-def real-function buffer))
+;;       (with-temp-buffer
+;;         (insert (or (cdr ud) main))
+;;         ;; Presentation Note: For conceptual continuity, we guarantee
+;;         ;; that backquote doc immediately follows main pcase doc.
+;;         ;; (The order of the other extensions is unimportant.)
+;;         (let (more)
+;;           ;; Collect all the extensions.
+;;           (mapatoms (lambda (symbol)
+;;                       (let ((me (pcase--get-macroexpander symbol)))
+;;                         (when me
+;;                           (push (cons symbol me)
+;;                                 more)))))
+;;           ;; Ensure backquote is first.
+;;           (let ((x (assq '\` more)))
+;;             (setq more (cons x (delq x more))))
+;;           (message "more is %S" (length more))
+;;           ;; Do the output.
+;;           (while more
+;;             (let* ((pair (pop more))
+;;                    (symbol (car pair))
+;;                    (me (cdr pair))
+;;                    (doc (documentation me 'raw))
+;;                    (filename (find-lisp-object-file-name me 'defun)))
+;;               (insert "\n\n-- ")
+;;               (setq doc (help-fns--signature symbol doc me
+;;                                              (indirect-function me)
+;;                                              nil))
+;;               (when filename
+;;                 (save-excursion
+;;                   (forward-char -1)
+;;                   (insert (format-message "  in `"))
+;;                   (help-insert-xref-button (help-fns-short-filename filename)
+;;                                            'help-function-def symbol filename
+;;                                            'pcase-macro)
+;;                   (insert (format-message "'."))))
+;;               (insert "\n" (or doc "Not documented.")))))
+;;         (let ((combined-doc (buffer-string)))
+;;           (if ud (help-add-fundoc-usage combined-doc (car ud)) combined-doc)))))
+;;   )
+
+(with-eval-after-load 'pcase
+  ;; Emacs 30 pcase--make-docstring makes spacemacs (and doom, and even a
+  ;; vanilla emacs setup) quite slow: By trying to locate every entry for each
+  ;; pcase deconstructor, it ends up iterating several times over the list of
+  ;; paths and the packages installed ...
+  ;;
+  ;; This makes marginalia and even eldoc to hang for O(10s) at times (move
+  ;; the cursor to a pcase statement in elisp code and emacs will simply stop).
+  ;;
+  ;; Of course, the issue does not appear when lsp-mode is not yet loaded (or
+  ;; at least lsp-mode is the more commonly loaded package in my setup that
+  ;; defines several pcase-cases ...)
+
+  (defvar kzk/use-legacy-pcase--make-docstring nil
+    "Whether `emacs-29/pcase--make-docstring' should be used instead of emacs-30 version")
+
+  (defun emacs-29/pcase--make-docstring ()
+    "The definition of pcase--make-docstring, taken from emacs-29"
+
+    (let* ((main (documentation (symbol-function 'pcase) 'raw))
+           (ud (help-split-fundoc main 'pcase)))
+      ;; So that eg emacs -Q -l cl-lib --eval "(documentation 'pcase)" works,
+      ;; where cl-lib is anything using pcase-defmacro.
+      (require 'help-fns)
+      (with-temp-buffer
+        (insert (or (cdr ud) main))
+        ;; Presentation Note: For conceptual continuity, we guarantee
+        ;; that backquote doc immediately follows main pcase doc.
+        ;; (The order of the other extensions is unimportant.)
+        (let (more)
+          ;; Collect all the extensions.
+          (mapatoms (lambda (symbol)
+                      (let ((me (pcase--get-macroexpander symbol)))
+                        (when me
+                          (push (cons symbol me)
+                                more)))))
+          ;; Ensure backquote is first.
+          (let ((x (assq '\` more)))
+            (setq more (cons x (delq x more))))
+          ;; Do the output.
+          (while more
+            (let* ((pair (pop more))
+                   (symbol (car pair))
+                   (me (cdr pair))
+                   (doc (documentation me 'raw)))
+              (insert "\n\n-- ")
+              (setq doc (help-fns--signature symbol doc me
+                                             (indirect-function me)
+                                             nil))
+              (insert "\n" (or doc "Not documented.")))))
+        (let ((combined-doc (buffer-string)))
+          (if ud (help-add-fundoc-usage combined-doc (car ud)) combined-doc)))))
+
+  (defun kzk/use-emacs-29-pcase-make-docstring-and-call (fn &rest args)
+    (let ((kzk/use-legacy-pcase--make-docstring t))
+        (apply fn args)))
+
+  (defun kzk/pcase--make-docstring-advice (fn &rest args)
+    (if kzk/use-legacy-pcase--make-docstring
+        (emacs-29/pcase--make-docstring)
+      (apply fn args)))
+
+  (advice-add 'pcase--make-docstring :around #'kzk/pcase--make-docstring-advice)
+
+  (dolist (fn '(marginalia-annotate-symbol
+                marginalia-annotate-command
+                marginalia-annotate-function
+                eldoc-print-current-symbol-info))
+    (advice-add fn :around #'kzk/use-emacs-29-pcase-make-docstring-and-call)))
