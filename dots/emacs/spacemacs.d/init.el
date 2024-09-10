@@ -111,7 +111,7 @@ This function should only modify configuration layer settings."
           git-enable-magit-gitflow-plugin t
           magit-bury-buffer-function 'magit-mode-quit-window)
      (version-control :variables
-                      version-control-diff-tool 'git-gutter
+                      version-control-diff-tool 'diff-hl
                       version-control-global-margin nil
                       version-control-diff-side 'left)
      ;; (treemacs :variables treemacs-use-git-mode 'deferred)
