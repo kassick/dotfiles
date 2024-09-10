@@ -105,6 +105,9 @@
     ;; (require 'copilot-chat-shell-maker)
     ;; (push '(shell-maker . copilot-chat-shell-maker-init) copilot-chat-frontend-list)
     ;; (copilot-chat-shell-maker-init)
+    ;; ;; Removing the advice sees to work!
+    ;; (advice-remove 'copilot-chat--clean #'copilot-chat--shell-maker-clean)
+
 
     ;; (purpose-set-extension-configuration
     ;;  :kzk-copilot-layer
