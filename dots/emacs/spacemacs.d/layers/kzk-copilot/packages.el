@@ -19,9 +19,7 @@
     :config
      (message "Copilot init")
      (define-key copilot-mode-map
-                 (kbd "C-*") '("Complete with Copilot" . copilot-complete))
-     (define-key copilot-mode-map
-                 (kbd "C-S-*") '("Panel Completions with Copilot" . copilot-panel-complete))
+                 (kbd "C-*") '("Complete with Copilot. C-u to panel" . kzk/copilot-complete))
 
      (let ((bindings '(("<return>" . copilot-accept-completion)
                        ("C-l" . copilot-accept-completion)
@@ -41,7 +39,13 @@
                                                 ;; avoid displaying the max
                                                 ;; chat exceeded issue
                                                 (let ((warning-minimum-level :error))
-                                                  (apply fn args))))))
+                                                  (apply fn args)))))
+
+  (kzk/after-init
+   (push '("*copilot-panel*" :dedicated nil :position right :width 78 :stick t :noselect nil)
+         popwin:special-display-config)
+
+   (pupo/update-purpose-config)))
 
 
 (defun kzk-copilot/init-shell-maker ()

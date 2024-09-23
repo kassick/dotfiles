@@ -143,3 +143,11 @@ Called with a prefix, resets the context buffer list before opening"
                 `(,(format "Add %s buffers to Copilot Chat context" name) . ,add-buffers-fn))
 
     map))
+
+(defun kzk/copilot-complete (prefix)
+  "Complete with Copilot. When called with prefix, display the completion panel"
+  (interactive "P")
+
+  (if prefix
+      (copilot-panel-complete)
+    (copilot-complete)))
