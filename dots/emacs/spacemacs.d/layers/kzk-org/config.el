@@ -16,6 +16,7 @@
 
 (custom-set-variables
  '(spacemacs-theme-org-height nil)
+ '(org-persp-startup-org-file "~/org/journal.org")
  '(org-startup-truncated nil)
  '(org-startup-indented t)
  ;; revert-without-query (quote ("google.org"))
@@ -47,7 +48,7 @@
 
 (setq kzk/org-capture-template-context-entry (concat "* %(kzk/iso-date) %?" "\n"
                                                      ":PROPERTIES:" "\n"
-                                                     ":LOCATION:  %a" "\n"
+                                                     ":LOCATION:  %l" "\n"
                                                      ":END:" "\n"
                                                      "\n"
                                                      "%i" "\n")
@@ -67,7 +68,7 @@
      (file+headline ,(kzk/org-directory-file "todo.org")
                     "Tasks")
      ,kzk/org-capture-task-template :prepend t :empty-lines-before 1 :empty-lines-after 1)
-    ("j" "Journal entry with context"
+    ("j" "Journal entry with contexts"
      entry
      (file+datetree ,(kzk/org-directory-file "journal.org"))
      ,kzk/org-capture-template-context-entry :empty-lines-before 1 :empty-lines-after 1)
