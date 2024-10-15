@@ -26,4 +26,11 @@
 
 (defun kzk-lsp/post-init-lsp-ui ()
   (advice-add #'lsp-ui-peek--peek-new :around #'kzk/lsp-ui-peek--peek-display)
-  (advice-add #'lsp-ui-peek--peek-hide :around #'kzk/lsp-ui-peek--peek-destroy))
+  (advice-add #'lsp-ui-peek--peek-hide :around #'kzk/lsp-ui-peek--peek-destroy)
+
+  (with-eval-after-load 'lsp-mode
+    (define-key lsp-command-map (kbd "T i") #'kzk/lsp-toggle-inlay-hints))
+
+  (unless lsp-use-upstream-bindings
+    (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
+      "Tli" #'kzk/lsp-toggle-inlay-hints)))

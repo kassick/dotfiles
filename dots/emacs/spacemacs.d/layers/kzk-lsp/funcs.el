@@ -78,3 +78,15 @@ called with a prefix, kills the window"
                       warning-minimum-level))
          (warning-minimum-level min-level))
     (apply fn call-args)))
+
+(defun kzk/lsp-toggle-inlay-hints ()
+  "Toggle LSP Inlay Hints"
+  (interactive)
+  (if lsp-inlay-hint-enable
+      (progn
+        (lsp-inlay-hints-mode -1)
+        (setq lsp-inlay-hint-enable nil))
+    (lsp-inlay-hints-mode t)
+    (setq lsp-inlay-hint-enable t))
+
+  (lsp))
