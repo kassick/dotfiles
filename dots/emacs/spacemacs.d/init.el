@@ -194,6 +194,7 @@ This function should only modify configuration layer settings."
      (groovy :variables
              groovy-lsp-jar-path "/home/kassick/Sources/user/groovy-language-server/build/libs/groovy-language-server-all.jar")
      terraform
+     (docker docker-dockerfile-backend 'lsp)
      ;; cscope
      ;; fsharp
      ;; csharp
