@@ -33,13 +33,20 @@
        (dolist (binding bindings)
          (define-key copilot-completion-map (kbd (car binding)) (cdr binding))))
 
-     (advice-add 'copilot--get-source :around (lambda (fn &rest args)
-                                                ;; Silence warnings, since
-                                                ;; copilot has no flag to
-                                                ;; avoid displaying the max
-                                                ;; chat exceeded issue
-                                                (let ((warning-minimum-level :error))
-                                                  (apply fn args)))))
+     ;; Silence warnings, since copilot has no flag to avoid displaying the
+     ;; max chat exceeded issue
+     (advice-add 'copilot--get-source
+                 :around (lambda (fn &rest args)
+                           (let ((warning-minimum-level :error))
+                             (apply fn args))))
+
+     ;; Sometimes org won't reset the mark after sorting entries. This leaves
+     ;; the panel completions buffer with all contents selected, which is odd.
+     ;; This advice ensures we reset the mark after sorting.
+     (advice-add 'copilot--handle-notification :after #'kzk/copilot--handle-notifications-advice)
+     )
+
+
 
   (kzk/after-init
    (push '("*copilot-panel*" :dedicated nil :position right :width 78 :stick t :noselect nil)
@@ -105,35 +112,57 @@
     ;;   a) why is it becoming non-ready? and b) is resetting the advices expected?
 
 
-    ;; (require 'shell-maker)
-    ;; (require 'copilot-chat-shell-maker)
-    ;; (push '(shell-maker . copilot-chat-shell-maker-init) copilot-chat-frontend-list)
-    ;; (copilot-chat-shell-maker-init)
-    ;; ;; Removing the advice sees to work!
-    ;; (advice-remove 'copilot-chat--clean #'copilot-chat--shell-maker-clean)
+    (require 'shell-maker)
+    (require 'copilot-chat-shell-maker)
+    (push '(shell-maker . copilot-chat-shell-maker-init) copilot-chat-frontend-list)
+    (copilot-chat-shell-maker-init)
+    ;; Removing the advice sees to work!
+    (advice-remove 'copilot-chat--clean #'copilot-chat--shell-maker-clean)
+
+    (purpose-set-extension-configuration
+     :kzk-copilot-layer
+     (purpose-conf :regexp-purposes '(("^\\*[Cc]opilot-chat\\*$" . coding-assistant)
+                                      ("^\\*[Cc]opilot-chat-list\\*$" . coding-assistant))))
+
+    (push `(coding-assistant
+            purpose-display-reuse-window-buffer
+            purpose-display-reuse-window-purpose
+            ,(pupo//position-to-display-function 'left 78 nil)
+            purpose-display-pop-up-window)
+          purpose-special-action-sequences)
+
+    ;; (push '(copilot-chat-shell-mode :position left :width 78 :dedicated t :stick nil) popwin:special-display-config)
+    ;; (push '(copilot-chat-list-mode :position left :width 20 :dedicated t :stick nil) popwin:special-display-config)
 
 
-    ;; (purpose-set-extension-configuration
-    ;;  :kzk-copilot-layer
-    ;;  (purpose-conf :regexp-purposes '(("^\\*copilot-chat-" . coding-assistant))))
+    (evil-define-key '(normal motion) copilot-chat-shell-mode-map
+      "q" #'evil-quit
+      "L" #'copilot-chat-prompt-split-and-list)
 
+    (evil-define-key '(insert) copilot-chat-shell-mode-map
+      (kbd "C-c q") #'evil-quit
+      (kbd "C-c l") #'copilot-chat-prompt-split-and-list)
 
-    ;; (push `(coding-assistant
-    ;;         purpose-display-reuse-window-buffer
-    ;;         purpose-display-reuse-window-purpose
-    ;;         ,(pupo//position-to-display-function 'right 78 nil))
-    ;;  purpose-special-action-sequences)
-
+    ;; end of use package
     )
-
 
   (kzk/after-init
 
    (advice-add 'copilot-chat-display :before #'kzk/copilot-chat-delete-windows)
 
+   ;; For some reason, the custom shortcuts defines in :config do not take
+   ;; effect until switching states. This advice, besides killing the chat
+   ;; windows before displaying (window management workarounds ugh...) also
+   ;; switches states to make sure that the shortcuts are available
+   (advice-add 'copilot-chat-shell-maker-display :around (lambda (fn &rest args)
+                                                           (kzk/copilot-chat-delete-windows)
+                                                           (-when-let* ((buf (apply fn args))
+                                                                        (w (get-buffer-window buf)))
+                                                             (with-selected-window w
+                                                               (evil-normal-state)
+                                                               (evil-insert-state)
+                                                               (goto-char (point-max))))))
    (setq kzk-copilot-chat-map (make-sparse-keymap))
-
-   (let ((keys `(("c" kzk/copilot-chat-display "Copilot Chat")))))
 
    (let ((bindings `(("c" . ("Copilot Chat (current buffer in the context)" . kzk/copilot-chat-display))
                      ("C" . ("Copilot Chat" . copilot-chat-display))
@@ -156,12 +185,37 @@
    (spacemacs/set-leader-keys "&" `("Copilot Chat" . ,kzk-copilot-chat-map))
    (spacemacs/set-leader-keys "a c p" `("Copilot Chat" . ,kzk-copilot-chat-map))
 
+   ;; ;; Window PLacement: Try with purpose configuration
+   ;; (purpose-set-extension-configuration
+   ;;  :kzk-copilot-layer
+   ;;  (purpose-conf :name-purposes '(("*Copilot-chat*" . coding-assistant-results)
+   ;;                                 ("*Copilot-chat-prompt*" . coding-assistant-prompt))))
+
+
+   ;; ;; Place the result window at right
+   ;; (push `(coding-assistant-results
+   ;;         purpose-display-reuse-window-buffer
+   ;;         purpose-display-reuse-window-purpose
+   ;;         ,(pupo//position-to-display-function 'left 78 nil))
+   ;;       purpose-special-action-sequences)
+
+   ;; (push `(coding-assistant-prompt
+   ;;         purpose-display-reuse-window-buffer
+   ;;         purpose-display-reuse-window-purpose)
+   ;;       purpose-special-action-sequences)
+
+   ;; ;; Place the prompt window below
+   ;; (push `(coding-assistant-results
+   ;;         purpose-display-reuse-window-buffer
+   ;;         purpose-display-reuse-window-purpose
+   ;;         ,(pupo//position-to-display-function 'right 78 nil))
+   ;;       purpose-special-action-sequences)
    ;; Chat window placement
    ;; (push '("^\\*copilot-chat-shell\\*" :regexp t :dedicated nil :position right :width 78 :stick nil :noselect nil)
    ;;        popwin:special-display-config)
-   (push '(copilot-chat-prompt-mode :position left :width 78 :dedicated nil :stick t) popwin:special-display-config)
-   (push '(copilot-chat-mode :position left :width 78 :dedicated nil :stick t) popwin:special-display-config)
-   (push '(copilot-chat-list-mode :position left :width 20 :dedicated nil :stick nil) popwin:special-display-config)
+   ;; (push '(copilot-chat-prompt-mode :position left :width 78 :dedicated nil :stick t) popwin:special-display-config)
+   ;; (push '(copilot-chat-mode :position left :width 78 :dedicated nil :stick t) popwin:special-display-config)
+   ;; (push '(copilot-chat-list-mode :position left :width 20 :dedicated nil :stick nil) popwin:special-display-config)
    (pupo/update-purpose-config)
    )
 

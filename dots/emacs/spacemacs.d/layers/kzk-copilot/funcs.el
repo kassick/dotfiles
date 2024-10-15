@@ -47,8 +47,9 @@
 (defun kzk/copilot-chat-display (prefix)
   "Opens the Copilot chat window, adding the current buffer to the context.
 
-Called with a prefix, resets the context buffer list before opening"
-  (interactive "P")
+Called with a prefix, resets the context buffer list before opening.
+Calling with double prefix, will reset the chat"
+  (interactive "p")
 
   (require 'copilot-chat)
   (let ((buf (current-buffer)))
@@ -58,10 +59,36 @@ Called with a prefix, resets the context buffer list before opening"
     (unless (copilot-chat--ready-p)
       (copilot-chat-reset))
 
-    (when prefix (copilot-chat--clear-buffers))
+    (when (>= prefix 4) (copilot-chat--clear-buffers))
+    (when (>= prefix 16) (copilot-chat-reset))
 
     (copilot-chat--add-buffer buf)
     (copilot-chat-display)))
+
+(defun kzk/copilot-chat-shell-maker-display (prefix)
+  "Opens the Copilot chat window, adding the current buffer to the context.
+
+Called with a prefix, resets the context buffer list before opening.
+Calling with double prefix, will reset the chat"
+  (interactive "p")
+
+  (require 'copilot-chat)
+  (interactive)
+
+  (unless (copilot-chat--ready-p)
+    (copilot-chat-reset))
+
+  (when (>= prefix 4) (copilot-chat--clear-buffers))
+  (when (>= prefix 16) (copilot-chat-reset))
+
+  (let ((buffer (get-buffer copilot-chat--buffer))
+        (tempb (get-buffer-create copilot-chat--shell-maker-temp-buffer))
+        (inhibit-read-only t))
+    (unless buffer
+      (setq buffer (copilot-chat--shell)))
+    (with-current-buffer tempb
+      (markdown-view-mode))
+    (display-buffer buffer)))
 
 (defun kzk/copilot-chat-add-buffer (buffer)
   "Adds buffer to the copilot chat context"
@@ -151,3 +178,10 @@ Called with a prefix, resets the context buffer list before opening"
   (if prefix
       (copilot-panel-complete)
     (copilot-complete)))
+
+(defun kzk/copilot--handle-notifications-advice (_ method msg)
+  (pcase method
+    ('PanelSolution
+     (with-current-buffer "*copilot-panel*"
+       (deactivate-mark)
+       (goto-char (point-min))))))
