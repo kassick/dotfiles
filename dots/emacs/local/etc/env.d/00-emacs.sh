@@ -19,7 +19,7 @@ then
 fi
 
 # inside emacs vterm?
-if [[ "$INSIDE_EMACS" ]]
+if [[ -n "$INSIDE_EMACS" ]]
 then
     if [ -n "$EMACS_VTERM_PATH" ] && [ -f "$EMACS_VTERM_PATH/etc/emacs-vterm-zsh.sh" ]
     then
@@ -29,7 +29,12 @@ then
     # override to ensure we do not launch terminal emacs when not expected...
     # Running terminal emacs inside vterm inside emacs leads to several
     # issues...
-    export GIT_EDITOR="emacsclient"
+    unalias e
+    emacs-find-file() {
+        vterm_cmd find-file "$(pwd)/$1"
+    }
+
     export EDITOR="emacsclient"
-    alias e="emacsclient"
+    export GIT_EDITOR="emacsclient"
+    alias e="emacs-find-file"
 fi
