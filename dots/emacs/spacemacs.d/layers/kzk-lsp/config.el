@@ -31,6 +31,9 @@
  '(lsp-ruff-lsp-ruff-path `[,(expand-file-name "~/.local/bin/ruff") "ruff"])
 
  '(lsp-response-time 20) ;; increase timeout because of glab
+
+ '(lsp-pyright-langserver-command "basedpyright")
+ '(lsp-pyright-type-checking-mode "standard")
  )
 
 (defcustom kzk/peek-uses-posframe t "If lsp-ui-peek should appear inside a posframe")
