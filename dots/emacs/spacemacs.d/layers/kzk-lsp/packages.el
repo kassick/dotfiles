@@ -17,6 +17,7 @@
   ;;   "==" #'lsp-format-buffer)
   ;; (define-key spacemacs-lsp-mode-map (kbd "==") 'lsp-format-buffer)
   ;;(spacemacs/set-leader-keys-for-minor-mode 'lsp-mode "==" 'lsp-format-buffer)
+  (advice-add 'lsp-warn :around #'kzk/lsp-warn-advice)
   (with-eval-after-load 'lsp-mode
     (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]worktrees\\'" t)
 

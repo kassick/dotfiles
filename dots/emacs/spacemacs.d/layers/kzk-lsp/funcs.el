@@ -69,3 +69,12 @@ called with a prefix, kills the window"
         (setq removed t)
         ))
     (unless removed (message "No folder removed"))))
+
+(defun kzk/lsp-warn-advice (fn message &rest args)
+  "Stops warning about unknown request methods -- this ends up spamming the user"
+  (let* ((call-args (append (list message) args))
+         (min-level (if (string-match-p "unknown request method:" (downcase message))
+                        :emergency
+                      warning-minimum-level))
+         (warning-minimum-level min-level))
+    (apply fn call-args)))
