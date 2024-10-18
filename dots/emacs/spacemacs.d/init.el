@@ -1166,72 +1166,78 @@ This function is called at the very end of Spacemacs initialization."
 ;;           (if ud (help-add-fundoc-usage combined-doc (car ud)) combined-doc)))))
 ;;   )
 
-(with-eval-after-load 'pcase
-  ;; Emacs 30 pcase--make-docstring makes spacemacs (and doom, and even a
-  ;; vanilla emacs setup) quite slow: By trying to locate every entry for each
-  ;; pcase deconstructor, it ends up iterating several times over the list of
-  ;; paths and the packages installed ...
-  ;;
-  ;; This makes marginalia and even eldoc to hang for O(10s) at times (move
-  ;; the cursor to a pcase statement in elisp code and emacs will simply stop).
-  ;;
-  ;; Of course, the issue does not appear when lsp-mode is not yet loaded (or
-  ;; at least lsp-mode is the more commonly loaded package in my setup that
-  ;; defines several pcase-cases ...)
+;; (with-eval-after-load 'pcase
+;;   ;; This has been reported upstream by blahgeek (Yikai Zhao)
+;;   ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=73766 and fixed in
+;;   ;; https://github.com/emacs-mirror/emacs/commit/a815becb63b48c472ee0b405c00db6a188ad6ddc
+;;   ;;
+;;   ;; ---
+;;   ;;
+;;   ;; Emacs 30 pcase--make-docstring makes spacemacs (and doom, and even a
+;;   ;; vanilla emacs setup) quite slow: By trying to locate every entry for each
+;;   ;; pcase deconstructor, it ends up iterating several times over the list of
+;;   ;; paths and the packages installed ...
+;;   ;;
+;;   ;; This makes marginalia and even eldoc to hang for O(10s) at times (move
+;;   ;; the cursor to a pcase statement in elisp code and emacs will simply stop).
+;;   ;;
+;;   ;; Of course, the issue does not appear when lsp-mode is not yet loaded (or
+;;   ;; at least lsp-mode is the more commonly loaded package in my setup that
+;;   ;; defines several pcase-cases ...)
 
-  (defvar kzk/use-legacy-pcase--make-docstring nil
-    "Whether `emacs-29/pcase--make-docstring' should be used instead of emacs-30 version")
+;;   (defvar kzk/use-legacy-pcase--make-docstring nil
+;;     "Whether `emacs-29/pcase--make-docstring' should be used instead of emacs-30 version")
 
-  (defun emacs-29/pcase--make-docstring ()
-    "The definition of pcase--make-docstring, taken from emacs-29"
+;;   (defun emacs-29/pcase--make-docstring ()
+;;     "The definition of pcase--make-docstring, taken from emacs-29"
 
-    (let* ((main (documentation (symbol-function 'pcase) 'raw))
-           (ud (help-split-fundoc main 'pcase)))
-      ;; So that eg emacs -Q -l cl-lib --eval "(documentation 'pcase)" works,
-      ;; where cl-lib is anything using pcase-defmacro.
-      (require 'help-fns)
-      (with-temp-buffer
-        (insert (or (cdr ud) main))
-        ;; Presentation Note: For conceptual continuity, we guarantee
-        ;; that backquote doc immediately follows main pcase doc.
-        ;; (The order of the other extensions is unimportant.)
-        (let (more)
-          ;; Collect all the extensions.
-          (mapatoms (lambda (symbol)
-                      (let ((me (pcase--get-macroexpander symbol)))
-                        (when me
-                          (push (cons symbol me)
-                                more)))))
-          ;; Ensure backquote is first.
-          (let ((x (assq '\` more)))
-            (setq more (cons x (delq x more))))
-          ;; Do the output.
-          (while more
-            (let* ((pair (pop more))
-                   (symbol (car pair))
-                   (me (cdr pair))
-                   (doc (documentation me 'raw)))
-              (insert "\n\n-- ")
-              (setq doc (help-fns--signature symbol doc me
-                                             (indirect-function me)
-                                             nil))
-              (insert "\n" (or doc "Not documented.")))))
-        (let ((combined-doc (buffer-string)))
-          (if ud (help-add-fundoc-usage combined-doc (car ud)) combined-doc)))))
+;;     (let* ((main (documentation (symbol-function 'pcase) 'raw))
+;;            (ud (help-split-fundoc main 'pcase)))
+;;       ;; So that eg emacs -Q -l cl-lib --eval "(documentation 'pcase)" works,
+;;       ;; where cl-lib is anything using pcase-defmacro.
+;;       (require 'help-fns)
+;;       (with-temp-buffer
+;;         (insert (or (cdr ud) main))
+;;         ;; Presentation Note: For conceptual continuity, we guarantee
+;;         ;; that backquote doc immediately follows main pcase doc.
+;;         ;; (The order of the other extensions is unimportant.)
+;;         (let (more)
+;;           ;; Collect all the extensions.
+;;           (mapatoms (lambda (symbol)
+;;                       (let ((me (pcase--get-macroexpander symbol)))
+;;                         (when me
+;;                           (push (cons symbol me)
+;;                                 more)))))
+;;           ;; Ensure backquote is first.
+;;           (let ((x (assq '\` more)))
+;;             (setq more (cons x (delq x more))))
+;;           ;; Do the output.
+;;           (while more
+;;             (let* ((pair (pop more))
+;;                    (symbol (car pair))
+;;                    (me (cdr pair))
+;;                    (doc (documentation me 'raw)))
+;;               (insert "\n\n-- ")
+;;               (setq doc (help-fns--signature symbol doc me
+;;                                              (indirect-function me)
+;;                                              nil))
+;;               (insert "\n" (or doc "Not documented.")))))
+;;         (let ((combined-doc (buffer-string)))
+;;           (if ud (help-add-fundoc-usage combined-doc (car ud)) combined-doc)))))
 
-  (defun kzk/use-emacs-29-pcase-make-docstring-and-call (fn &rest args)
-    (let ((kzk/use-legacy-pcase--make-docstring t))
-        (apply fn args)))
+;;   (defun kzk/use-emacs-29-pcase-make-docstring-and-call (fn &rest args)
+;;     (let ((kzk/use-legacy-pcase--make-docstring t))
+;;         (apply fn args)))
 
-  (defun kzk/pcase--make-docstring-advice (fn &rest args)
-    (if kzk/use-legacy-pcase--make-docstring
-        (emacs-29/pcase--make-docstring)
-      (apply fn args)))
+;;   (defun kzk/pcase--make-docstring-advice (fn &rest args)
+;;     (if kzk/use-legacy-pcase--make-docstring
+;;         (emacs-29/pcase--make-docstring)
+;;       (apply fn args)))
 
-  (advice-add 'pcase--make-docstring :around #'kzk/pcase--make-docstring-advice)
+;;   (advice-add 'pcase--make-docstring :around #'kzk/pcase--make-docstring-advice)
 
-  (dolist (fn '(marginalia-annotate-symbol
-                marginalia-annotate-command
-                marginalia-annotate-function
-                eldoc-print-current-symbol-info))
-    (advice-add fn :around #'kzk/use-emacs-29-pcase-make-docstring-and-call)))
+;;   (dolist (fn '(marginalia-annotate-symbol
+;;                 marginalia-annotate-command
+;;                 marginalia-annotate-function
+;;                 eldoc-print-current-symbol-info))
+;;     (advice-add fn :around #'kzk/use-emacs-29-pcase-make-docstring-and-call)))
