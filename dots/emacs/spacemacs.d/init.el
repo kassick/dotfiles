@@ -23,7 +23,10 @@
 
 (add-hook 'after-make-frame-functions #'kzk/hack-reset-original-display-env-var)
 
+(require 'package)
 (setq package-install-upgrade-built-in t)
+(add-to-list 'package-pinned-packages '(transient . "melpa") t)
+
 
 ;; (message "early display is %S in process %S" (getenv "DISPLAY") (emacs-pid))
 ;; keep around for debug, may be necessary
@@ -272,13 +275,13 @@ This function should only modify configuration layer settings."
                                       ;;                  :fetcher github
                                       ;;                  :repo "kassick/gitlab-lsp.el"
                                       ;;                  :files ("*.el"))))
-                                      ;; (copilot-lsp :location
-                                      ;;              ,(if kzk/debug-use-local-gitlab-lsp
-                                      ;;                   (expand-file-name "~/Sources/user/emacs-copilot-lsp")
-                                      ;;                 '(recipe
-                                      ;;                   :fetcher github
-                                      ;;                   :repo "kassick/copilot-lsp.el"
-                                      ;;                   :files ("*.el"))))
+                                      (copilot-lsp :location
+                                                   ,(if kzk/debug-use-local-gitlab-lsp
+                                                        (expand-file-name "~/Sources/user/emacs-copilot-lsp")
+                                                      '(recipe
+                                                        :fetcher github
+                                                        :repo "kassick/copilot-lsp.el"
+                                                        :files ("*.el"))))
                                       ;; (lsp-inline-completions :location
                                       ;;                         ,(if kzk/debug-use-local-gitlab-lsp
                                       ;;                              (expand-file-name "~/Sources/user/emacs-lsp-inline-completions")
@@ -975,7 +978,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     (setq custom-file cf))
   (load-file custom-file)
 
-  (add-to-list 'package-pinned-packages '(transient . "melpa") t)
 
   )
 
@@ -1070,7 +1072,11 @@ before packages are loaded."
   ;; (define-key global-map
   ;;             (kbd "C-&") '("Complete with Gitlab Duo" . gitlab-lsp-complete))
 
-  ;; (require 'copilot-lsp)
+  (require 'copilot-lsp)
+  (require 'lsp-inline-completion)
+  (add-hook 'lsp-inline-completion-shown-hook #'lsp-inline-completion-show-keys)
+  (define-key lsp-mode-map
+              (kbd "C-*") '("Inline Completions" . lsp-inline-completion-display))
 
   ;; (require 'lsp-inline-completions)
   ;; (setq lsp-before-inline-completion-hook nil)
@@ -1084,6 +1090,8 @@ before packages are loaded."
   ;;             (spinner-start 'triangle 10)
   ;;             ;; Show something, since we can not spin ...
   ;;             (message "Asking for suggestions ...")))
+
+  ;; (add-hook 'lsp-inline-completion-shown-hook #'lsp-inline-completion-show-hint)
 
   ;; (add-hook 'lsp-after-inline-completion-hook #'spinner-stop)
   ;; (define-key global-map

@@ -157,3 +157,4 @@ if [ -d ~/.local/etc/rc.d ]; then
         [ -n "$ZSH_DEBUG_STARTUP" ] && echo "Loaded $rc"
     done
 fi
+export PATH=/home/kassick/.local/bin:${PATH}

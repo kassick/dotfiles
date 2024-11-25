@@ -4,6 +4,10 @@
     window-purpose
     posframe
     embark
+    ;; (nameframe :location (recipe
+    ;;                       :fetcher github
+    ;;                       :repo "john2x/nameframe"
+    ;;                       :files ("*.el" "dist")))
     ;; ,@(when kzk/experimental-popup-as-side-window
     ;;     '(popper)
     ;;     )
@@ -139,6 +143,16 @@
       "M-W" #'kzk/embark-consult-location-ace)
 
     (add-to-list 'embark-keymap-alist '(consult-location . embark-location-actions-map))))
+
+
+;; (defun kzk-window-management/init-nameframe ()
+;;   (kzk/after-init
+;;    (nameframe-projectile-mode t)
+;;    (nameframe-eyebrowse-mode t)
+;;    (nameframe-perspective-mode t)
+
+;;    (spacemacs/set-leader-keys "F s" '("Switch frame by name" . nameframe-switch-frame ))
+;;    (define-key global-map (kbd "C-x 5 s") '("Switch frame by name" . nameframe-switch-frame))))
 
 
 ;;; Several post-init keybindings

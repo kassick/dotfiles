@@ -70,6 +70,24 @@ called with a prefix, kills the window"
         ))
     (unless removed (message "No folder removed"))))
 
+
+;; (defun kzk/deep-merge-alists (alist1 alist2)
+;;   "Deep merge two association lists ALIST1 and ALIST2."
+;;   (let ((result (copy-alist alist1)))
+;;     (dolist (pair alist2 result)
+;;       (let ((key (car pair))
+;;             (value (cdr pair)))
+;;         (if (assoc key result)
+;;             (let ((existing-value (cdr (assoc key result))))
+;;               (setcdr (assoc key result)
+;;                       (if (and (listp existing-value) (listp value))
+;;                           (kzk/deep-merge-alists existing-value value)
+;;                         value)))
+;;           (push pair result))))))
+
+;; (defun kzk/lsp--client-capabilities-advice (fn &optional custom-capabilities)
+;;   (kzk/deep-merge-alists (apply fn '()) custom-capabilities))
+
 (defun kzk/lsp-warn-advice (fn message &rest args)
   "Stops warning about unknown request methods -- this ends up spamming the user"
   (let* ((call-args (append (list message) args))

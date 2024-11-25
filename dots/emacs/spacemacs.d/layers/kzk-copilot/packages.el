@@ -1,8 +1,8 @@
 (defconst kzk-copilot-packages
-  '((copilot :location (recipe
-                        :fetcher github
-                        :repo "copilot-emacs/copilot.el"
-                        :files ("*.el" "dist")))
+  '(;; (copilot :location (recipe
+    ;;                     :fetcher github
+    ;;                     :repo "copilot-emacs/copilot.el"
+    ;;                     :files ("*.el" "dist")))
     shell-maker
     (copilot-chat :location (recipe
                              :fetcher github
@@ -154,14 +154,14 @@
    ;; effect until switching states. This advice, besides killing the chat
    ;; windows before displaying (window management workarounds ugh...) also
    ;; switches states to make sure that the shortcuts are available
-   (advice-add 'copilot-chat-shell-maker-display :around (lambda (fn &rest args)
-                                                           (kzk/copilot-chat-delete-windows)
-                                                           (-when-let* ((buf (apply fn args))
-                                                                        (w (get-buffer-window buf)))
-                                                             (with-selected-window w
-                                                               (evil-normal-state)
-                                                               (evil-insert-state)
-                                                               (goto-char (point-max))))))
+   ;; (advice-add 'copilot-chat-shell-maker-display :around (lambda (fn &rest args)
+   ;;                                                         (kzk/copilot-chat-delete-windows)
+   ;;                                                         (-when-let* ((buf (apply fn args))
+   ;;                                                                      (w (get-buffer-window buf)))
+   ;;                                                           (with-selected-window w
+   ;;                                                             (evil-normal-state)
+   ;;                                                             (evil-insert-state)
+   ;;                                                             (goto-char (point-max))))))
    (setq kzk-copilot-chat-map (make-sparse-keymap))
 
    (let ((bindings `(("c" . ("Copilot Chat (current buffer in the context)" . kzk/copilot-chat-display))

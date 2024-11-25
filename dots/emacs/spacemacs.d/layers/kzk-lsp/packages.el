@@ -22,7 +22,30 @@
     (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]worktrees\\'" t)
 
     (spacemacs/set-leader-keys-for-minor-mode 'lsp-mode
-      "FC" 'kzk/lsp-workspaces-gc)))
+      "FC" 'kzk/lsp-workspaces-gc))
+
+  ;; (advice-add 'lsp--client-capabilities :around #'kzk/lsp--client-capabilities-advice)
+  ;; (with-eval-after-load 'lsp-ruff
+  ;;   ;; Override ruff server definition, providing custom capabilities that
+  ;;   ;; will be merged with the default ones
+  ;;   (lsp-register-client
+  ;;    (make-lsp-client
+  ;;     :new-connection (lsp-stdio-connection
+  ;;                      (lambda () (append lsp-ruff-server-command lsp-ruff-ruff-args)))
+  ;;     :activation-fn (lsp-activate-on "python")
+  ;;     :server-id 'ruff
+  ;;     :priority -2
+  ;;     :add-on? t
+  ;;     :custom-capabilities '((general . ((positionEncodings . ["utf-16"]))))
+  ;;     :initialization-options
+  ;;     (lambda ()
+  ;;       (list :settings
+  ;;             (list :logLevel lsp-ruff-log-level
+  ;;                   :showNotifications lsp-ruff-show-notifications
+  ;;                   :organizeImports (lsp-json-bool lsp-ruff-advertize-organize-imports)
+  ;;                   :fixAll (lsp-json-bool lsp-ruff-advertize-fix-all)
+  ;;                   :importStrategy lsp-ruff-import-strategy))))))
+  )
 
 (defun kzk-lsp/post-init-lsp-ui ()
   (advice-add #'lsp-ui-peek--peek-new :around #'kzk/lsp-ui-peek--peek-display)

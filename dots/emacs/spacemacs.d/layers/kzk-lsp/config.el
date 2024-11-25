@@ -26,9 +26,12 @@
  ;; Prefer system-wide ruff -- repositories frequently will have stale
  ;; installations used in the CI and during make lint. I prefer using the
  ;; newest versions and update the repo as-needed
- '(lsp-ruff-lsp-server-command `(,(expand-file-name "~/.local/bin/ruff-lsp")))
+ ;; '(lsp-ruff-lsp-server-command `(,(expand-file-name "~/.local/bin/ruff-lsp")))
 
- '(lsp-ruff-lsp-ruff-path `[,(expand-file-name "~/.local/bin/ruff") "ruff"])
+ ;; '(lsp-ruff-lsp-ruff-path `[,(expand-file-name "~/.local/bin/ruff") "ruff"])
+
+ ;; temporary until lsp-mode and ruff server start getting along https://github.com/emacs-lsp/lsp-mode/issues/4547
+ ;; '(lsp-ruff-server-command '("ruff" "server" "--preview"))  ;; locally built server is in preview mode ...
 
  '(lsp-response-time 20) ;; increase timeout because of glab
 
