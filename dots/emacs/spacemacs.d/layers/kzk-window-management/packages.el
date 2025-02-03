@@ -57,6 +57,9 @@
    (push '(xref--xref-buffer-mode :dedicated nil :position bottom :height 0.3 :stick nil)
          popwin:special-display-config)
 
+   (push '("*envrc*" :dedicatet t :stick t :position bottom :height 0.3 :noselect t)
+         popwin:special-display-config)
+
    ;; needed, since our config changed ...
    (pupo/update-purpose-config)
 
