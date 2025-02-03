@@ -124,91 +124,21 @@ This is used to reorder all sections as sources."
                                    :prompt "Bindings: "
                                    :sort nil)  )
          )
-    (command-execute (intern (car selected)))
-    )  )
+    (command-execute (intern (car selected)))))
 
-(defun kzk//search-initial-input-maybe ()
-  "When the region is active, returns the selected text"
-  (and (region-active-p) (buffer-substring-no-properties
-                          (region-beginning) (region-end))))
-
-(defun kzk//search-initial-input ()
-  "Returns either the current region, the current symbol or nil"
-  (-if-let (region (kzk//search-initial-input-maybe))
-      region
-    (thing-at-point 'symbol t)))
-
-
-(defun kzk/search-in-buffer ()
-  "Search in the current buffer"
-  (interactive)
-  (consult-line (kzk//search-initial-input-maybe)))
-
-(defun kzk/search-in-buffer-with-input ()
-  "Search for symbol or region in the current buffer"
-  (interactive)
-  (consult-line (kzk//search-initial-input)))
-
-(defun kzk/search-in-project-buffers ()
-  "Search in all project buffers"
-  (interactive)
-  (consult-line-multi nil (kzk//search-initial-input-maybe)))
-
-(defun kzk/search-in-project-buffers-with-input ()
-  "Search for symbol or region in all project buffers"
-  (interactive)
-  (consult-line-multi nil (kzk//search-initial-input)))
-
-(defun kzk/search-in-all-buffers ()
-  "Search in all buffers"
-  (interactive)
-  (consult-line-multi t (kzk//search-initial-input-maybe)))
-
-(defun kzk/search-in-all-buffers-with-input ()
-  "Search current symbol or region in all buffers"
-  (interactive)
-  (consult-line-multi t (kzk//search-initial-input)))
-
-(defun kzk/search-from-path ()
-  "Choose folder to search."
-  (interactive)
-  (spacemacs/compleseus-search (region-active-p) nil))
-
-(defun kzk/search-from-path-with-input ()
-  "Choose folder to search for current symbol or region."
-  (interactive)
-  (spacemacs/compleseus-search t nil))
-
-(defun kzk/search-in-current-dir ()
-  "Search current folder."
-  (interactive)
-  (spacemacs/compleseus-search (region-active-p) default-directory))
-
-(defun kzk/search-in-current-dir-with-input ()
-  "Search symbol or region in current folder."
-  (interactive)
-  (spacemacs/compleseus-search t default-directory))
-
-(defun kzk/search-in-project ()
-  "Search cuin current project."
-  (interactive)
-  (spacemacs/compleseus-search (region-active-p) (projectile-project-root)))
-
-(defun kzk/search-in-project-with-input ()
-  "Search cuin current project."
-  (interactive)
-  (spacemacs/compleseus-search t (projectile-project-root)))
 
 (defun kzk/projectile-consult-fd-find  ()
   "Search for files by name in the project root"
   (interactive)
   (consult-fd (projectile-project-root)))
 
+
 (defun kzk/consult-fd-find-here (prefix)
   "Search for files by name. C-u to select starting directory"
   (interactive "P")
 
   (consult-fd (or prefix default-directory)))
+
 
 (defun kzk/compile-multi-parse-makefile-rules ()
   "Return the target list for MAKEFILE by parsing it."
@@ -227,6 +157,7 @@ This is used to reorder all sections as sources."
           (unless (string-match "^\\." str)
             (push `(,(concat "make:" str) . ,(concat "make " str)) targets)))))
     (nreverse targets)))
+
 
 (defun kzk/consult-buffer-with-purpose ()
   "Switchs to a buffer with the same purpose as the current one"

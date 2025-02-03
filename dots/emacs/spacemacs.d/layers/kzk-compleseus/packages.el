@@ -64,21 +64,7 @@
     )
 
   (spacemacs/set-leader-keys
-    "ss" #'kzk/search-in-buffer
-    "sS" #'kzk/search-in-buffer-with-input
-    "sb" #'kzk/search-in-project-buffers
-    "sB" #'kzk/search-in-project-buffers-with-input
-    "s C-b" #'kzk/search-in-all-buffers
-    "s C-S-b" #'kzk/search-in-all-buffers-with-input
-    "sf" #'kzk/search-from-path
-    "sF" #'kzk/search-from-path-with-input
-    "sd" #'kzk/search-in-current-dir
-    "sD" #'kzk/search-in-current-dir-with-input
-    "sp" #'kzk/search-in-project
-    "sP" #'kzk/search-in-project-with-input
     "st" '("Search project TODOs" . kzk/consult-project-todos)
-    "*"  #'kzk/search-in-project-with-input
-    "/"  #'kzk/search-in-project
 
     ;; Add some consult commands in their proper places
     "sgg" #'consult-grep
@@ -86,28 +72,7 @@
 
     ;; Consult Project Buffers is more powerful than projectile-buffers
     "pb" '("Project Buffers" . consult-project-buffer)
-    )
-
-
-
-  ;; Customize symbol search
-  (spacemacs/transient-state-register-remove-bindings
-    'symbol-highlight
-    '("b" "/"))
-  (spacemacs/transient-state-register-add-bindings 'symbol-highlight
-    '(
-      ;; replace with my custom project search -- upstream
-      ;; uses a function that ignores the current symbol input,
-      ;; which looks like a bug
-      ("/" kzk/search-in-project-buffers-with-input :exit t)
-      ;; Search the current symbol on all the buffers
-      ("b" kzk/search-in-all-buffers-with-input :exit t)))
-  (setq spacemacs--symbol-highlight-transient-state-doc
-        (concat
-         spacemacs--symbol-highlight-transient-state-doc
-         ;; "[_/_] project" is already there, only need to append the buffers shortcut
-         "  [_b_] buffers"))
-  )
+    ))
 
 (defun kzk-compleseus/init-compile-multi ()
   (use-package compile-multi
