@@ -154,7 +154,6 @@ This function should only modify configuration layer settings."
      (ipython-notebook)
      (python :variables
              ;; lsp-pyright-log-level "trace"
-             lsp-pyright-venv-path "/home/kassick/.pyenv/versions"
              python-auto-set-local-pyenv-version nil
              python-auto-set-local-pyvenv-virtualenv nil
              python-test-runner 'pytest
