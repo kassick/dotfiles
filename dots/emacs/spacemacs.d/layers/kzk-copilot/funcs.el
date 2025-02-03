@@ -171,17 +171,25 @@ Calling with double prefix, will reset the chat"
 
     map))
 
-(defun kzk/copilot-complete (prefix)
-  "Complete with Copilot. When called with prefix, display the completion panel"
-  (interactive "P")
+(defun kzk/copilot-chat-transient ()
+  (interactive)
 
-  (if prefix
-      (copilot-panel-complete)
-    (copilot-complete)))
+  ;; copilot-chat-transient is not marked for autoload, so we must use this kludge until https://github.com/chep/copilot-chat.el/pull/69 is merged
 
-(defun kzk/copilot--handle-notifications-advice (_ method msg)
-  (pcase method
-    ('PanelSolution
-     (with-current-buffer "*copilot-panel*"
-       (deactivate-mark)
-       (goto-char (point-min))))))
+  (require 'copilot-chat)
+  (call-interactively #'copilot-chat-transient))
+
+(defun kzk/copilot-chat-transient-code ()
+  (interactive)
+  (require 'copilot-chat)
+  (call-interactively #'copilot-chat-transient-code))
+
+(defun kzk/copilot-chat-transient-buffers ()
+  (interactive)
+  (require 'copilot-chat)
+  (call-interactively #'copilot-chat-transient-buffers))
+
+(defun kzk/copilot-chat-transient-magit ()
+  (interactive)
+  (require 'copilot-chat)
+  (call-interactively #'copilot-chat-transient-magit))

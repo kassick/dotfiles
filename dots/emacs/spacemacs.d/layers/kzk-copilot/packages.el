@@ -10,52 +10,6 @@
                              :repo "chep/copilot-chat.el"
                              :files ("*.el")))))
 
-(defun kzk-copilot/init-copilot ()
-  (use-package copilot
-    :defer t
-    :hook ((prog-mode . copilot-mode))
-    :custom
-    ;; (copilot-max-char 1000000) ;; increase a bit max char, some files are quite big ...
-    (copilot-indent-offset-warning-disable t) ;; don't be annoying ...
-    :config
-     (message "Copilot init")
-     (define-key copilot-mode-map
-                 (kbd "C-*") '("Complete with Copilot. C-u to panel" . kzk/copilot-complete))
-
-     (let ((bindings '(("<return>" . copilot-accept-completion)
-                       ("C-l" . copilot-accept-completion)
-                       ("<tab>" . copilot-next-completion)
-                       ("C-n" . copilot-next-completion)
-                       ("C-j" . copilot-next-completion)
-                       ("C-p" . copilot-previous-completion)
-                       ("C-k" . copilot-previous-completion)
-                       ("C-<return>" . copilot-accept-completion-by-word)
-                       ("C-S-l" . copilot-accept-completion-by-word))))
-       (dolist (binding bindings)
-         (define-key copilot-completion-map (kbd (car binding)) (cdr binding))))
-
-     ;; Silence warnings, since copilot has no flag to avoid displaying the
-     ;; max chat exceeded issue
-     (advice-add 'copilot--get-source
-                 :around (lambda (fn &rest args)
-                           (let ((warning-minimum-level :error))
-                             (apply fn args))))
-
-     ;; Sometimes org won't reset the mark after sorting entries. This leaves
-     ;; the panel completions buffer with all contents selected, which is odd.
-     ;; This advice ensures we reset the mark after sorting.
-     (advice-add 'copilot--handle-notification :after #'kzk/copilot--handle-notifications-advice)
-     )
-
-
-
-  (kzk/after-init
-   (push '("*copilot-panel*" :dedicated nil :position right :width 78 :stick t :noselect nil)
-         popwin:special-display-config)
-
-   (pupo/update-purpose-config)))
-
-
 (defun kzk-copilot/init-shell-maker ()
   (use-package shell-maker
     :defer t))
