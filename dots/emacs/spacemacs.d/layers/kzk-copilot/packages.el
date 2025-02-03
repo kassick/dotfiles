@@ -132,7 +132,18 @@
                      ("f" . ("Copilot Fix" . copilot-chat-fix))
                      ("o" . ("Copilot Optimize" . copilot-chat-optimize))
                      ("t" . ("Copilot Tests" . copilot-chat-test))
-                     ("0" . ("Delete Copilot Chat Windows" . kzk/copilot-chat-delete-windows)))))
+                     ("0" . ("Delete Copilot Chat Windows" . kzk/copilot-chat-delete-windows))
+                     ("." . ("Chat Transient Mode" . kzk/copilot-chat-transient))
+                     ("C-." . ("Chat Transient Code" . kzk/copilot-chat-transient-code))
+                     ("C-b" . ("Chat Transient Buffers" . kzk/copilot-chat-transient-buffers))
+                     ("C-c" . (menu-item "Chat Transient Magit"
+                                         kzk/copilot-chat-transient-magit
+                                         :filter ,(lambda (item)
+                                                    (if (bound-and-true-p git-commit-mode)
+                                                        item
+                                                      #'ignore
+                                                      ))))
+                     )))
      (dolist (binding bindings)
        (define-key kzk-copilot-chat-map (kbd (car binding)) (cdr binding))))
 
