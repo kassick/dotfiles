@@ -114,39 +114,41 @@
   ;; (define-key company-active-map (kbd "C-<f1>") 'kzk/company-show-doc-buffer)
   ;; ;;(define-key company-active-map (kbd ;;"S-TAB" 'company-select-previous)
 
-  (with-eval-after-load 'general
-    (with-eval-after-load 'company
-      (general-define-key :keymaps 'company-mode-map
-                          "C-c o" 'company-manual-begin
-                          "C-;" 'company-manual-begin
-                          "C-c f" 'company-files
-                          "C-c y" 'company-yasnippet)
+  (with-eval-after-load 'company
+    (require 'general)
+    (message "Defining c-return in company active map!")
+    (define-key company-active-map
+                (kbd "C-<return>") #'company-complete-selection)
 
-      (general-define-key :keymaps 'company-active-map
-                          "C-;" 'company-complete-common-or-cycle
-                          "C-." (lambda ()
-                                  (interactive)
-                                  (company-complete-selection)
-                                  (insert ".")
-                                  (company-manual-begin)
-                                  )
-                          "C-e" #'company-other-backend
-                          "C-w" 'company-abort
-                          "<C-backspace>" 'company-abort
-                          )
+    (general-define-key :keymaps 'company-mode-map
+                        "C-c o" 'company-manual-begin
+                        "C-;" 'company-manual-begin
+                        "C-c f" 'company-files
+                        "C-c y" 'company-yasnippet)
 
-      (general-define-key :keymaps 'company-active-map
-                          :predicate '(company-explicit-action-p)
-                          "RET" 'company-complete-selection
-                          "<return>" 'company-complete-selection
-                          "<home>" 'company-select-first
-                          "<end>" 'company-select-last
-                          )
-      )
+    (general-define-key :keymaps 'company-active-map
+                        "C-;" 'company-complete-common-or-cycle
+                        "C-." (lambda ()
+                                (interactive)
+                                (company-complete-selection)
+                                (insert ".")
+                                (company-manual-begin)
+                                )
+                        "C-e" #'company-other-backend
+                        "C-w" 'company-abort
+                        "<C-backspace>" 'company-abort
+                        "C-<return>" 'company-complete-selection)
+
+    (general-define-key :keymaps 'company-active-map
+                        :predicate '(company-explicit-action-p)
+                        "RET" 'company-complete-selection
+                        "<return>" 'company-complete-selection
+                        "<home>" 'company-select-first
+                        "<end>" 'company-select-last)
     )
 
-    ;;; NO LINGERING COMPANY POPUP AFTER ESCAPING TO NORMAL
-    ;;; This is very annoying
+  ;;; NO LINGERING COMPANY POPUP AFTER ESCAPING TO NORMAL
+  ;;; This is very annoying
   (with-eval-after-load 'evil
     (add-hook 'evil-insert-state-exit-hook 'company-abort))
 
