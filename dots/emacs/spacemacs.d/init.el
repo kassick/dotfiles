@@ -272,13 +272,13 @@ This function should only modify configuration layer settings."
                                       ;;                  :fetcher github
                                       ;;                  :repo "kassick/gitlab-lsp.el"
                                       ;;                  :files ("*.el"))))
-                                      (copilot-lsp :location
-                                                   ,(if kzk/debug-use-local-gitlab-lsp
-                                                        (expand-file-name "~/Sources/user/emacs-copilot-lsp")
-                                                      '(recipe
-                                                        :fetcher github
-                                                        :repo "kassick/copilot-lsp.el"
-                                                        :files ("*.el"))))
+                                      ;; (copilot-lsp :location
+                                      ;;              ,(if kzk/debug-use-local-gitlab-lsp
+                                      ;;                   (expand-file-name "~/Sources/user/emacs-copilot-lsp")
+                                      ;;                 '(recipe
+                                      ;;                   :fetcher github
+                                      ;;                   :repo "kassick/copilot-lsp.el"
+                                      ;;                   :files ("*.el"))))
                                       ;; (lsp-inline-completions :location
                                       ;;                         ,(if kzk/debug-use-local-gitlab-lsp
                                       ;;                              (expand-file-name "~/Sources/user/emacs-lsp-inline-completions")
@@ -1069,30 +1069,10 @@ before packages are loaded."
   ;; (define-key global-map
   ;;             (kbd "C-&") '("Complete with Gitlab Duo" . gitlab-lsp-complete))
 
-  (require 'copilot-lsp)
   (require 'lsp-inline-completion)
-  (add-hook 'lsp-inline-completion-shown-hook #'lsp-inline-completion-show-keys)
+  (add-hook 'lsp-inline-completion-mode-hook #'lsp-inline-completion-company-integration-mode)
   (define-key lsp-mode-map
               (kbd "C-*") '("Inline Completions" . lsp-inline-completion-display))
-
-  ;; (require 'lsp-inline-completions)
-  ;; (setq lsp-before-inline-completion-hook nil)
-  ;; (setq lsp-after-initialize-hook nil)
-  ;; (add-hook 'lsp-before-inline-completion-hook
-  ;;           (lambda ()
-  ;;             ;; scroll to top so preview can show the snippet
-  ;;             (recenter-top-bottom 4)
-
-  ;;             (require 'spinner)
-  ;;             (spinner-start 'triangle 10)
-  ;;             ;; Show something, since we can not spin ...
-  ;;             (message "Asking for suggestions ...")))
-
-  ;; (add-hook 'lsp-inline-completion-shown-hook #'lsp-inline-completion-show-hint)
-
-  ;; (add-hook 'lsp-after-inline-completion-hook #'spinner-stop)
-  ;; (define-key global-map
-  ;;             (kbd "C-*") '("Inline Completions" . lsp-inline-completion))
 
   (custom-set-variables
    '(js-indent-level 4))

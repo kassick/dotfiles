@@ -3,6 +3,7 @@
     ;;                     :fetcher github
     ;;                     :repo "copilot-emacs/copilot.el"
     ;;                     :files ("*.el" "dist")))
+    lsp-mode
     shell-maker
     (copilot-chat :location (recipe
                              :fetcher github
@@ -222,3 +223,29 @@
   (with-eval-after-load 'embark
     (define-key embark-buffer-map
                 "&" #'kzk/copilot-chat-add-buffer)))
+
+(defun kzk-copilot/post-init-lsp-mode ()
+  (with-eval-after-load 'evil-evilified-state
+    (evilified-state-evilify-map lsp-copilot-panel-buffer-mode-map :mode lsp-copilot-panel-buffer-mode :eval-after-load lsp-copilot))
+
+  (with-eval-after-load 'lsp-mode
+    (define-key lsp-mode-map
+                (kbd "M-*") '("Copilot Panel" . lsp-copilot-panel-completion)))
+
+  (kzk/after-init
+   (require 'spacemacs-purpose-popwin)
+   (require 'popwin)
+   (require 'window-purpose)
+
+   (assoc-delete-all 'lsp-copilot-panel-buffer-mode popwin:special-display-config)
+   (push '(lsp-copilot-panel-buffer-mode :noselect nil :dedicated nil :position right :width 0.5 :stick t)
+         popwin:special-display-config)
+
+   ;; needed, since our config changed ...
+   (pupo/update-purpose-config)
+
+
+
+   )
+
+  )

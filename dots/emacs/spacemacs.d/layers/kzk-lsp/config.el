@@ -37,6 +37,8 @@
 
  '(lsp-pyright-langserver-command "basedpyright")
  '(lsp-pyright-type-checking-mode "standard")
+
+ '(lsp-copilot-server-multi-root nil)
  )
 
 (defcustom kzk/peek-uses-posframe t "If lsp-ui-peek should appear inside a posframe")
