@@ -82,6 +82,7 @@
   ;;                   :organizeImports (lsp-json-bool lsp-ruff-advertize-organize-imports)
   ;;                   :fixAll (lsp-json-bool lsp-ruff-advertize-fix-all)
   ;;                   :importStrategy lsp-ruff-import-strategy))))))
+
   )
 
 (defun kzk-lsp/post-init-lsp-ui ()
