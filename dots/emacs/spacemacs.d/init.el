@@ -213,7 +213,7 @@ This function should only modify configuration layer settings."
           ;; org-enable-appear-support t
           ;; org-appear-trigger 'always ;;manual
           org-enable-modern-support t
-          org-enable-valign t)
+          org-enable-valign nil)
      (latex :variables
             latex-enable-folding t
             latex-enable-auto-fill nil)
