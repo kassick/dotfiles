@@ -4,6 +4,7 @@
   (spacemacs/set-leader-keys "ps" 'projectile-save-project-buffers)
 
   (with-eval-after-load 'projectile
+    (push "~/Sources" projectile-ignored-projects)
     (setq compilation-buffer-name-function #'projectile-compilation-buffer-name)
     (advice-add 'projectile-find-file
                 :around (lambda (fn &rest args)
