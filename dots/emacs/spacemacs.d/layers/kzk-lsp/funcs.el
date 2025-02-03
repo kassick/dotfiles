@@ -108,6 +108,8 @@ called with a prefix, kills the window"
     (setq lsp-inlay-hint-enable t))
 
   (lsp))
+
+
 (defun kzk/lsp-workspace-command-execute (command &optional args)
   "Execute workspace COMMAND with ARGS."
   (condition-case-unless-debug err
@@ -123,3 +125,10 @@ called with a prefix, kills the window"
      (error "`workspace/executeCommand' with `%s' failed.\n\n%S"
             command err))))
 
+(defun kzk/save-inline-completion-tick ()
+  (setq-local kzk-inline-completion-tick (buffer-chars-modified-tick)))
+
+(defun kzk/lsp-inline-completion-pop-to-panel ()
+  (interactive)
+  (lsp-inline-completion--clear-overlay)
+  (lsp-copilot--panel-display-buffer (buffer-name) lsp-inline-completion--items kzk-inline-completion-tick))
