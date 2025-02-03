@@ -148,7 +148,7 @@ Calling with double prefix, will reset the chat"
      (apply (symbol-function ',add-buffers-fn) (list prefix))
      (call-interactively (symbol-function ',target-fn))))
 
-(defun kzk//make-context-map (name add-buffers-fn)
+(defun kzk//make-copilot-context-map (name add-buffers-fn)
   (let ((map (make-sparse-keymap))
         (bindings `(("c" "Copilot Chat" copilot-chat-display)
                     ("a" "Copilot Ask and Insert" copilot-chat-ask-and-insert)
