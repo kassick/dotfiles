@@ -108,3 +108,18 @@ called with a prefix, kills the window"
     (setq lsp-inlay-hint-enable t))
 
   (lsp))
+(defun kzk/lsp-workspace-command-execute (command &optional args)
+  "Execute workspace COMMAND with ARGS."
+  (condition-case-unless-debug err
+      (let ((params (if args
+                        (list :command command :arguments args)
+                      (list :command command)))
+            (ws (lsp--find-workspaces-for "workspace/execute-command")))
+        (cl-loop for w in ws do
+                 (with-lsp-workspace w
+                   (when (lsp-can-execute-command? command)
+                     (lsp-request "workspace/executeCommand" params)))))
+    (error
+     (error "`workspace/executeCommand' with `%s' failed.\n\n%S"
+            command err))))
+
