@@ -1,5 +1,8 @@
 (defconst kzk-code-tweaks-packages '
-  (vterm
+  (
+   multi-vterm
+   projectile
+   vterm
    evil-args
    evil-matchit
    evil-easymotion))
@@ -17,6 +20,15 @@
 
 
 (defun kzk-code-tweaks/post-init-vterm ())
+
+(defun kzk-code-tweaks/post-init-multi-vterm ())
+
+(defun kzk-code-tweaks/post-init-projectile ()
+  (kzk/after-init
+   ;; Defer to init -- the shell layer may end up execuring after this one and
+   ;; resetting my customization
+   (spacemacs/set-leader-keys
+     "p'" #'kzk/projectile-pop-shell)))
 
 (defun kzk-code-tweaks/post-init-evil-args ()
   (kzk/after-init
