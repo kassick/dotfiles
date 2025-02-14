@@ -23,18 +23,19 @@
     ;;(message "copilot chat config")
 
     ;; Prompt window:
-    (evil-define-key '(normal motion) copilot-chat-prompt-mode-map
-      (kbd "k") 'copilot-chat-prompt-split-and-list
-      (kbd "j") 'copilot-chat-prompt-history-next
-      (kbd "k") 'copilot-chat-prompt-history-previous
-      (kbd "q") 'kzk/copilot-chat-delete-windows)
-    (define-key copilot-chat-prompt-mode-map
-                (kbd "C-c q") 'kzk/copilot-chat-delete-windows)
-    (define-key copilot-chat-prompt-mode-map
-                (kbd "<return>") 'copilot-chat-prompt-send)
-    (evil-set-initial-state 'copilot-chat-prompt-mode 'insert)
+    ;; - Some helper keys for normal
+    (evil-define-key '(normal motion) copilot-chat-org-prompt-mode-map
+      ;; "q" 'kzk/copilot-chat-delete-windows
+      "L" 'copilot-chat-prompt-split-and-list
+      "J" 'copilot-chat-prompt-history-next
+      "K" 'copilot-chat-prompt-history-previous)
+
+    ;; - Send on c-return -- make it easier to write multi-line prompts
+    (define-key copilot-chat-org-prompt-mode-map
+                (kbd "C-<return>") 'copilot-chat-prompt-send)
 
     ;; chat buffer list window:
+    ;; - Evilify state
     (evilified-state-evilify-map copilot-chat-list-mode-map
       :mode copilot-chat-list-mode
       :bindings
@@ -43,81 +44,59 @@
       (kbd "g") 'copilot-chat-list-refresh
       (kbd "C") 'copilot-chat-list-clear-buffers)
 
-    ;; Chat Results map
-    ;; - Switch to prompt on usual change keys
-    (dolist (k '("&" "o" "O" "a" "A" "i" "I" "C"))
-      (evil-define-key '(normal motion) copilot-chat-mode-map
-        (kbd k) 'kzk/copilot-pop-to-chat-buffer))
-    ;; - Quitting deletes the chat windows
-    (evil-define-key '(normal motion) copilot-chat-mode-map
-      (kbd "q") 'kzk/copilot-chat-delete-windows)
-    (define-key copilot-chat-mode-map
-                (kbd "C-c q") 'kzk/copilot-chat-delete-windows)
 
-    ;; Shell-maker as frontend -- I've found some issues...
-    ;;
-    ;; - By using purpose and special-action-sequences, I've fixed the positioning issue
-    ;;
-    ;; - Current Issue: Shell-maker calls copilot-chat-reset in
-    ;;   copilot-chat-shell-maker-display when not ready-p. But after closing
-    ;;   the shell-maker window once, for some reason, the instance is no
-    ;;   longer ready and reset is called. But shellmaker overrides
-    ;;   copilot-chat-reset to a function that resets the advices ... this is
-    ;;   probably wrong, but I do not have time to fix it now. Must figure out
-    ;;   a) why is it becoming non-ready? and b) is resetting the advices expected?
+    ;; ;; dont use pupo, because the way that copilot chat displays the buffer is
+    ;; ;; kind of weird
+    ;; (purpose-set-extension-configuration
+    ;;   :kzk-copilot-layer
+    ;;   (purpose-conf :regexp-purposes `((,kzk/copilot-chat-buffer-regexp . coding-assistant)
+    ;;                                    ;;("^\\*[Cc]opilot-chat-prompt\\*$" . coding-assistant-prompt)
+    ;;                                    (,kzk/copilot-chat-buffer-list-regexp . coding-assistant-others))))
 
+    ;; ;; reuse whenever
+    ;; (dolist (it '(coding-assistant coding-assistant-others))
+    ;;   (push `(coding-assistant-prompt
+    ;;           purpose-display-reuse-window-buffer
+    ;;           purpose-display-reuse-window-purpose)
+    ;;         purpose-special-action-sequences))
 
-    (require 'shell-maker)
-    (require 'copilot-chat-shell-maker)
-    (push '(shell-maker . copilot-chat-shell-maker-init) copilot-chat-frontend-list)
-    (copilot-chat-shell-maker-init)
-    ;; Removing the advice sees to work!
-    (advice-remove 'copilot-chat--clean #'copilot-chat--shell-maker-clean)
+    ;; (push `(coding-assistant
+    ;;         purpose-display-reuse-window-buffer
+    ;;         purpose-display-reuse-window-purpose
+    ;;         kzk/copilot-chat-popup-display
+    ;;         ;; ,(pupo//position-to-display-function 'left 78 nil)
+    ;;         ;; purpose-display-pop-up-window
+    ;;         )
+    ;;       purpose-special-action-sequences)
 
-    (purpose-set-extension-configuration
-     :kzk-copilot-layer
-     (purpose-conf :regexp-purposes '(("^\\*[Cc]opilot-chat\\*$" . coding-assistant)
-                                      ("^\\*[Cc]opilot-chat-list\\*$" . coding-assistant))))
+    (add-hook 'copilot-chat-org-prompt-mode-hook #'kzk/copilot-chat-mode-hook)
+    (push `(,kzk/copilot-chat-buffer-regexp :regexp t :width 78 :position left :stick t :noselect nil :dedicated nil)
+          popwin:special-display-config)
+    (pupo/update-purpose-config)
 
-    (push `(coding-assistant
-            purpose-display-reuse-window-buffer
-            purpose-display-reuse-window-purpose
-            ,(pupo//position-to-display-function 'left 78 nil)
-            purpose-display-pop-up-window)
-          purpose-special-action-sequences)
-
-    ;; (push '(copilot-chat-shell-mode :position left :width 78 :dedicated t :stick nil) popwin:special-display-config)
-    ;; (push '(copilot-chat-list-mode :position left :width 20 :dedicated t :stick nil) popwin:special-display-config)
-
-
-    (evil-define-key '(normal motion) copilot-chat-shell-mode-map
-      "q" #'evil-quit
-      "L" #'copilot-chat-prompt-split-and-list)
-
-    (evil-define-key '(insert) copilot-chat-shell-mode-map
-      (kbd "C-c q") #'evil-quit
-      (kbd "C-c l") #'copilot-chat-prompt-split-and-list)
+    ;; TODO: Fix windowe placement!!! because polymode calls switch-to-buffer
+    ;; in pm--select-existing-buffer-visibly , it ends up running though the
+    ;; purpose code again. For reasons, it ends up popping up in a different
+    ;; window, resulting in a very inconsistent state...
 
     ;; end of use package
     )
 
   (kzk/after-init
 
-   (advice-add 'copilot-chat-display :before #'kzk/copilot-chat-delete-windows)
+   ;; (advice-add 'copilot-chat-display :before #'copilot-chat-hide)
+   (advice-add 'copilot-chat-hide :override 'kzk/copilot-chat-hide)
+   ;; (advice-add 'copilot-chat-reset :override 'kzk/copilot-chat-reset)
 
-   ;; For some reason, the custom shortcuts defines in :config do not take
-   ;; effect until switching states. This advice, besides killing the chat
-   ;; windows before displaying (window management workarounds ugh...) also
-   ;; switches states to make sure that the shortcuts are available
-   ;; (advice-add 'copilot-chat-shell-maker-display :around (lambda (fn &rest args)
-   ;;                                                         (kzk/copilot-chat-delete-windows)
-   ;;                                                         (-when-let* ((buf (apply fn args))
-   ;;                                                                      (w (get-buffer-window buf)))
-   ;;                                                           (with-selected-window w
-   ;;                                                             (evil-normal-state)
-   ;;                                                             (evil-insert-state)
-   ;;                                                             (goto-char (point-max))))))
    (setq kzk-copilot-chat-map (make-sparse-keymap))
+
+   (dolist (fn '(copilot-chat-explain
+                 copilot-chat-review
+                 copilot-chat-doc
+                 copilot-chat-fix
+                 copilot-chat-optimize
+                 copilot-chat-test))
+     (advice-add fn :after (lambda (&rest _) (copilot-chat-display))))
 
    (let ((bindings `(("c" . ("Copilot Chat (current buffer in the context)" . kzk/copilot-chat-display))
                      ("C" . ("Copilot Chat" . copilot-chat-display))
@@ -132,62 +111,32 @@
                      ("f" . ("Copilot Fix" . copilot-chat-fix))
                      ("o" . ("Copilot Optimize" . copilot-chat-optimize))
                      ("t" . ("Copilot Tests" . copilot-chat-test))
-                     ("0" . ("Delete Copilot Chat Windows" . kzk/copilot-chat-delete-windows))
-                     ("." . ("Chat Transient Mode" . kzk/copilot-chat-transient))
-                     ("C-." . ("Chat Transient Code" . kzk/copilot-chat-transient-code))
-                     ("C-b" . ("Chat Transient Buffers" . kzk/copilot-chat-transient-buffers))
+                     ;; Hide from outside is not working
+                     ;; ("0" . ("Delete Copilot Chat Windows" . copilot-chat-hide))
+                     ("." . ("Chat Transient Mode" . copilot-chat-transient))
+                     ("C-." . ("Chat Transient Code" . copilot-chat-transient-code))
+                     ("C-b" . ("Chat Transient Buffers" . copilot-chat-transient-buffers))
                      ("C-c" . (menu-item "Chat Transient Magit"
-                                         kzk/copilot-chat-transient-magit
+                                         copilot-chat-transient-magit
                                          :filter ,(lambda (item)
                                                     (if (bound-and-true-p git-commit-mode)
-                                                        item
-                                                      #'ignore
-                                                      ))))
-                     )))
+                                                        `("Chat Transient Magit" . ,item)
+                                                      '("Chat Transient Magit (disabled)" . ignore)
+                                                      ;;#'ignore
+                                                      )))))))
      (dolist (binding bindings)
        (define-key kzk-copilot-chat-map (kbd (car binding)) (cdr binding))))
 
    (define-key global-map (kbd "C-&") kzk-copilot-chat-map)
    (spacemacs/set-leader-keys "&" `("Copilot Chat" . ,kzk-copilot-chat-map))
    (spacemacs/set-leader-keys "a c p" `("Copilot Chat" . ,kzk-copilot-chat-map))
-
-   ;; ;; Window PLacement: Try with purpose configuration
-   ;; (purpose-set-extension-configuration
-   ;;  :kzk-copilot-layer
-   ;;  (purpose-conf :name-purposes '(("*Copilot-chat*" . coding-assistant-results)
-   ;;                                 ("*Copilot-chat-prompt*" . coding-assistant-prompt))))
-
-
-   ;; ;; Place the result window at right
-   ;; (push `(coding-assistant-results
-   ;;         purpose-display-reuse-window-buffer
-   ;;         purpose-display-reuse-window-purpose
-   ;;         ,(pupo//position-to-display-function 'left 78 nil))
-   ;;       purpose-special-action-sequences)
-
-   ;; (push `(coding-assistant-prompt
-   ;;         purpose-display-reuse-window-buffer
-   ;;         purpose-display-reuse-window-purpose)
-   ;;       purpose-special-action-sequences)
-
-   ;; ;; Place the prompt window below
-   ;; (push `(coding-assistant-results
-   ;;         purpose-display-reuse-window-buffer
-   ;;         purpose-display-reuse-window-purpose
-   ;;         ,(pupo//position-to-display-function 'right 78 nil))
-   ;;       purpose-special-action-sequences)
-   ;; Chat window placement
-   ;; (push '("^\\*copilot-chat-shell\\*" :regexp t :dedicated nil :position right :width 78 :stick nil :noselect nil)
-   ;;        popwin:special-display-config)
-   ;; (push '(copilot-chat-prompt-mode :position left :width 78 :dedicated nil :stick t) popwin:special-display-config)
-   ;; (push '(copilot-chat-mode :position left :width 78 :dedicated nil :stick t) popwin:special-display-config)
-   ;; (push '(copilot-chat-list-mode :position left :width 20 :dedicated nil :stick nil) popwin:special-display-config)
-   (pupo/update-purpose-config)
    )
 
   (with-eval-after-load 'embark
     (define-key embark-buffer-map
-                "&" #'kzk/copilot-chat-add-buffer)))
+                (kbd "C-&") #'kzk/copilot-chat-add-buffer)))
+
+;; -------
 
 (defun kzk-copilot/post-init-lsp-mode ()
   (with-eval-after-load 'evil-evilified-state
