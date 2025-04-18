@@ -251,5 +251,9 @@ In that case, we simply bury the buffer
           (evil-local-set-key state
                               (kbd "q") #'copilot-chat-hide)))))
 
+  ;; disable sub/super-scripts -- annoying when typing code in the prompt
+  (let ((restart org-export-with-sub-superscripts))
+    (setq org-export-with-sub-superscripts nil)
+    (when restart (org-mode-restart)))
   ;; Disable org indented here
   (org-indent-mode -1))
