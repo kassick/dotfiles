@@ -104,7 +104,22 @@
   ;; Forcing prefer-other-frame to popup new frame
   (with-eval-after-load 'window-purpose
     (setcdr (assq 'prefer-other-frame purpose-action-sequences)
-            '(purpose-display-maybe-pop-up-frame))))
+            '(purpose-display-maybe-pop-up-frame))
+
+    (setcdr (assq 'prefer-other-window purpose-action-sequences)
+            '(purpose-display-reuse-window-buffer
+              purpose-display-reuse-window-purpose
+              ;; only pops when sensible (`split-window-sensibly')
+              ;; in config.el we adjust it to be more permissive
+              purpose-display-maybe-pop-up-window
+              purpose-display-maybe-other-window
+              ;; only pops if `pop-up-frames' says so
+              purpose-display-maybe-pop-up-frame
+              ;; We DO NOT WANT OTHER (existing) FRAME, we prefer it pops up a
+              ;; new one!
+              ;;
+              ;; --- purpose-display-maybe-other-frame ---
+              purpose-display-maybe-same-window))))
 
 (defun kzk-window-management/post-init-posframe ()
   (advice-add 'delete-frame :around #'kzk/handle-delete-frame-error))
