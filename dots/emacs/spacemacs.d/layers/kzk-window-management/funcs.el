@@ -408,8 +408,9 @@ With a prefix, includes buffers shown in all frames. "
 
   (interactive)
   (-when-let (w (active-minibuffer-window))
-    (with-selected-window w
-      (minibuffer-quit-recursive-edit))))
+    (save-window-excursion
+      (with-selected-window w
+        (minibuffer-quit-recursive-edit)))))
 
 
 (defun kzk/other-window-default-cb ()
