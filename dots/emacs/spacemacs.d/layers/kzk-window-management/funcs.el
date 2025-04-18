@@ -480,13 +480,12 @@ maximize the frame, we do not want that window to occupy all the screen!
       (dolist (w (window-list frame 'not-minibuffer))
         (-when-let* ((buf (window-buffer w))
                      (purpose (purpose-buffer-purpose buf))
-                     ((purpose-side . pupo-purpose) (rassoc purpose pupo--direction-to-purpose))
                      (cfg (cdr (popwin:match-config buf))
                           )
                      (width (window-width w))
                      (height (window-height w)))
-          (pcase pupo-purpose
-            ((or 'popr 'popl)
+          (pcase purpose
+            ((or 'popr 'popl 'coding-assistant)
              (let ((target-width (purpose--normalize-width (plist-get cfg :width))))
                (when (> width target-width)
                  (window-resize w (- target-width width) t))))
