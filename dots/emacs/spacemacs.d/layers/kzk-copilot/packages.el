@@ -143,6 +143,7 @@
                      ;; Hide from outside is not working
                      ;; ("0" . ("Delete Copilot Chat Windows" . copilot-chat-hide))
                      ("." . ("Chat Transient Mode" . copilot-chat-transient))
+                     ("%" . ("Aider" . aider-transient-menu-1col))
                      ("C-." . ("Chat Transient Code" . copilot-chat-transient-code))
                      ("C-b" . ("Chat Transient Buffers" . copilot-chat-transient-buffers))
                      ("C-c" . (menu-item "Chat Transient Magit"
