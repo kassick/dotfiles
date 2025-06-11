@@ -5,6 +5,7 @@
     ;;                     :files ("*.el" "dist")))
     lsp-mode
     shell-maker
+    aider
     (copilot-chat :location (recipe
                              :fetcher github
                              :repo "chep/copilot-chat.el"
@@ -14,9 +15,37 @@
   (use-package shell-maker
     :defer t))
 
+(defun kzk-copilot/init-aider ()
+  (use-package aider
+    :defer t
+    :init
+    ;; missing autoload
+    (autoload 'aider-transient-menu-1col "aider" "Transient menu for Aider commands." t)
+
+    :config
+    (evil-define-key '(insert) aider-comint-mode-map
+      (kbd "C-r") #'comint-history-isearch-backward-regexp))
+
+  (kzk/after-init
+   (define-key kzk/copilot-chat-map (kbd "%")
+               '("Aider" . aider-transient-menu-1col))
+
+   (define-key global-map (kbd "C-%") '("Aider Transient Menu" . aider-transient-menu-1col))
+   (spacemacs/set-leader-keys "%" '("Aider Transient Menu" . aider-transient-menu-1col))
+
+   (with-eval-after-load 'embark
+     (define-key embark-buffer-map
+                 (kbd "M-%") #'kzk/aider-add-buffer))
+
+   (push '("^\\*aider:.*\\*$" :regexp t :width 78 :position left :stick t :noselect nil :dedicated nil)
+         popwin:special-display-config)))
+
+
 (defun kzk-copilot/init-copilot-chat ()
   (use-package copilot-chat
     :defer t
+    :init
+
     ;; :init (message "copilot chat init")
     ;; :custom (copilot-chat-frontend 'shell-maker)
     :config
@@ -88,7 +117,7 @@
    (advice-add 'copilot-chat-hide :override 'kzk/copilot-chat-hide)
    ;; (advice-add 'copilot-chat-reset :override 'kzk/copilot-chat-reset)
 
-   (setq kzk-copilot-chat-map (make-sparse-keymap))
+   ;; (setq kzk/copilot-chat-map (make-sparse-keymap))
 
    (dolist (fn '(copilot-chat-explain
                  copilot-chat-review
@@ -125,16 +154,11 @@
                                                       ;;#'ignore
                                                       )))))))
      (dolist (binding bindings)
-       (define-key kzk-copilot-chat-map (kbd (car binding)) (cdr binding))))
-
-   (define-key global-map (kbd "C-&") kzk-copilot-chat-map)
-   (spacemacs/set-leader-keys "&" `("Copilot Chat" . ,kzk-copilot-chat-map))
-   (spacemacs/set-leader-keys "a c p" `("Copilot Chat" . ,kzk-copilot-chat-map))
-   )
+       (define-key kzk/copilot-chat-map (kbd (car binding)) (cdr binding)))))
 
   (with-eval-after-load 'embark
     (define-key embark-buffer-map
-                (kbd "C-&") #'kzk/copilot-chat-add-buffer)))
+                (kbd "M-&") #'kzk/copilot-chat-add-buffer)))
 
 ;; -------
 
