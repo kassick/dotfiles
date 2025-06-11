@@ -1,0 +1,16 @@
+* Window Management
+
+** Other Window Placement
+
+When switching to a buffer in another window, emacs will try to pick an available window and, if none is available, try to split.
+
+With purpose and dedicated, this gets a tad more confusing.
+
+With a window [edit] window and a dedicated [compilation] window, if you have the [edit] window selected and try to switch to some buffer with a -other-window function, emacs may as well try to find another frame with some available window slot, instead of prefering the current one.
+
+This is caused by:
+- Dedicated preventing the [compilation] window from being reused
+- Window split thresholds being requiring way too large windows -- split-window-sensibly decides it can not split at all
+- Purpose actions for =prefer-other-window= having the `-maybe-other-frame` function that will try to display the buffer somethere in another frame...
+
+To provide a more sane (for me) experience, I'm letting split create smaller windows (see config.el) and prefering to pop a new frame instead of reusing other frames (see packages.el post-init-window-purpose).

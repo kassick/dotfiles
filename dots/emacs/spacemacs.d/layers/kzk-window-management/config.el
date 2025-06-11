@@ -17,6 +17,6 @@
  ;; frequently try to find a window in a completely different frame, because
  ;; the current frame was already too busy (i.e. an edit window and a
  ;; compilation window at the bottom ugh)
- '(split-width-threshold 60)
- '(split-height-threshold 30)
+ '(split-width-threshold 130)
+ '(split-height-threshold 60)
  )
