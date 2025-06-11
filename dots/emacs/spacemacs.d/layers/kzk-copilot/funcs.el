@@ -257,3 +257,11 @@ In that case, we simply bury the buffer
     (when restart (org-mode-restart)))
   ;; Disable org indented here
   (org-indent-mode -1))
+
+
+(defun kzk/aider-add-buffer (buffer)
+  "Adds the current buffer to copilot chat context"
+  (interactive "b")
+
+  (with-current-buffer buffer
+    (aider-add-current-file)))
