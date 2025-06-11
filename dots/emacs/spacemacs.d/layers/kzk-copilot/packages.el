@@ -37,8 +37,9 @@
      (define-key embark-buffer-map
                  (kbd "M-%") #'kzk/aider-add-buffer))
 
-   (push '("^\\*aider:.*\\*$" :regexp t :width 78 :position left :stick t :noselect nil :dedicated nil)
-         popwin:special-display-config)))
+   (push '(aider-comint-mode :width 78 :position left :stick t :noselect nil :dedicated nil)
+         popwin:special-display-config)
+   (pupo/update-purpose-config)))
 
 
 (defun kzk-copilot/init-copilot-chat ()
