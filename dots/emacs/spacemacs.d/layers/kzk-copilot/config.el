@@ -15,11 +15,15 @@ Buffer names:
 (defvar kzk/copilot-chat-map (make-sparse-keymap)
   "The Copiloting keymap")
 
+(defvar kzk/aider-map (make-sparse-keymap)
+  "The Aider keymep")
+
 (kzk/after-init
  (define-key global-map (kbd "C-&") `("Copilot" . ,kzk/copilot-chat-map))
  (spacemacs/set-leader-keys "&" `("Copilot" . ,kzk/copilot-chat-map))
 
- )
+ (define-key global-map (kbd "C-%") `("Aider" . ,kzk/aider-map))
+ (spacemacs/set-leader-keys "%" `("Aider" . ,kzk/aider-map)))
 
 
 (custom-set-variables

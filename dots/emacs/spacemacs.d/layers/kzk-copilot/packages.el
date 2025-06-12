@@ -30,8 +30,12 @@
    (define-key kzk/copilot-chat-map (kbd "%")
                '("Aider" . aider-transient-menu-1col))
 
-   (define-key global-map (kbd "C-%") '("Aider Transient Menu" . aider-transient-menu-1col))
-   (spacemacs/set-leader-keys "%" '("Aider Transient Menu" . aider-transient-menu-1col))
+   (let ((bindings '(("." . ("Transient Menu" . aider-transient-menu-1col))
+                     ("+" . ("Add current file to Context" . aider-add-current-file-or-dired-marked-files))
+                     ("-" . ("Drop current file from Context" . aider-drop-current-file))
+                     ("a" . ("a" . ("Open Aider" . aider-run-aider))))))
+     (dolist (binding bindings)
+       (define-key kzk/aider-map (kbd (car binding)) (cdr binding))))
 
    (with-eval-after-load 'embark
      (define-key embark-buffer-map
