@@ -961,7 +961,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
            (completions-annotations :foreground "#a3a3a3" :inherit (italic shadow))
            (persp-face-lighter-buffer-not-in-persp :foreground "#F00" :background unspecified :weight bold)
            (persp-face-lighter-default :foreground "SteelBlue3" :background unspecified :weight bold)
-           (persp-face-lighter-nil-persp :inherit 'bold-italic :foreground "LightBlue3"))
+           (persp-face-lighter-nil-persp :inherit bold-italic :foreground "LightBlue3"))
 
           ;; --- END theming-modifications ---
           ))
