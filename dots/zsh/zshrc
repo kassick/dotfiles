@@ -101,6 +101,15 @@ plugins=(gitfast python sudo pyenv fzf direnv)
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Unset some common variables that end up being set in the parent process --
+# for exemple when this is run from emacs inside a virtualenv
+unset VIRTUAL_ENV
+unset DIRENV_FILE
+unset DIRENV_DIFF
+unset DIRENV_DIR
+unset DIRENV_WATCHES
+unset ENVRC_ANNOT
+
 export EDITOR=vi
 alias e=$EDITOR
 

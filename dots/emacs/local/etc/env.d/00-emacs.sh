@@ -1,7 +1,7 @@
 if [ -n "$SSH_CONNECTION" ]; then
     EDITOR='emacsclient -t --alternate-editor="" '
 else
-    EDITOR='gtk-launch emacs'
+    EDITOR='gtk-launch emacsclient'
 fi
 
 export EDITOR
