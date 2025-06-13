@@ -30,8 +30,8 @@ Buffer names:
  '(copilot-chat-frontend 'org)
  `(aider-program ,(expand-file-name "~/.local/bin/ifood-aider-helper"))
  '(aider-args '(
-                "--model" "litellm_proxy/claude-3-7-sonnet-20250219-v1.0"
-                "--editor-model" "litellm_proxy/claude-3-7-sonnet-20250219-v1.0"
+                "--model" "litellm_proxy/claude-sonnet-4-20250514-v1.0"
+                "--editor-model" "litellm_proxy/claude-sonnet-4-20250514-v1.0"
                 "--weak-model" "litellm_proxy/ifood_default"
                 "--edit-format" "diff"
                 "--editor" "emacsclient -c"
