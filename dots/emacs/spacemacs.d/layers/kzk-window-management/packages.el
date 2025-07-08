@@ -128,6 +128,8 @@
 
 (defun kzk-window-management/post-init-embark ()
   (with-eval-after-load 'embark
+    ;; consult file buffer bookmark
+    ;;
     ;; Ace -- easy and done
     (define-key embark-file-map     (kbd "M-W") (kzk/embark-ace-action find-file))
     (define-key embark-buffer-map   (kbd "M-W") (kzk/embark-ace-action switch-to-buffer))
@@ -141,6 +143,8 @@
     (define-key embark-file-map (kbd "C-o") 'find-file-other-frame)
     (define-key embark-buffer-map (kbd "C-o") 'switch-to-buffer-other-frame)
 
+    ;; consult grep
+    ;;
     ;; consult-grep has no embark actions and no map, defining one here
     (defvar-keymap embark-grep-actions-map
       :doc "Keymap for actions for grep actions"
@@ -152,6 +156,8 @@
 
     (add-to-list 'embark-keymap-alist '(consult-grep . embark-grep-actions-map))
 
+    ;; consult location
+    ;;
     ;; For consult line and consult-line-multi, we must provide a new keymap
     ;; for the consult-location type
     (defvar-keymap embark-location-actions-map
@@ -162,17 +168,28 @@
       "M-w" #'kzk/embark-consult-location-esw
       "M-W" #'kzk/embark-consult-location-ace)
 
-    (add-to-list 'embark-keymap-alist '(consult-location . embark-location-actions-map))))
+    (add-to-list 'embark-keymap-alist '(consult-location . embark-location-actions-map))
+
+    ;; consult xref
+    (defvar-keymap embark-xref-actions-map
+      :doc "Keymap for actions for xref"
+      :parent embark-general-map
+      "o" #'kzk/embark-consult-xref-other-window
+      "C-o" #'kzk/embark-consult-xref-other-frame
+      "M-w" #'kzk/embark-consult-xref-esw
+      "M-W" #'kzk/embark-consult-xref-ace)
+
+    (add-to-list 'embark-keymap-alist '(consult-xref . embark-xref-actions-map))))
 
 
-;; (defun kzk-window-management/init-nameframe ()
-;;   (kzk/after-init
-;;    (nameframe-projectile-mode t)
-;;    (nameframe-eyebrowse-mode t)
-;;    (nameframe-perspective-mode t)
+(defun kzk-window-management/init-nameframe ()
+  (kzk/after-init
+   (nameframe-projectile-mode t)
+   (nameframe-eyebrowse-mode t)
+   (nameframe-perspective-mode t)
 
-;;    (spacemacs/set-leader-keys "F s" '("Switch frame by name" . nameframe-switch-frame ))
-;;    (define-key global-map (kbd "C-x 5 s") '("Switch frame by name" . nameframe-switch-frame))))
+   (spacemacs/set-leader-keys "F s" '("Switch frame by name" . nameframe-switch-frame ))
+   (define-key global-map (kbd "C-x 5 s") '("Switch frame by name" . nameframe-switch-frame))))
 
 
 ;;; Several post-init keybindings

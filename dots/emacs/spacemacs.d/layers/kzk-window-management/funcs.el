@@ -51,6 +51,8 @@
 
     buffer))
 
+;;; ----------------------------------------------------------------------
+;;; Helm actions
 (defun helm-esw/ag-find-file (candidate)
   "Selects a target window with esw before finding the file"
   (helm-ag--find-file-action candidate 'helm-esw/find-file-splitted-window (helm-ag--search-this-file-p)))
@@ -101,6 +103,9 @@
                  '("Find match in in new splited window `C-c w'" . helm-esw/ag-find-file ) t)
     (define-key helm-ag-map (kbd "C-c w") 'helm-esw/run-ag-find-file)))
 
+;;; ----------------------------------------------------------------------
+;;; Vertico / Consult / Embark
+
 ;;; Taken from https://karthinks.com/software/fifteen-ways-to-use-embark/
 ;;; (and adapted for names)
 ;;; {{{
@@ -113,6 +118,11 @@
          (aw-switch-to-window (ace-select-window))
          (call-interactively (symbol-function ',fn))))))
 ;;; }}}
+
+;;; Embark emacs buffer and file
+;;;
+;;; These functions are handy as embark actions on files/buffers to call
+;;; either ace or esw
 
 (defun kzk/esw-ff (filename &rest args)
   "Finds a file and open it in a ESW selected window"
@@ -135,6 +145,10 @@
   (require 'ace-window)
   (let* ((wnd (aw-switch-to-window (esw/select-window nil t t) )))
     (set-window-buffer wnd buffer-or-name)))
+
+;;; Embark Grep results
+;;;
+;;; These add {other-window, other-frame, esw, ace} actions for grep results
 
 (defun kzk/embark-grep-action-other-window (location)
   "Select window (es-windows) where to find match"
@@ -202,6 +216,14 @@
     ;;; Ensure the window is selected after the interactive command is completed
     (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
 
+;;; Embark Location results
+;;;
+;;; Location is not grep!!! Location includes stuff suth as the results of
+;;; consult-line & friends
+;;;
+;;; These functions add {other-frame, other-window, esw, ace} actions to
+;;; location results
+
 (defun kzk/embark-consult-location-esw (location)
   "Select window (es-windows) where to find location"
   (let ((location-mark (car (get-text-property 0 'consult-location location) )))
@@ -223,7 +245,6 @@
 
     (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
 
-
 (defun kzk/embark-consult-location-other-window (location)
   "Finds location on other window"
   (let ((location-mark (car (get-text-property 0 'consult-location location) )))
@@ -239,6 +260,48 @@
     (switch-to-buffer-other-frame (marker-buffer location-mark))
     (goto-char location-mark)))
 
+;;; Embark xref
+;;;
+;;; These functions add support for {other-window, other-frame, esw, ace}
+;;; actions for xref results
+
+(defun kzk/embark-consult-xref-esw (reference)
+  "Select window (es-windows) where to find xref"
+  (let ((xref-reference (get-text-property 0 'consult-xref reference)))
+    (esw/select-window nil t t)
+    (switch-to-buffer (current-buffer))
+    (xref-pop-to-location xref-reference)
+
+    (require 'ace-window)
+    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+
+(defun kzk/embark-consult-xref-ace (reference)
+  "Select window (ace) where to find xref"
+  (let ((xref-reference (get-text-property 0 'consult-xref reference)))
+    (ace-select-window)
+    (switch-to-buffer (current-buffer))
+    (xref-pop-to-location xref-reference)
+
+    (require 'ace-window)
+    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+
+
+(defun kzk/embark-consult-xref-other-window (reference)
+  "Finds xref on other window"
+  (let ((xref-reference (get-text-property 0 'consult-xref reference)))
+    (xref-pop-to-location xref-reference 'window)
+
+    (require 'ace-window)
+    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+
+(defun kzk/embark-consult-xref-other-frame (reference)
+  "Finds xref on other frame"
+  (let ((xref-reference (get-text-property 0 'consult-xref reference)))
+    ;; Do not use the 'frame action, as that tries to reuse frames
+    (switch-to-buffer-other-frame (current-buffer))
+    (xref-pop-to-location xref-reference)))
+
+;;; ----------------------------------------------------------------------
 
 (defun kzk/handle-delete-frame-error (orig-fun &rest args)
   (condition-case err
@@ -247,6 +310,9 @@
      (progn
        (posframe-delete-all)
        (apply orig-fun args)))))
+
+
+;;; ----------------------------------------------------------------------
 
 (defun kzk/evil-smart-doc-lookup (prefix)
   "Looks up help for thing at point using the current mode help function, if any.
@@ -270,6 +336,8 @@ Calling with multiple prefix will forward de prefix/4 to the actual help functio
       ;; Calling with sing
       (select-window cur-window))))
 
+;;; ----------------------------------------------------------------------
+
 (defun kzk/patch-display-buffer-override-next-command-action-list (&rest args)
   "Ensures that display-buffer-overriding-action is a list, as it is
 expected by display-buffer-override-next-command"
@@ -286,6 +354,9 @@ expected by display-buffer-override-next-command"
                    ;; filter dead buffers
                    (buffer-live-p it))
                   kzk/pupo-managed-buffers)))
+
+;;; ----------------------------------------------------------------------
+;;; Popups
 
 (defun kzk/popup-last-no-select (prefix)
   "Pops up the last popup window.
@@ -403,6 +474,8 @@ With a prefix, includes buffers shown in all frames. "
                                ))))
       (consult-buffer (list source)))))
 
+;;; ----------------------------------------------------------------------
+
 (defun kzk/quit-active-minibuffer ()
   "Quits the active minibuffer"
 
@@ -412,6 +485,8 @@ With a prefix, includes buffers shown in all frames. "
       (with-selected-window w
         (minibuffer-quit-recursive-edit)))))
 
+;;; ----------------------------------------------------------------------
+;;; Other Window management
 
 (defun kzk/other-window-default-cb ()
   (or (when-let* ((win (window-parameter (selected-window) 'kzk/other-window))
@@ -465,6 +540,8 @@ window\" for the current one."
                   ;; There should be nothing else , but
                   (t (warn "Invalid type found in popwin:special-display-config: %S" pattern))))))
 
+;;; ----------------------------------------------------------------------
+;;; Popup Management (again)
 (defvar kzk/last-frame-size nil)
 (defun kzk/resize-popups-on-frame-change-hook (frame)
   "Adjust the popup buffers size in case they are too big after a frame resize
