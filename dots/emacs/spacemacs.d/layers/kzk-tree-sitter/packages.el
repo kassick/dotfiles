@@ -1,6 +1,7 @@
 (defconst kzk-tree-sitter-packages
   '(tree-sitter-langs
-    ts-fold))
+    ts-fold
+    diminish))
 
 (defun kzk-tree-sitter/post-init-tree-sitter-langs ()
   ;; Force call here to make sure this happens in the startup process. If left
@@ -13,3 +14,8 @@
 (defun kzk-tree-sitter/post-init-ts-fold ()
   (spacemacs/set-leader-keys "T C-f" '("Toggle Fold Indicators" . ts-fold-indicators-mode))
   (setq ts-fold-indicators-priority 0))
+
+(defun kzk-tree-sitter/post-init-diminish ()
+  (with-eval-after-load 'diminish
+    (with-eval-after-load 'tree-sitter
+      (diminish 'tree-sitter-mode "🌳"))))
