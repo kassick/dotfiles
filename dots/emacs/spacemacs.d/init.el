@@ -8,18 +8,22 @@
 
 
 (defvar kzk/debug-use-local-gitlab-lsp t)
-(defvar kzk/experimental-popup-as-side-window (or nil
-                                                  (getenv "EXPERIMENTAL_POPUPS")))
+(defvar kzk/experimental-popup-as-side-window
+  (or nil
+      (getenv "EXPERIMENTAL_POPUPS")))
 
 (setq kzk/hack-original-display (getenv "DISPLAY"))
 (defun kzk/hack-reset-original-display-env-var (&optional frame)
   ;;; the message will insist it's resetting from :0 to :0, but if this is not
   ;;; executed, (getenv "DISPLAY") will return the wrong value because reasons
-  (message "Resetting DISPLAY from %S to %S" (getenv "DISPLAY") kzk/hack-original-display)
-  (run-at-time "3 seconds" nil (lambda () (setenv "DISPLAY" kzk/hack-original-display)))
+  (run-at-time "3 seconds" nil
+               (lambda ()
+                 (when kzk/hack-original-display
+                   (message "Resetting DISPLAY from %S to %S" (getenv "DISPLAY") kzk/hack-original-display)
+                   (setenv "DISPLAY" kzk/hack-original-display))))
+
   (remove-hook 'after-make-frame-functions #'kzk/hack-reset-original-display-env-var)
-  "$DISPLAY kludge"
-  )
+  "$DISPLAY kludge")
 
 (add-hook 'after-make-frame-functions #'kzk/hack-reset-original-display-env-var)
 
@@ -93,7 +97,8 @@ This function should only modify configuration layer settings."
    ;; `M-m f e R' (Emacs style) to install them.
    ;; ----------------------------------------------------------------
    dotspacemacs-configuration-layers
-   '(csv
+   '(
+     csv
      html
      (unicode-fonts :variables
                     unicode-fonts-enable-ligatures t)
