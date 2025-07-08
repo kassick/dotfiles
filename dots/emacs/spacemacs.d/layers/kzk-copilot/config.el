@@ -29,14 +29,17 @@ Buffer names:
 (custom-set-variables
  '(copilot-chat-frontend 'org)
  `(aider-program ,(expand-file-name "~/.local/bin/ifood-aider-helper"))
- '(aider-args '(
-                "--model" "litellm_proxy/claude-sonnet-4-20250514-v1.0"
-                "--editor-model" "litellm_proxy/claude-sonnet-4-20250514-v1.0"
-                "--weak-model" "litellm_proxy/ifood_default"
-                "--edit-format" "diff"
-                "--editor" "emacsclient -c"
-                "--chat-lang" "en_US"
-                "--no-show-model-warnings"))
+ ;; These can be configured via .aider.conf.yaml and .ifood-aider-helper.conf.yml
+ ;; '(aider-args '(
+ ;;                ;; Use 9090 to avoid common classhes
+ ;;                "--proxy-port" "9090"
+ ;;                "--model" "litellm_proxy/claude-sonnet-4-20250514-v1.0"
+ ;;                "--editor-model" "litellm_proxy/claude-sonnet-4-20250514-v1.0"
+ ;;                "--weak-model" "litellm_proxy/ifood_default"
+ ;;                "--edit-format" "diff"
+ ;;                "--editor" "emacsclient -c"
+ ;;                "--chat-lang" "en_US"
+ ;;                "--no-show-model-warnings"))
  '(aider-popular-models '(;; curl -vvv -X GET https://generative-ai-platform.ifood-sandbox.com.br/api/v2/v1/models | jq '"litellm_proxy/\(.data[] | .id)"'|sort
                           ;; not all these are actually available
                           "litellm_proxy/babbage-002"
