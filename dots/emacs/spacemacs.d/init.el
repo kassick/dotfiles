@@ -87,15 +87,17 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '()
 
    ;; List of configuration layers to load.
+   ;; ----------------------------------------------------------------
+   ;; Example of useful layers you may want to use right away.
+   ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
+   ;; `M-m f e R' (Emacs style) to install them.
+   ;; ----------------------------------------------------------------
    dotspacemacs-configuration-layers
    '(csv
      html
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-     ;; `M-m f e R' (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
-     (unicode-fonts :variables unicode-fonts-enable-ligatures t)
+     (unicode-fonts :variables
+                    unicode-fonts-enable-ligatures t)
+     emoji
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      nav-flash
      theming
@@ -323,6 +325,11 @@ This function should only modify configuration layer settings."
                                           ;; eyebrowse
                                           )
                                         )
+                                    unicode-fonts ;; Avoid unicode fonts
+                                                  ;; because it forces using
+                                                  ;; b&w symbola to display
+                                                  ;; emojis, and I dislike
+                                                  ;; that
                                     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
