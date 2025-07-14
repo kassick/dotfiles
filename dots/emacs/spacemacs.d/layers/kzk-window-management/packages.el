@@ -179,7 +179,19 @@
       "M-w" #'kzk/embark-consult-xref-esw
       "M-W" #'kzk/embark-consult-xref-ace)
 
-    (add-to-list 'embark-keymap-alist '(consult-xref . embark-xref-actions-map))))
+    (add-to-list 'embark-keymap-alist '(consult-xref . embark-xref-actions-map))
+
+    ;; consult imenu
+    (advice-add #'consult-imenu--compute :filter-return #'kzk/consult-imenu-compute--result-advice)
+    (defvar-keymap embark-imenu-actions-map
+      :doc "Keymap for actions for imenu"
+      :parent embark-general-map
+      "o" #'kzk/embark-consult-imenu-other-window
+      "C-o" #'kzk/embark-consult-imenu-other-frame
+      "M-w" #'kzk/embark-consult-imenu-esw
+      "M-W" #'kzk/embark-consult-imenu-ace)
+
+    (add-to-list 'embark-keymap-alist '(imenu . embark-imenu-actions-map))
 
 
 (defun kzk-window-management/init-nameframe ()

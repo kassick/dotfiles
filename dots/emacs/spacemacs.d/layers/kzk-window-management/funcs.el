@@ -328,6 +328,50 @@
     ;; Do not use the 'frame action, as that tries to reuse frames
     (xref-pop-to-location xref-reference)))
 
+;;; Embark imenu
+;;;
+;;; These functions add support for {other-window, other-frame, esw, ace} for
+;;; imenu actions in consult
+
+(defun kzk/consult-imenu-compute--result-advice (items)
+  "Adds a missing text property to the item text, so we can do embark actions from consult"
+  (-map
+   (lambda (item)
+     (pcase item
+       (`(,text ,pos ,fn . ,args)
+        ;; Special case with a callable -- add the (pos fn . args) cons as property
+        (add-text-properties 0 1 `(kzk-consult-imenu-marker (,pos ,fn . ,args) text)
+        `(,text ,pos ,fn . ,args)))
+       (`(,text . ,pos)
+        (add-text-properties 0 1 `(kzk-consult-imenu-marker ,pos ) text)
+        (cons text pos))
+       (t (message "this item %S is really weird" item)
+          item)))
+   items))
+
+(kzk/defun-embark-action-esw kzk/embark-consult-imenu-esw (item)
+  "Select window (es-windows) where to find imenu item !"
+
+  (let ((item-prop (get-text-property 0 'kzk-consult-imenu-marker item)))
+    (consult-imenu--jump (cons item item-prop))))
+
+(kzk/defun-embark-action-ace kzk/embark-consult-imenu-ace (item)
+  "Select window (ace) where to find imenu item !"
+
+  (let ((item-prop (get-text-property 0 'kzk-consult-imenu-marker item)))
+    (consult-imenu--jump (cons item item-prop))))
+
+(kzk/defun-embark-action-on-other-window kzk/embark-consult-imenu-other-window (item)
+  "Finds imenu item on other window !"
+  (let ((item-prop (get-text-property 0 'kzk-consult-imenu-marker item)))
+    (consult-imenu--jump (cons item item-prop))))
+
+(kzk/defun-embark-action-on-other-frame kzk/embark-consult-imenu-other-frame (item)
+  "Finds imenu on other frame !"
+  (let ((item-prop (get-text-property 0 'kzk-consult-imenu-marker item)))
+    (consult-imenu--jump (cons item item-prop))))
+
+
 ;;; ----------------------------------------------------------------------
 
 (defun kzk/handle-delete-frame-error (orig-fun &rest args)
