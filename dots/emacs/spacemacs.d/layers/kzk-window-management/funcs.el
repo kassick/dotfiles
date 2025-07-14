@@ -106,6 +106,47 @@
 ;;; ----------------------------------------------------------------------
 ;;; Vertico / Consult / Embark
 
+(defmacro kzk/defun-embark-action-on-other-window (fn-name arg-list help &rest FORMS)
+  (declare (indent defun))
+  `(defun ,fn-name ,arg-list
+       ,help
+     (switch-to-buffer-other-window (current-buffer))
+     ,@FORMS
+     (require 'ace-window)
+     (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+
+
+(defmacro kzk/defun-embark-action-on-other-frame (fn-name arg-list help &rest FORMS)
+  (declare (indent defun))
+  `(defun ,fn-name ,arg-list
+       ,help
+     (switch-to-buffer-other-frame (current-buffer))
+     ,@FORMS))
+
+(defmacro kzk/defun-embark-action-esw (fn-name arg-list help &rest FORMS)
+  (declare (indent defun))
+  `(defun ,fn-name ,arg-list
+     ,help
+     (let ((orig-buffer (current-buffer)))
+       (esw/select-window nil t t)
+       (switch-to-buffer orig-buffer)
+       ,@FORMS
+       (require 'ace-window)
+       (run-at-time 0 nil #'aw-switch-to-window (selected-window)))))
+
+(defmacro kzk/defun-embark-action-ace (fn-name arg-list help &rest FORMS)
+  (declare (indent defun))
+  `(defun ,fn-name ,arg-list
+     ,help
+
+     (let ((orig-buffer (current-buffer)) )
+       (ace-select-window)
+       (switch-to-buffer orig-buffer nil 'force-same-window)
+       (message " a selected window: %S" (selected-window))
+       ,@FORMS
+       (require 'ace-window)
+       (run-at-time 0 nil #'aw-switch-to-window (selected-window)))))
+
 ;;; Taken from https://karthinks.com/software/fifteen-ways-to-use-embark/
 ;;; (and adapted for names)
 ;;; {{{
@@ -265,40 +306,26 @@
 ;;; These functions add support for {other-window, other-frame, esw, ace}
 ;;; actions for xref results
 
-(defun kzk/embark-consult-xref-esw (reference)
+(kzk/defun-embark-action-esw kzk/embark-consult-xref-esw (reference)
   "Select window (es-windows) where to find xref"
   (let ((xref-reference (get-text-property 0 'consult-xref reference)))
-    (esw/select-window nil t t)
-    (switch-to-buffer (current-buffer))
-    (xref-pop-to-location xref-reference)
+    (xref-pop-to-location xref-reference)))
 
-    (require 'ace-window)
-    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
-
-(defun kzk/embark-consult-xref-ace (reference)
+(kzk/defun-embark-action-ace kzk/embark-consult-xref-ace (reference)
   "Select window (ace) where to find xref"
   (let ((xref-reference (get-text-property 0 'consult-xref reference)))
-    (ace-select-window)
-    (switch-to-buffer (current-buffer))
-    (xref-pop-to-location xref-reference)
-
-    (require 'ace-window)
-    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
+    (xref-pop-to-location xref-reference)))
 
 
-(defun kzk/embark-consult-xref-other-window (reference)
+(kzk/defun-embark-action-on-other-window kzk/embark-consult-xref-other-window (reference)
   "Finds xref on other window"
   (let ((xref-reference (get-text-property 0 'consult-xref reference)))
-    (xref-pop-to-location xref-reference 'window)
+    (xref-pop-to-location xref-reference)))
 
-    (require 'ace-window)
-    (run-at-time 0 nil #'aw-switch-to-window (selected-window))))
-
-(defun kzk/embark-consult-xref-other-frame (reference)
-  "Finds xref on other frame"
+(kzk/defun-embark-action-on-other-frame kzk/embark-consult-xref-other-frame (reference)
+  "Finds xref on other frame !"
   (let ((xref-reference (get-text-property 0 'consult-xref reference)))
     ;; Do not use the 'frame action, as that tries to reuse frames
-    (switch-to-buffer-other-frame (current-buffer))
     (xref-pop-to-location xref-reference)))
 
 ;;; ----------------------------------------------------------------------
