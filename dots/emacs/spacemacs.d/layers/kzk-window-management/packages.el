@@ -193,6 +193,18 @@
 
     (add-to-list 'embark-keymap-alist '(imenu . embark-imenu-actions-map))
 
+    ;; Use consult-outline for org -- this will use consult-location, which
+    ;; already has all mappings. The original consult-org-heading uses the
+    ;; category org-heading, which exposes a hell lot of actions, most of
+    ;; which I don't care when using consult to jump
+    (advice-add #'spacemacs/consult-jump-in-buffer
+                :around
+                (lambda (fn)
+                  (cond
+                   ((eq major-mode 'org-mode) (consult-outline))
+                   (t (call-interactively fn)))))
+    ))
+
 
 (defun kzk-window-management/init-nameframe ()
   (kzk/after-init
