@@ -37,7 +37,8 @@
      (dolist (binding bindings)
        (define-key kzk/aider-map (kbd (car binding)) (cdr binding))))
 
-   (with-eval-after-load 'embark
+   (with-eval-after-load 'consult
+     (require 'embark)
      (define-key embark-buffer-map
                  (kbd "M-%") #'kzk/aider-add-buffer)
 
@@ -165,7 +166,8 @@
      (dolist (binding bindings)
        (define-key kzk/copilot-chat-map (kbd (car binding)) (cdr binding)))))
 
-  (with-eval-after-load 'embark
+  (with-eval-after-load 'consult
+    (require 'embark)
     (define-key embark-buffer-map
                 (kbd "M-&") #'kzk/copilot-chat-add-buffer)))
 
