@@ -265,3 +265,26 @@ In that case, we simply bury the buffer
 
   (with-current-buffer buffer
     (aider-add-current-file)))
+
+
+(defun kzk/aider-add-file (path &optional prefix)
+  "Adds file on path to the aider context.
+
+When called with prefix, adds the file read only.
+"
+
+  (interactive "fAdd File to Aider: \nP")
+
+  ;; Find buffer for file or create new temporary one
+  (let* ((existing-buffer (find-buffer-visiting path))
+         (buffer (or existing-buffer
+                     (find-file-noselect path))))
+    (with-current-buffer buffer
+      (if (or prefix buffer-read-only)
+         (aider-current-file-read-only)
+        (aider-add-current-file)))
+
+    ;; Kill buffer if we created it temporarily
+    (unless existing-buffer
+      (kill-buffer buffer))
+    (message "Added file %s to aider context" path)))

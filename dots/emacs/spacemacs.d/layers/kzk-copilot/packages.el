@@ -39,7 +39,10 @@
 
    (with-eval-after-load 'embark
      (define-key embark-buffer-map
-                 (kbd "M-%") #'kzk/aider-add-buffer))
+                 (kbd "M-%") #'kzk/aider-add-buffer)
+
+     (define-key embark-file-map
+                 (kbd "M-%") #'kzk/aider-add-file))
 
    (push '(aider-comint-mode :width 78 :position left :stick t :noselect nil :dedicated nil)
          popwin:special-display-config)
