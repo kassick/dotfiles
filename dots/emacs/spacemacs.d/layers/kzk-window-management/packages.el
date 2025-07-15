@@ -127,7 +127,8 @@
   (advice-add 'delete-frame :around #'kzk/handle-delete-frame-error))
 
 (defun kzk-window-management/post-init-embark ()
-  (with-eval-after-load 'embark
+  (with-eval-after-load 'consult
+    (require 'embark)
     ;; consult file buffer bookmark
     ;;
     ;; Ace -- easy and done
