@@ -144,7 +144,8 @@
    "s/" #'kzk/consult-fd-find-here
    )
 
- (with-eval-after-load 'embark-consult
+ (with-eval-after-load 'consult
+   (require 'embark-consult)
    (general-define-key :keymaps 'embark-consult-search-map
                        "/" #'consult-fd)
 
